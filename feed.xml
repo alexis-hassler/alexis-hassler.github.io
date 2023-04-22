@@ -1,0 +1,2480 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://blog.alexis-hassler.com//feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.alexis-hassler.com//" rel="alternate" type="text/html" hreflang="fr" /><updated>2023-04-22T17:44:26+00:00</updated><id>https://blog.alexis-hassler.com//feed.xml</id><title type="html">Bojo Blog</title><subtitle>&lt;p&gt;J'ai créé la société &lt;b&gt;Sewatech&lt;/b&gt; en 2005, pour y exercer mon métier de développeur &lt;i title=&quot;ie. je fais du Java et de l'Angular&quot;&gt;full stack&lt;/i&gt;, à dominante &lt;i title=&quot;ie. je suis meilleur en Spring qu'en CSS&quot;&gt;back end&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;Vous pouvez me &lt;a href=&quot;https://www.sewatech.fr/contacts.html&quot;&gt;contacter&lt;/a&gt; si vous cherchez un développeur indépendant expérimenté (plus de 25 ans d'expérience) pour intégrer votre équipe de projet. Je peux aussi intervenir pour un audit ou une mission de conseil.&lt;/p&gt; &lt;p&gt;Enfin, je donne des formations sur &lt;a href=&quot;https://www.sewatech.fr/formation-spring.html&quot;&gt;Spring&lt;/a&gt;, &lt;a href=&quot;https://www.sewatech.fr/formation-vertx.html&quot;&gt;Vert.x&lt;/a&gt;, &lt;a href=&quot;https://www.sewatech.fr/formation-wildfly.html&quot;&gt;WildFly&lt;/a&gt;,... en intra sur site ou à distance.&lt;/p&gt;
+</subtitle><author><name>Alexis Hassler</name></author><entry><title type="html">Retour d’expérience, migration à Spring Boot 3</title><link href="https://blog.alexis-hassler.com//2023/04/06/migration-boot-3.html" rel="alternate" type="text/html" title="Retour d’expérience, migration à Spring Boot 3" /><published>2023-04-06T00:00:00+00:00</published><updated>2023-04-06T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2023/04/06/migration-boot-3</id><content type="html" xml:base="https://blog.alexis-hassler.com//2023/04/06/migration-boot-3.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-boot-migration-2-3.svg&quot; alt=&quot;Spring Boot logo version 2 to version 3&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ces dernières semaines, j&amp;#8217;ai dû faire une migration de Spring Boot 2 à Spring Boot 3.
+Comme Spring Boot, il y a toute une suite de frameworks et librairies, avec en particulier Spring Framework, Spring Security, Hibernate, ça fait pas mal de galères potientielles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;ai lu quelques articles et billets sur le sujet, en particulier le &lt;a href=&quot;https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide&quot;&gt;guide de migration du projet Spring&lt;/a&gt;.
+J&amp;#8217;en ai conclu que ça n&amp;#8217;allait pas être très compliqué, avec surtout un gros rechercher/remplacer de &lt;code&gt;javax.*&lt;/code&gt; pour &lt;code&gt;jakarta.*&lt;/code&gt;.
+Evidemment ça ne s&amp;#8217;est pas passé aussi simplement que prévu, c&amp;#8217;est ce que je vais raconter ici.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;application est construite sur des bases classiques.
+Elle implémente un API Web, avec du contenu JSON.
+Elle est organisée en couches avec des &lt;em&gt;controllers&lt;/em&gt;, des services et des &lt;em&gt;repositories&lt;/em&gt;.
+Pour ces derniers, on utilise &lt;em&gt;Spring Data JPA&lt;/em&gt;, avec &lt;em&gt;Hibernate&lt;/em&gt; et une base de données PostgreSQL.
+Bref, une application comme il en existe plein.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tâches-préalables&quot;&gt;Tâches préalables&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme ça avait été &lt;a href=&quot;https://spring.io/blog/2021/09/02/a-java-17-and-jakarta-ee-9-baseline-for-spring-framework-6&quot;&gt;annoncé dès 2021&lt;/a&gt;, nous savions que nous devions utiliser un &lt;strong&gt;JDK 17&lt;/strong&gt; pour pouvoir utiliser Spring Boot 3.
+Bien avant la migration, on avait passé notre code du JDK 11 au JDK 17.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a eu un peu plus de surprise avec &lt;strong&gt;Swagger&lt;/strong&gt;.
+On utilisait SpringFox pour générer la documentation de l&amp;#8217;API à afficher dans SwaggerUI.
+Or SpringFox n&amp;#8217;a pas été mis à jour pour être compatible avec Spring Boot 3.
+Je l&amp;#8217;ai donc abandonné pour Springdoc.
+Au passage, on utilisait des annotation Swagger v2 qu&amp;#8217;il a fallut remplacer par des annotations OpenAPI v3.
+J&amp;#8217;en ai profité pour poser mes &lt;a href=&quot;https://www.jtips.info/Spring/Swagger&quot;&gt;notes de configuration de Springdoc sur JTips&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le passage de Hibernate 5 à &lt;strong&gt;Hibernate 6&lt;/strong&gt; implique pas mal de changements, dont l&amp;#8217;abandon du support direct d'&lt;strong&gt;Ehcache&lt;/strong&gt;.
+Pour continuer de l&amp;#8217;utiliser, il faut utiliser &lt;strong&gt;JCache&lt;/strong&gt; (ou JSR-101) et faire en sorte qu&amp;#8217;Ehcache en soit le &lt;em&gt;provider&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;authentification se fait avec &lt;strong&gt;OIDC&lt;/strong&gt; sur un serveur d&amp;#8217;autorisation intégré à l&amp;#8217;application, basé sur Spring Authorization Server.
+Au démarrage du projet, cette librairie était en version 0.3.
+Forcément, comme on n&amp;#8217;était pas en version finale, on pouvait craindre à pas mal de changements.
+En l&amp;#8217;occurence, les changements se sont fait sur la version 0.4, compatible avec Spring Boot 2 ; le passage à la version 1.0, compatible avec Spring Boot 3, est beaucoup moins important.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En plus de quelques changements de packages, il a fallu modifier toutes les références à la classe ProviderContext qui a changé de nom pour AuthorizationServerContext.
+Par ailleurs, le support d&amp;#8217;OIDC n&amp;#8217;est plus activé par défaut, il faut le déclarer explicitement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;    authorizationServerConfigurer.oidc(oidcConfigurer -&amp;gt; {});&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec tout ça, on était prêt à passer à Spring Boot 3.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tâches-prévues&quot;&gt;Tâches prévues&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Grâce à lecture du guide de migration et de quelques autres billets, on connaissait un certain nombre de tâches.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a pas mal de petits changements sur &lt;strong&gt;Spring Security&lt;/strong&gt;, au point où il a son &lt;a href=&quot;https://docs.spring.io/spring-security/reference/migration/index.html&quot;&gt;guide de migration&lt;/a&gt; dédié.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;WebSecurityConfigurerAdapter n&amp;#8217;existe plus.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Quelques méthodes de HttpSecurity ont changé.&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;securityMatcher(&amp;#8230;&amp;#8203;) remplace requestMatcher(&amp;#8230;&amp;#8203;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;authorizeHttpRequests(&amp;#8230;&amp;#8203;) remplace authorizeRequests(&amp;#8230;&amp;#8203;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;requestMatchers(&amp;#8230;&amp;#8203;) remplace antMatchers(&amp;#8230;&amp;#8203;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour &lt;strong&gt;Spring integration&lt;/strong&gt;, les changements se limitent à une plus grande utilisation de &lt;code&gt;Instant&lt;/code&gt; à la place de &lt;code&gt;Date&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Dans la classe &lt;code&gt;Trigger&lt;/code&gt;, &lt;code&gt;nextExecutionTime()&lt;/code&gt; remplacé par &lt;code&gt;nextExecution()&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Dans la classe &lt;code&gt;TriggerContext&lt;/code&gt;, &lt;code&gt;lastActualExecutionTime()&lt;/code&gt; est déprécié en faveur de &lt;code&gt;lastActualExecution()&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le gros morceaux semblait être le passage de Java EE à &lt;strong&gt;Jakarta EE&lt;/strong&gt;, avec plusieurs packages qui sont renommés de &lt;code&gt;javax.zzz&lt;/code&gt; à &lt;code&gt;jakarta.zzz&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Servlet: &lt;code&gt;javax.servlet&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.servlet&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JPA: &lt;code&gt;javax.persistence&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.persistence&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Bean Validation: &lt;code&gt;javax.validation&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.validation&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Annotations: &lt;code&gt;javax.annotation&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.annotation&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Mail: &lt;code&gt;javax.mail&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.mail&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Finalement le changement de packages est rapide, mais il faut aussi mettre à jour les librairies qui dépendent de Java EE.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;com.fasterxml.jackson.datatype:jackson-datatype-hibernate5&lt;/code&gt; &amp;#8658; &lt;code&gt;com.fasterxml.jackson.datatype:jackson-datatype-hibernate5-jakarta&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;com.vladmihalcea:hibernate-types-55&lt;/code&gt; &amp;#8658; &lt;code&gt;io.hypersistence:hypersistence-utils-hibernate-62&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tâches-pas-prévues&quot;&gt;Tâches pas prévues&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Peut-être que j&amp;#8217;ai manqué de concentration en lisant le &lt;a href=&quot;https://docs.jboss.org/hibernate/orm/6.0/migration-guide/migration-guide.html&quot;&gt;guide de migration à &lt;strong&gt;Hibernate 6&lt;/strong&gt;&lt;/a&gt;, mais je ne pensais pas que le changement sur la gestion des types aurait autant d&amp;#8217;impact.
+On avait anticipé les gros changemenents dans la classe &lt;code&gt;UserType&lt;/code&gt; en remplaçant nos types personnalisés par ceux de la librairie Hypersistence Utils de &lt;a href=&quot;https://vladmihalcea.com/&quot;&gt;Vlad Mihalcea&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ensuite, il a fallu retoucher pas mal d&amp;#8217;annotations remplacent du texte par des classes.
+C&amp;#8217;est plus typé, c&amp;#8217;est mieux, plus propre.
+Avant, pour associer une propriété à une colonne de type &lt;code&gt;jsonb&lt;/code&gt;, il fallait déclarer le type au niveau de la classe, puis l&amp;#8217;utiliser par son nom au niveau de la propriété.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;strong&gt;@TypeDef(name = &quot;jsonb&quot;, typeClass = JsonBinaryType.class)&lt;/strong&gt;
+public class Product {
+  &lt;strong&gt;@Type(type = &quot;jsonb&quot;)&lt;/strong&gt;
+  private String detailAsJson;
+  ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans Hibernate 6, l&amp;#8217;annotation &lt;code&gt;@TypeDef&lt;/code&gt; a disparu et l&amp;#8217;annotation &lt;code&gt;@Type&lt;/code&gt; fait directement référence à la classe de description du type jsonb.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class Product {
+  &lt;strong&gt;@Type(JsonBinaryType.class)&lt;/strong&gt;
+  private String detailAsJson;
+  ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour le type &lt;strong&gt;UUID&lt;/strong&gt;, la gestion a aussi pas mal changé, pour plus de simplicité.
+Avec Hibernate 6, on retire les annotations &lt;code&gt;@Type(type = &quot;org.hibernate.type.UUIDCharType&quot;)&lt;/code&gt;.
+A la place on choisit la façon d&amp;#8217;associer les propriétés UUID via la propriété &lt;code&gt;preferred_uuid_jdbc_type&lt;/code&gt; d&amp;#8217;Hibernate (CHAR, VARCHAR, UUID).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;spring.jpa.properties.hibernate.type.&lt;strong&gt;preferred_uuid_jdbc_type&lt;/strong&gt;=VARCHAR&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au passage, comme on utilise beaucoup les &lt;strong&gt;filtres&lt;/strong&gt; d&amp;#8217;Hibernate et qu&amp;#8217;il y a un &lt;a href=&quot;https://hibernate.atlassian.net/browse/HHH-16179&quot;&gt;bug gênant&lt;/a&gt; dans la version 6.0, on est directement passé à la version 6.2.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, il y a eu un travail important sur l&amp;#8217;intégration de la &lt;a href=&quot;https://www.rfc-editor.org/rfc/rfc7807&quot;&gt;&lt;strong&gt;RFC-7807&lt;/strong&gt;&lt;/a&gt; (Problem Details for HTTP APIs).
+On utilisait Zalando Problem qui n&amp;#8217;a pas été migrée et qui ne le sera probablement jamais puisque qu&amp;#8217;elle est devenue inutile.
+En effet, &lt;a href=&quot;https://www.jtips.info/Spring/Problem&quot;&gt;Spring Framework 6 a intégré le support de RFC-7807&lt;/a&gt;.
+Il a donc fallu jeter tout le travail qui avait été réalisé et le réimplanté dans la nouvelle version.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Après tout ça, l&amp;#8217;application fonctionnait, mais pas les tests d&amp;#8217;intégration.
+On utilise &lt;strong&gt;RestTemplate&lt;/strong&gt; avec une configuration adaptée aux tests, pour les redirection et la gestion relachée des cookies.
+Le passage de Apache HttpClient 4 à &lt;strong&gt;Apache HttpComponents 5&lt;/strong&gt; est documenté, mais j&amp;#8217;ai passé plus de temps que prévu sur le sujet.
+Pour la gestion des cookies, la configuration a juste un peu changé.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  // Apache HttpClient 4
+  private static HttpClient buildHttpClient() {
+    RequestConfig requestConfig = RequestConfig.custom()
+            .setCookieSpec(&lt;strong&gt;CookieSpecs.STANDARD_STRICT&lt;/strong&gt;)
+            .build();
+    return HttpClientBuilder.create()
+            .setDefaultRequestConfig(requestConfig)
+            .setRedirectStrategy(&lt;strong&gt;new LaxRedirectStrategy()&lt;/strong&gt;)
+            .build();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  // Apache HttpComponents 5
+  private static HttpClient buildHttpClient() {
+    RequestConfig requestConfig = RequestConfig.custom()
+            .setCookieSpec(&lt;strong&gt;StandardCookieSpec.RELAXED&lt;/strong&gt;)
+            .build();
+    return HttpClientBuilder.create()
+            .setDefaultRequestConfig(requestConfig)
+            .setRedirectStrategy(&lt;strong&gt;new DefaultRedirectStrategy()&lt;/strong&gt;)
+            .build();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Malheureusement, ça n&amp;#8217;a pas suffit pour la gestion des redirections de requêtes POST vers GET.
+Dans la nouvelle version, la classe &lt;strong&gt;RedirectExec&lt;/strong&gt; ne joint jamais les cookies à la requête GET.
+La seule solution pour y arriver a été de faire ma propre classe CustomRedirectExec identique à l&amp;#8217;original mais avec une récupération des headers en plus.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;    ...
+    currentRequest = redirectBuilder.build();
+    // Ça c'est l'ajout perso
+    currentRequest.setHeaders(scope.originalRequest.getHeaders());
+    EntityUtils.consume(response.getEntity());
+    response.close();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, il a fallu faire quelques petits ajustements dans les tests d&amp;#8217;intégration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Les URLs sont gérés avec plus de rigueur pour le '/' de fin.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Les content types demandent aussi plus de rigueur.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;avais planifié &lt;strong&gt;une petite semaine&lt;/strong&gt; pour cette migration.
+Au final, elle m&amp;#8217;a pris plus du double.
+Pour être plus précis, j&amp;#8217;ai passé environs &lt;strong&gt;80 heures&lt;/strong&gt; pour identifier, comprendre et résoudre les problèmes que j&amp;#8217;ai présenté ici, plus quelques pétouilles qui n&amp;#8217;ont pas d&amp;#8217;intérêt ici.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="spring" /><summary type="html">Ces dernières semaines, j&amp;#8217;ai dû faire une migration de Spring Boot 2 à Spring Boot 3. Comme Spring Boot, il y a toute une suite de frameworks et librairies, avec en particulier Spring Framework, Spring Security, Hibernate, ça fait pas mal de galères potientielles. J&amp;#8217;ai lu quelques articles et billets sur le sujet, en particulier le guide de migration du projet Spring. J&amp;#8217;en ai conclu que ça n&amp;#8217;allait pas être très compliqué, avec surtout un gros rechercher/remplacer de javax.* pour jakarta.*. Evidemment ça ne s&amp;#8217;est pas passé aussi simplement que prévu, c&amp;#8217;est ce que je vais raconter ici.</summary></entry><entry><title type="html">Tests d’intégration, comment vérifier que le ménage a été fait ?</title><link href="https://blog.alexis-hassler.com//2022/07/02/test-menage.html" rel="alternate" type="text/html" title="Tests d’intégration, comment vérifier que le ménage a été fait ?" /><published>2022-07-02T00:00:00+00:00</published><updated>2022-07-02T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/07/02/test-menage</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/07/02/test-menage.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/junit/junit5-db.svg&quot; alt=&quot;JUnit 5 logo with database&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Encore un billet sur les tests, et plus précisément sur les tests d&amp;#8217;intégration en Java.
+Dans ma mission actuelle, il y a beaucoup de tests d&amp;#8217;intégration, trop à mon goût.
+Et ce sont généralement des tests avec une intégration complète : le test envoie une requête HTTP à laquelle le &lt;em&gt;backend&lt;/em&gt; testé renvoie une réponse construite avec des données issue d&amp;#8217;une base de données de test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour les faire fonctionner de façon reproductible, aussi bien en local qu&amp;#8217;en intégration continue, ça demande quelques contorsions.
+J&amp;#8217;ai donc cherché des idées pour les améliorer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Aujourd&amp;#8217;hui, je vais vous expliquer ce qu&amp;#8217;on a fait pour résoudre le problème du ménage dans les données.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;le-problème&quot;&gt;Le problème&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lorsqu&amp;#8217;on développe un test d&amp;#8217;intégration, on doit laisser le système dans l&amp;#8217;état dans lequel on l&amp;#8217;a trouvé en arrivant.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/endroit-propre.jpg&quot; alt=&quot;endroit propre&quot; width=&quot;400&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ça concerne en particulier les données en base.
+On initialise des données pour chaque test, le test lui-même peut ajouter ou modifier des données.
+Pour que le test suivant se déroule correctement, il faut faire le ménage après chaque test ou chaque classe de test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;metricsRepository.deleteAll();
+deviceRepository.deleteAll();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le problème avec ces tests d&amp;#8217;intégration, c&amp;#8217;est qu&amp;#8217;on ne cherche pas à isoler un composant particulier.
+De ce fait, certaines actions peuvent impacter plusieurs tables.
+A plusieurs reprises, l&amp;#8217;auteur du test a oublié des données, parce qu&amp;#8217;il n&amp;#8217;avait pas conscience qu&amp;#8217;elle avaient pu être créées.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Nous avons décidé de mettre en place un dispositif d&amp;#8217;aide au développeur pour l&amp;#8217;alerter s&amp;#8217;il oublie des données.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;extension-junit&quot;&gt;Extension JUnit&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Nous utilisons &lt;strong&gt;JUnit 5&lt;/strong&gt; qui a un système d&amp;#8217;extension très puissant.
+Par rapport à JUnit 4, il a été complètement remis à plat et remplace à la fois les &lt;em&gt;runners&lt;/em&gt; et les &lt;em&gt;rules&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ce qui va nous intéressé, c&amp;#8217;est la possibilité de s&amp;#8217;insérer dans le cycle de vie des tests.
+Ça marche un peu à la façon des méthodes annotées &lt;code&gt;@BeforeAll&lt;/code&gt;, &lt;code&gt;@BeforeEach&lt;/code&gt;, &lt;code&gt;@AfterEach&lt;/code&gt; ou &lt;code&gt;@AfterAll&lt;/code&gt;, mais dans une classe indépendante et réutilisable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/junit/lifecycle-extension.svg&quot; alt=&quot;JUnit Extension lifecycle&quot; width=&quot;600&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour vérifier l&amp;#8217;état de la base de données, on développe une classe qui implémente &lt;code&gt;AfterAllCallback&lt;/code&gt;.
+Ça devient une sorte de méthode &lt;code&gt;@AfterAll&lt;/code&gt; pour chaque classe de test qui déclare l&amp;#8217;extension.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class CheckEntitiesExtension implements &lt;strong&gt;AfterAllCallback&lt;/strong&gt; {
+
+  @Override
+  public void &lt;strong&gt;afterAll&lt;/strong&gt;(ExtensionContext extensionContext) {
+    // ...
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;extension est activée pour chaque classe de test qui la déclare dans &lt;strong&gt;&lt;code&gt;@ExtendWith&lt;/code&gt;&lt;/strong&gt;.
+Une classe de test peut déclarer plusieurs exensions, ce qui nous arrange puisqu&amp;#8217;on veut ajouter notre vérification à des tests d&amp;#8217;intégration qui ont déjà l&amp;#8217;extension &lt;code&gt;SpringExtension&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;strong&gt;@ExtendWith&lt;/strong&gt;({SpringExtension.class, &lt;strong&gt;CheckEntitiesExtension.class&lt;/strong&gt;})
+public class DeviceApiIT {
+  // ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;intégration-avec-spring-et-jpa&quot;&gt;Intégration avec Spring et JPA&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Notre architecture se base sur Spring Boot, avec Spring Data JPA.
+La plupart des accès à la base de données se font avec des interfaces &lt;em&gt;repository&lt;/em&gt;, à base de méthodes abstraites et de conventions de nommage.
+Mais Spring Boot a des beans qui nous permettent de faire du pur JPA.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;span class=&quot;image&quot;&gt;&lt;img src=&quot;/images/spring/spring-boot.svg&quot; alt=&quot;Spring Boot&quot; height=&quot;120&quot;&gt;&lt;/span&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160;
+&lt;span class=&quot;image&quot;&gt;&lt;img src=&quot;/images/spring/spring-data.svg&quot; alt=&quot;Spring Data&quot; height=&quot;120&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première étape est de récupérer le contexte d&amp;#8217;application qui a été démarré par l&amp;#8217;extension Spring.
+On l&amp;#8217;utilise pour récupérer quelques beans comme l'`EntityManager` et le &lt;code&gt;TransactionManager&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Override
+  public void afterAll(ExtensionContext extensionContext) {
+    ApplicationContext applicationContext
+        = &lt;strong&gt;SpringExtension&lt;/strong&gt;.getApplicationContext(extensionContext);
+
+    &lt;strong&gt;EntityManager&lt;/strong&gt; entityManager = applicationContext.getBean(EntityManager.class);
+    &lt;strong&gt;PlatformTransactionManager&lt;/strong&gt; transactionManager =
+        applicationContext.getBean(PlatformTransactionManager.class);
+
+    //...
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A partir de là, on peut se concentrer sur les données avec JPA.
+On récupère la liste des entités via les méta-données de l'&lt;em&gt;entity manager&lt;/em&gt;.
+Pour chaque entité, on compte le nombre d&amp;#8217;occurences en base et si ce nombre est positif c&amp;#8217;est qu&amp;#8217;il reste des données dans le table. Dans ce cas, on fait échouer le test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Override
+  public void afterAll(ExtensionContext extensionContext) {
+    //...
+    List&amp;lt;String&amp;gt; found =
+        entityManager.getMetamodel()
+            .getEntities()
+            .stream()
+            .filter(entityType -&amp;gt; &lt;em&gt;count&lt;/em&gt;(entityManager, entityType) &amp;gt; 0)
+            .map(EntityType::getName)
+            .collect(Collectors.toList());
+
+    if (!found.isEmpty()) {
+      &lt;strong&gt;fail&lt;/strong&gt;(&quot;Data found : &quot; + String.join(&quot;, &quot;, found));
+    }
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour compter le nombre d&amp;#8217;occurences en base de données, j&amp;#8217;ai utilisé l&amp;#8217;API Criteria de JPA.
+Le code est générique sans grand effort.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  private static Long count(EntityManager entityManager, EntityType&amp;lt;?&amp;gt; entityType) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery&amp;lt;Long&amp;gt; query = criteriaBuilder.createQuery(Long.class);
+    query.select(criteriaBuilder.&lt;strong&gt;count&lt;/strong&gt;(query.from(entityType)));
+    return entityManager.createQuery(query).getSingleResult();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;OK, c&amp;#8217;est pas un bout de code très élégant, mais caché dans une méthode, ça passe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;améliorations&quot;&gt;Améliorations&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Vous vous demandez peut-être pourquoi je compte le nombre d&amp;#8217;occurences et pourquoi je ne me contente pas d&amp;#8217;un &lt;code&gt;exists&lt;/code&gt;.
+C&amp;#8217;est parce que je veux afficher cette information dans le &lt;em&gt;fail&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;De plus, certaines données sont initialisées au démarrage de Spring.
+Il ne faut pas faire le ménage dans ces données et les exclure de la vérification.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  private final Set&amp;lt;String&amp;gt; excludedEntityNames =
+      Set.of(
+          UserDbEntity.class.getSimpleName(),
+          TermsDbEntity.class.getSimpleName(),
+          FirmwareDbEntity.class.getSimpleName());
+
+  @Override
+  public void afterAll(ExtensionContext extensionContext) {
+    // ...
+
+    List&amp;lt;String&amp;gt; found =
+        entityManager.getMetamodel()
+            .getEntities()
+            .stream()
+            .&lt;strong&gt;filter(entityType -&amp;gt; !excludedEntityNames.contains(entityType.getName()))&lt;/strong&gt;
+    // ...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On ne se contente pas de vérifier que le ménage a été fait, mais on fait la suppression des données dans l&amp;#8217;extension.
+Le but n&amp;#8217;est pas de mettre en place un ménage automatique.
+On reste sur l&amp;#8217;objectif d&amp;#8217;alerter le développeur.
+C&amp;#8217;est lui qui est responsable de son test, de la préparation jusqu&amp;#8217;à la remise en état.
+Non, on fait ça pour éviter qu&amp;#8217;un test mal nettoyé ne fasse resortir tous les autres tests en échec.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans la pratique, on a directement intégré ces améliorations, mais je n&amp;#8217;ai présenté qu&amp;#8217;un code simplifié.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;synthèse&quot;&gt;Synthèse&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première préoccupation lorsqu&amp;#8217;on intégre ce genre de vérification, avec beaucoup d&amp;#8217;accès à la base de données, c&amp;#8217;est le surcoût en temps de build.
+Sur mon poste de travail, il est de sept dizièmes de seconde, pour un build complet de trois minutes.
+En environnement d&amp;#8217;intégration (CI), il est d&amp;#8217;une seconde et demi, pour un build complet de dix minutes.
+Autant dire que c&amp;#8217;est négligeable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans notre projet toutes les classes de tests d&amp;#8217;intégration héritent d&amp;#8217;une classe abstrait &lt;code&gt;AbstractIT&lt;/code&gt;.
+Il suffit d&amp;#8217;ajouter l&amp;#8217;extension à cette classe abstraite pour que tous les tests d&amp;#8217;intégration en profitent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/failed-ci.svg&quot; alt=&quot;CI failed&quot; width=&quot;90&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;effet immédiat, ça a été de casser le build.
+C&amp;#8217;est dû à plusieurs tests qui ne faisaient pas bien leur ménage.
+Ça tombe bien, c&amp;#8217;est justement ce qu&amp;#8217;on cherche à identifier.
+On a dû leur ajouter des appels à &lt;code&gt;repository.deleteAll()&lt;/code&gt; dans des méthodes &lt;code&gt;@AfterAll&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Une fois ce ménage fait, que le &lt;em&gt;build&lt;/em&gt; passe, l&amp;#8217;extension commence à remplir son objectif principal :
+quand un développeur oublie des données en fin de test, son test ne passe plus, ni en local ni en CI.
+Il est obligé de faire son ménage, et s&amp;#8217;en rend compte directement dans l&amp;#8217;IDE.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gr&quot;&gt;java.lang.AssertionError: Data found : DeviceDbEntity(1)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette simple extension, c&amp;#8217;est la fin du casse-tête sur les builds qui ne passent pas à l&amp;#8217;appel de &lt;code&gt;mvn verify&lt;/code&gt; alors qu&amp;#8217;ils passent seuls.
+On ne s&amp;#8217;arrache plus les cheveux parce qu&amp;#8217;un nouveau test d&amp;#8217;intégration est en échec à cause du test passé avant lui qui avait laissé des données en trop.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par contre, il reste plein de problèmes liés aux traitements asynchrones, et ça j&amp;#8217;en parlerai dans un prochain billet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="spring" /><category term="jpa" /><category term="junit" /><summary type="html">Encore un billet sur les tests, et plus précisément sur les tests d&amp;#8217;intégration en Java. Dans ma mission actuelle, il y a beaucoup de tests d&amp;#8217;intégration, trop à mon goût. Et ce sont généralement des tests avec une intégration complète : le test envoie une requête HTTP à laquelle le backend testé renvoie une réponse construite avec des données issue d&amp;#8217;une base de données de test. Pour les faire fonctionner de façon reproductible, aussi bien en local qu&amp;#8217;en intégration continue, ça demande quelques contorsions. J&amp;#8217;ai donc cherché des idées pour les améliorer. Aujourd&amp;#8217;hui, je vais vous expliquer ce qu&amp;#8217;on a fait pour résoudre le problème du ménage dans les données.</summary></entry><entry><title type="html">Comment vérifier l’envoi d’e-mails en test d’intégration ?</title><link href="https://blog.alexis-hassler.com//2022/05/04/spring-test-mail.html" rel="alternate" type="text/html" title="Comment vérifier l’envoi d’e-mails en test d’intégration ?" /><published>2022-05-04T00:00:00+00:00</published><updated>2022-05-04T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/05/04/spring-test-mail</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/05/04/spring-test-mail.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/mailbox.jpg&quot; alt=&quot;mailbox&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En avril, je traitais le sujet de la date dans les tests.
+Je continue sur ma lancée avec les tests, mais cette fois-ci il s&amp;#8217;agit de tests d&amp;#8217;intégration et de l&amp;#8217;envoi d&amp;#8217;e-mails.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lorsqu&amp;#8217;une application envoie des e-mails, ses tests d&amp;#8217;intégration doivent d&amp;#8217;une part avoir accès à un serveur SMTP, mais ils doivent aussi pouvoir valider que les messages envoyés sont conformes aux attentes.
+Nous allons aborder ces deux aspects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;docker-évidemment&quot;&gt;Docker, évidemment&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Docker va nous apporter plus qu&amp;#8217;un simple accès, il permet aussi de l&amp;#8217;isolation et de la reproductibilité des tests.
+En utilisant &lt;strong&gt;Testcontainers&lt;/strong&gt;, on peut démarrer des conteneurs directement depuis les tests, en récupérer la configuration pour l&amp;#8217;utiliser pour paramétrer la connexion.
+Je ne vais pas développer ce sujet ici, j&amp;#8217;y ai déjà consacré une page sur &lt;strong&gt;JTips&lt;/strong&gt;, globalement pour les &lt;a href=&quot;https://www.jtips.info/JUnit/Testcontainers&quot;&gt;tests d&amp;#8217;intégration&lt;/a&gt; d&amp;#8217;un part et plus spécifiquement pour les &lt;a href=&quot;https://www.jtips.info/Spring/Testcontainers&quot;&gt;tests avec Spring&lt;/a&gt; d&amp;#8217;autre part.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-testcontainers-mailhog.svg&quot; alt=&quot;Spring + Testcontainers + MailHog&quot; height=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On va se concentrer sur l&amp;#8217;utilisation d&amp;#8217;un conteneur basé sur &lt;a href=&quot;https://github.com/mailhog/MailHog&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;strong&gt;MailHog&lt;/strong&gt;&lt;/a&gt;.
+Cette application se comporte comme un serveur SMTP et stocke les messages pour les restituer via une page Web.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans l&amp;#8217;exemple ci-dessous, je démarre un serveur MailHog dans un environnement Spring Boot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class TestContextInitializer
+    implements ApplicationContextInitializer&amp;lt;ConfigurableApplicationContext&amp;gt; {
+
+  @Override
+  public void initialize(ConfigurableApplicationContext context) {
+    // &lt;strong&gt;Démarrage du conteneur&lt;/strong&gt;
+    GenericContainer smtp = new GenericContainer&amp;lt;&amp;gt;(&quot;mailhog/mailhog&quot;)
+        .withExposedPorts(1025, 8025);
+    smtp.start();
+
+    // &lt;strong&gt;Injection des caractéristiques dans les propriétés de Spring Boot&lt;/strong&gt;
+    TestPropertyValues
+        .of(&quot;spring.mail.host=&quot; + smtp.getContainerIpAddress())
+        .of(&quot;spring.mail.port=&quot; + smtp.getMappedPort(1025))
+        .of(&quot;spring.mail.http-port=&quot; + smtp.getMappedPort(8025))
+        .applyTo(context);
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on a un serveur SMTP et que nos e-mails y sont envoyés, voyons comment on peut vérifier qu&amp;#8217;on lui envoie les bons messages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On a vu en préambule que MailHog donnait accès aux messages via une page Web.
+Il offre aussi une API HTTP pour y accéder par programme, dont les pincipaux endpoints :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Lire tous les messages : &lt;code&gt;GET /api/v2/messages&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Supprimer tous les messages : &lt;code&gt;DELETE /api/v1/messages&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Lire un message : &lt;code&gt;GET /api/v1/messages/{id}&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Supprimer un message : &lt;code&gt;DELETE /api/v1/messages/{id}&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette API permet de vérifier le nombre de messages envoyés avec succès et le contenu des messages envoyés.
+Le plus pratique est probablement d&amp;#8217;encapsuler l&amp;#8217;API dans une classe &lt;code&gt;MailHogClient&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Test
+  void action_should_send_message() {
+    // GIVeN
+    mailHogClient.deleteAllMessages();
+
+    // WHeN
+    service.doAction();
+
+    // THeN
+    Message message = mailHogClient.findLatestMessages();
+    assertThat(message).isNotNull();
+    assertThat(message.getContentType()).startsWith(&quot;text/html&quot;);
+    assertThat(message.getSubject()).startsWith(&quot;Hello World&quot;);
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au final, ça fait beaucoup de tuyauterie pour valider qu&amp;#8217;on a envoyé les bons messages.
+Il faut du Docker avec Testcontainers, et du code pour les messages par l&amp;#8217;API.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;mock&quot;&gt;Mock&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-mockito.svg&quot; alt=&quot;Spring + Mockito&quot; height=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Plutôt que de déployer tout ça, on pourrait opter pour une solution plus simple en remplaçant le composant d&amp;#8217;envoi d&amp;#8217;e-mails par un &lt;em&gt;mock&lt;/em&gt;.
+Dans Spring, ce composant est un bean de type MailSender ou JavaMailSender.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+public class IntegrationTestConfiguration {
+
+  @Bean
+  public JavaMailSender mockJavaMailSender() {
+    return &lt;strong&gt;mock(JavaMailSender.class)&lt;/strong&gt;;
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec Spring Boot, il n&amp;#8217;y a pas de conflit puisque le MailSender classique n&amp;#8217;est instancié que s&amp;#8217;il n&amp;#8217;y a pas d&amp;#8217;instance par ailleurs.
+Sinon, on peut toujours ajouter &lt;code&gt;@Primary&lt;/code&gt; pour résoudre le conflit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ensuite, on injecte le bean dans le test et on l&amp;#8217;utilise comme un &lt;em&gt;mock&lt;/em&gt; normal.
+Sauf qu&amp;#8217;il faut le réinitialiser.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class SomeIT {
+
+  &lt;strong&gt;@Autowired JavaMailSender mailSender&lt;/strong&gt;
+
+  @BeforeEach
+  public void before() {
+    //reset mock
+    &lt;strong&gt;reset(mailSender)&lt;/strong&gt;;
+  }
+
+  @Test
+  public void action_should_send_email() {
+    // GIVeN
+    //...
+
+    // WHeN
+    service.action();
+
+    // THeN
+    verify(mailSender, times(1)).send(any(MimeMessage));
+    verify(mailSender, never()) .send(any(MimeMessage[]));
+    verify(mailSender, never()) .send(any(MimeMessagePreparator));
+    verify(mailSender, never()) .send(any(MimeMessagePreparator[]));
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette solution impose moins de tuyauterie, mais resteint le périmètre de l&amp;#8217;intégration.
+On ne vérifie pas que l&amp;#8217;envoi de messages se passe bien, mais uniquement qu&amp;#8217;on a essayé.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;les-deux-mon-capitaine&quot;&gt;Les deux mon capitaine&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il est possible de combiner les avantages des deux solutions.
+Pour ça, on va concerver un vrai &lt;code&gt;MailSender&lt;/code&gt; et lui adjoindre une variante décorée (&lt;em&gt;spy&lt;/em&gt;) par Mockito.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-mockito-mailhog.svg&quot; alt=&quot;Spring + Mockito + MailHog&quot; height=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour avoir les deux beans, c&amp;#8217;est assez facile avec Spring Framework sans Boot.
+On crée une classe de configuration dédiée aux tests, avec une méthode de fabrique MailSender espionné, dans laquelle on injecte le bean normal.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+@EnableConfigurationProperties(MailProperties.class)
+public class MainConfiguration {
+  @Bean
+  public &lt;strong&gt;JavaMailSender mailSender(MailProperties properties)&lt;/strong&gt; {
+    JavaMailSender mailSender = new JavaMailSender();
+    // ...
+    return mailSender;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+public class IntegrationTestConfiguration {
+  @Bean
+  &lt;strong&gt;@Primary&lt;/strong&gt;
+  public JavaMailSender spyMailSender(
+        &lt;strong&gt;@Qualifier(&quot;mailSender&quot;)&lt;/strong&gt; JavaMailSender mailSender) {
+    return &lt;strong&gt;&lt;em&gt;spy&lt;/em&gt;(&lt;/strong&gt;mailSender&lt;strong&gt;)&lt;/strong&gt;;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec Spring Boot, c&amp;#8217;est un peu plus complexe.
+Comme on l&amp;#8217;a vu dans le chapitre précédent, lorsqu&amp;#8217;on déclare un nouveau bean de type MailSender pour les tests, Boot ne produit plus son MailSender normal.
+C&amp;#8217;était bien partique avec le &lt;em&gt;mock&lt;/em&gt;, puisqu&amp;#8217;on ne voulait plus du bean normal.
+Avec le &lt;em&gt;spy&lt;/em&gt;, ça nous oblige à dupliquer du code existant pour instancier explicitement le JavaMailSender à espionner.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+@EnableConfigurationProperties(MailProperties.class)
+public class IntegrationTestConfiguration {
+
+  @Bean
+  public &lt;strong&gt;JavaMailSender spyJavaMailSender(MailProperties properties)&lt;/strong&gt; {
+    return &lt;strong&gt;&lt;em&gt;spy&lt;/em&gt;(&lt;/strong&gt;buildMailSender(properties, sender)&lt;strong&gt;)&lt;/strong&gt;;
+  }
+
+  private JavaMailSender buildMailSender(MailProperties properties) {
+    JavaMailSenderImpl sender = new JavaMailSenderImpl();
+
+    sender.setHost(properties.getHost());
+    if (properties.getPort() != null) {
+      sender.setPort(properties.getPort());
+    }
+    sender.setUsername(properties.getUsername());
+    sender.setPassword(properties.getPassword());
+    sender.setProtocol(properties.getProtocol());
+    if (properties.getDefaultEncoding() != null) {
+      sender.setDefaultEncoding(properties.getDefaultEncoding().name());
+    }
+    if (!properties.getProperties().isEmpty()) {
+      sender.setJavaMailProperties(asProperties(properties.getProperties()));
+    }
+
+    return sender;
+  }
+
+  private Properties asProperties(Map&amp;lt;String, String&amp;gt; source) {
+    Properties properties = new Properties();
+    properties.putAll(source);
+    return properties;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette configuration, on valide que les messages partent bien en SMTP et on peut vérifier le contenu de ce qu&amp;#8217;on envoie.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/pigeon-messager.png&quot; alt=&quot;Pigeon messager de guerre&quot; width=&quot;500&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A vous de choisir le niveau de tuyauterie et de vérification vous souhaitez implémenter.
+En tout, il n&amp;#8217;y a aucune raison de ne pas vérifier que l&amp;#8217;envoi de messages est conforme.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note edit&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Edit&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On me souffle dans l&amp;#8217;oreillette que j&amp;#8217;aurais pu simplifier mon code en déclarant un &lt;em&gt;mock&lt;/em&gt; local avec l&amp;#8217;annotation de Spring Boot &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/mock/mockito/MockBean.html&quot; target=&quot;&lt;em&gt;blank&quot;&gt;&lt;code&gt;@MockBean&lt;/code&gt;&lt;/a&gt;, ou un _spy&lt;/em&gt; local avec &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/mock/mockito/SpyBean.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;code&gt;@SpyBean&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">En avril, je traitais le sujet de la date dans les tests. Je continue sur ma lancée avec les tests, mais cette fois-ci il s&amp;#8217;agit de tests d&amp;#8217;intégration et de l&amp;#8217;envoi d&amp;#8217;e-mails. Lorsqu&amp;#8217;une application envoie des e-mails, ses tests d&amp;#8217;intégration doivent d&amp;#8217;une part avoir accès à un serveur SMTP, mais ils doivent aussi pouvoir valider que les messages envoyés sont conformes aux attentes. Nous allons aborder ces deux aspects.</summary></entry><entry><title type="html">Une histoire de temps et de tests</title><link href="https://blog.alexis-hassler.com//2022/04/01/test-date-time.html" rel="alternate" type="text/html" title="Une histoire de temps et de tests" /><published>2022-04-01T00:00:00+00:00</published><updated>2022-04-01T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/04/01/test-date-time</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/04/01/test-date-time.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/clepsydre.jpg&quot; alt=&quot;clepsydre&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le temps, c&amp;#8217;est compliqué, ça change tout le temps.
+Et je ne parle pas de météo, mais bien du temps qui passe.
+Et c&amp;#8217;est justement parce qu&amp;#8217;il passe que ça change.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Bon, je vais m&amp;#8217;arrêter là avec les pensées profondes.
+Je n&amp;#8217;ai pas prévu de marquer l&amp;#8217;histoire de la philosophie avec ce billet.
+Ce qui m&amp;#8217;intéresse ici, c&amp;#8217;est de pouvoir tester des méthodes qui utilisent des objets temporels, et plus précisément des objets du package récent &lt;code&gt;java.time&lt;/code&gt; : &lt;code&gt;Instant.now()&lt;/code&gt;, &lt;code&gt;LocalDateTime.now()&lt;/code&gt;, &lt;code&gt;ZonedDateTime.now()&lt;/code&gt;,&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Partons sur ce petit exemple, dans lequel on choisit une activité distincte en fonction de l&amp;#8217;heure de la journée.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+
+  public ActivityService(Action action) {
+    this.action = action;
+  }
+
+  public void chooseActivity() {
+    if (&lt;strong&gt;LocalDateTime.now()&lt;/strong&gt;.get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En utilisant le code tel quel, &lt;code&gt;action.doSleep()&lt;/code&gt; est appelé si le test est exécuté le matin et &lt;code&gt;action.doPlay()&lt;/code&gt; si le code est appelé l&amp;#8217;après-midi.
+Voyons comment adapter le code pour qu&amp;#8217;on puisse développer tester de façon reproductible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;on-a-toujours-fait-comme-ça&quot;&gt;On a toujours fait comme ça&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Commençons par la technique la plus classique, que j&amp;#8217;utilise et vois utilisée depuis une bonne vingtaine d&amp;#8217;années.
+Elle consiste à déléguer la création des dates à un &lt;em&gt;builder&lt;/em&gt;, qu&amp;#8217;on injecte dans notre classe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+  private final DateBuilder dateBuilder;
+
+  public ActivityService(Action action, &lt;strong&gt;DateBuilder dateBuilder&lt;/strong&gt;) {
+    this.action = action;
+    this.dateBuilder = dateBuilder;
+  }
+
+  public void chooseActivity() {
+    if (&lt;strong&gt;dateBuilder.currentLocalDateTime()&lt;/strong&gt;.get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;bâtisseur-de-dates&quot;&gt;Bâtisseur de dates&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette façon de procéder, on n&amp;#8217;appelle jamais &lt;code&gt;Instant.now()&lt;/code&gt; directement, ni aucune méthode autre méthode &lt;code&gt;Xxx.now()&lt;/code&gt;.
+Le &lt;em&gt;builder&lt;/em&gt; est la seule classe ayant cette responsabilité.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class DateBuilder {
+
+  public Instant &lt;strong&gt;currentInstant()&lt;/strong&gt; {
+    return Instant.now();
+  }
+
+  public LocalDateTime &lt;strong&gt;currentLocalDateTime()&lt;/strong&gt; {
+    return LocalDateTime.now();
+  }
+
+  //...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour supporter toutes les méthodes &lt;code&gt;Xxx.now()&lt;/code&gt;, on doit implémenter une dizaine de méthodes dans &lt;code&gt;DateBuilder&lt;/code&gt;.
+A ça il faut ajouter les variantes qui prennent un paramètre de type &lt;code&gt;ZoneId&lt;/code&gt; (&lt;code&gt;LocalDateTime.now(ZoneId zone)&lt;/code&gt;, &lt;code&gt;ZonedDateTime.now(ZoneId zone)&lt;/code&gt;,&amp;#8230;&amp;#8203;), ce qui nous fait monter à une petite vingtaine de méthodes (19 pour être précis).&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;moquons-le-maçon&quot;&gt;Moquons le maçon&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour tester unitairement &lt;code&gt;ActivityService&lt;/code&gt;, on va créer des &lt;em&gt;mocks&lt;/em&gt; des dépendances, y compris pour &lt;code&gt;DateBuilder&lt;/code&gt;.
+De cette façon, à chaque appel, l&amp;#8217;objet produira la date et l&amp;#8217;heure qu&amp;#8217;on a choisies dans la préparation du test.
+Et donc le test est parfaitement indépendant de l&amp;#8217;heure d&amp;#8217;exécution et devient reproductible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Test
+  void chooseActivity_should_play_in_the_afternoon() {
+    // GIVeN
+    var action = mock(Action.class);
+    var dateBuilder = &lt;strong&gt;mock(DateBuilder.class)&lt;/strong&gt;;
+    when(dateBuilder.currentLocalDateTime())
+        .thenReturn(LocalDateTime.parse(&quot;1970-01-01T21:00&quot;));
+
+    var activityService = new ActivityService(action, dateBuilder);
+
+    // WHeN
+    activityService.chooseActivity();
+
+    // THeN
+    verify(action, never()).doSleep();
+    verify(action, times(1)).doPlay();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;remettons-lhorloge-au-centre-du-village&quot;&gt;Remettons l&amp;#8217;horloge au centre du village&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/horloge-tassin.jpg&quot; alt=&quot;horloge tassin&quot; width=&quot;600&quot;&gt;
+&lt;/div&gt;
+&lt;div class=&quot;title&quot;&gt;&lt;span class=&quot;small&quot;&gt;source: &lt;a href=&quot;https://numelyo.bm-lyon.fr/BML:BML_01ICO001014cd12f1d2bdd1&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Bibliothèque municipale de Lyon&lt;/a&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Depuis le JDK 8, il existe une autre solution, suggérée directement dans la javadoc du JDK.
+Dans les explications sur la classe abstraite &lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot;&gt;&lt;code&gt;Clock&lt;/code&gt;&lt;/a&gt;, on trouve ce passage :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All key date-time classes also have a now() factory method that uses the system clock in the default time zone.
+The primary purpose of this abstraction is to allow alternate clocks to be plugged in as and when required.
+Applications use an object to obtain the current time rather than a static method.
+&lt;strong&gt;This can simplify testing.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;attribution&quot;&gt;
+&amp;#8212; java.time.Clock&lt;br&gt;
+&lt;cite&gt;javadoc&lt;/cite&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette classe permettrait donc de simplifier les tests.
+C&amp;#8217;est exactement ce qu&amp;#8217;on recherche, on va donc s&amp;#8217;y intéresser.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;rock-around-the-clock&quot;&gt;&lt;span class=&quot;text-black&quot;&gt;Rock around the &lt;code&gt;Clock&lt;/code&gt;&lt;/span&gt;&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avant de voir comment elle peut nous simplifier les tests, voyons ce qu&amp;#8217;elle fait.
+Et pour ça, revenons à la javadoc.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A clock providing access to the current instant, date and time using a time-zone.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;attribution&quot;&gt;
+&amp;#8212; java.time.Clock&lt;br&gt;
+&lt;cite&gt;javadoc&lt;/cite&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Clock&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;instant(): Instant&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;getZone(): ZoneId&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Son rôle, c&amp;#8217;est de fournir l&amp;#8217;instant courant, et c&amp;#8217;est à peu près tout.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;implémentation par défaut fait ça avec les informations du système, via la méthode native &lt;code&gt;System.currentTimeMillis()&lt;/code&gt;.
+C&amp;#8217;est celle qui est utilisée lorsqu&amp;#8217;on appelle une méthode &lt;code&gt;Xxx.now()&lt;/code&gt; sans paramètre.
+Toutes ces méthodes ont une variante avec un paramètre &lt;code&gt;Clock&lt;/code&gt; permettant de s&amp;#8217;appuyer sur un autre référenciel.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Instant.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Instant&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(): Instant&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(Clock clock): Instant&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/LocalDateTime.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;LocalDateTime&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(): LocalDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(Clock clock): LocalDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZonedDateTime.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;ZonedDateTime&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(): ZonedDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(Clock clock): ZonedDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;donnons-du-temps-au-temps&quot;&gt;Donnons du temps au temps&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on a posé ces bases, on se rend compte qu&amp;#8217;on peut très bien injecter une instance de &lt;code&gt;Clock&lt;/code&gt; plutôt qu&amp;#8217;un &lt;code&gt;DateBuilder&lt;/code&gt;.
+Pour en profiter, il faut s&amp;#8217;obliger à utiliser les méthodes &lt;code&gt;Xxx.now(&amp;#8230;&amp;#8203;)&lt;/code&gt; qui prennent un paramètre de type &lt;code&gt;Clock&lt;/code&gt;, au détriment des variantes sans paramètre.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+  private final Clock clock;
+
+  public ActivityService(Action action, &lt;strong&gt;Clock clock&lt;/strong&gt;) {
+    this.action = action;
+    this.clock = clock;
+  }
+
+  public void chooseActivity() {
+    if (&lt;strong&gt;LocalDateTime.now(clock)&lt;/strong&gt;.get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On abandonne l&amp;#8217;idée d&amp;#8217;un &lt;em&gt;builder&lt;/em&gt; construit par nos soins et on n&amp;#8217;utilise que des classes de l&amp;#8217;API standard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;un-jour-jirai-à-new-york-avec-toi&quot;&gt;Un jour j&amp;#8217;irai à New-York avec toi&lt;/h3&gt;
+&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/clock-timezone.jpg&quot; alt=&quot;clock timezone&quot; width=&quot;200&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Plus haut, j&amp;#8217;avais dit que les méthodes &lt;code&gt;Xxx.now()&lt;/code&gt; avaient presque toutes une variante avec une instance de &lt;code&gt;ZoneId&lt;/code&gt; en paramètre, pour positionner les objets temporels dans un fuseau horaire.
+Ça ne concerne pas &lt;code&gt;Instant&lt;/code&gt;, mais &lt;code&gt;LocalDateTime&lt;/code&gt;, &lt;code&gt;ZonedDateTime&lt;/code&gt;,&amp;#8230;&amp;#8203;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on a abandonné les méthodes sans paramètre au profit de la variante avec un paramètre de type &lt;code&gt;Clock&lt;/code&gt;, voyons ce que ça donne avec les fuseaux horaires.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il n&amp;#8217;y a pas de variante avec deux paramètres &lt;code&gt;Xxx.now(clock, zoneId)&lt;/code&gt; comme on pourrait s&amp;#8217;y attendre.
+C&amp;#8217;est l&amp;#8217;objet &lt;code&gt;Clock&lt;/code&gt; qui porte les informations de fuseau.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Clock&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;system(ZoneId zone): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;getZone(): ZoneId&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;withZone(ZoneId zone): Clock&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Grâce à la méthode &lt;code&gt;withZone(&amp;#8230;&amp;#8203;)&lt;/code&gt; appelée sur l&amp;#8217;objet injecté, on crée une copie positionnée sur le fuseau horaire de notre choix.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+  private final Clock clock;
+
+  public ActivityService(Action action, &lt;strong&gt;Clock clock&lt;/strong&gt;) {
+    this.action = action;
+    this.clock = clock;
+  }
+
+  public void chooseActivity(ZoneId zoneId) {
+    if (LocalDateTime.now(&lt;strong&gt;clock.withZone(zoneId)&lt;/strong&gt;).get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ceci soulève une autre question.
+La question originelle.
+Comment l&amp;#8217;instance injectée doit-elle être créée ?
+Une instance de &lt;code&gt;Clock&lt;/code&gt; pouvant être positionnée dans un fuseau horaire, comment faut-il instancier l&amp;#8217;horloge de référence ?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Clock&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;systemUTC(): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;systemDefaultZone(): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;system(ZoneId zone): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme on parle d&amp;#8217;horloge de référence, on va la positionner sur le fuseau horaire de référence, le fuseau UTC.
+On va utiliser la méthode statique &lt;code&gt;systemUTC()&lt;/code&gt;, qui est d&amp;#8217;ailleurs utilisée par &lt;code&gt;Xxx.now()&lt;/code&gt; sans paramètre.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;ni-clou-ni-vis&quot;&gt;Ni clou, ni vis&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans la première solution, on pouvait tester la classe de service grâce à des objets &lt;em&gt;mock&lt;/em&gt;.
+On pourrait aussi faire un &lt;em&gt;mock&lt;/em&gt; de &lt;code&gt;Clock&lt;/code&gt; afin de figer la date et l&amp;#8217;heure qu&amp;#8217;il fournit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Clock clock = mock(Clock.class);
+    when(clock.getZone()).thenReturn(ZoneOffset.UTC);
+    when(clock.instant()).thenReturn(Instant.EPOCH.plus(21, HOURS));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/fixe-tout.png&quot; alt=&quot;fixe tout&quot; width=&quot;80&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ça fonctionne, mais avec &lt;code&gt;Clock&lt;/code&gt;, il n&amp;#8217;y plus besoin de ça.
+En effet, le JDK fournit directement une implémentation adaptée aux tests.
+Elle se présente sous la forme d&amp;#8217;une horloge fixe, qui retourne toujours la même heure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Clock clock = Clock.fixed(Instant.EPOCH.plus(21, HOURS), ZoneOffset.UTC);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette horloge, tous les instants créés seront à la même heure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Instant instant1 = Instant.now(clock);
+    logger.info(instant1)
+    &lt;span class=&quot;comment&quot;&gt;// 1970-01-01T21:00:00Z&lt;/span&gt;
+    ...
+    // Later
+    Instant instant2 = Instant.now(clock);
+    logger.info(instant2)
+    &lt;span class=&quot;comment&quot;&gt;// 1970-01-01T21:00:00Z&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voici ce que devient le test unitaire avec une telle horloge.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Test
+  void chooseActivity_should_play_in_the_afternoon() {
+    // GIVeN
+    var action = mock(Action.class);
+    var clock = Clock.fixed(Instant.EPOCH.plus(21, HOURS), ZoneOffset.UTC);;
+
+    var activityService = new ActivityService(action, clock);
+
+    // WHeN
+    activityService.chooseActivity();
+
+    // THeN
+    verify(action, never()).doSleep();
+    verify(action, times(1)).doPlay();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;au-vent-en-emporte-le-temps&quot;&gt;Au vent en emporte le temps&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A partir du moment où on utilise des objets temporels du paquetage &lt;code&gt;java.time&lt;/code&gt;, une classe &lt;code&gt;DateBuilder&lt;/code&gt; ne sert à rien.
+C&amp;#8217;est même une abstraction inutile.
+En injectant un objet (ou bean) de type &lt;code&gt;Clock&lt;/code&gt;, on arrive à avoir un code tout aussi facile à tester, en restant sur l&amp;#8217;API standard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par contre, si on utilise encore les anciennes API avec &lt;code&gt;java.util.Date&lt;/code&gt; et &lt;code&gt;java.util.Calendar&lt;/code&gt;, on n&amp;#8217;a pas le choix, il faut passer par un &lt;em&gt;builder&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et comme j&amp;#8217;ai commencé par de la philosophie de haut niveau, je vais conclure avec de la poésie de haut niveau.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour le bonheur&lt;br&gt;
+De nos deux cœurs&lt;br&gt;
+&lt;strong&gt;Arrête le temps et les heures&lt;/strong&gt;&lt;br&gt;
+Je t&amp;#8217;en supplie&lt;br&gt;
+A l&amp;#8217;infini&lt;br&gt;
+Retiens la nuit&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/jauni.jpg&quot; alt=&quot;jauni&quot; height=&quot;170&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">Le temps, c&amp;#8217;est compliqué, ça change tout le temps. Et je ne parle pas de météo, mais bien du temps qui passe. Et c&amp;#8217;est justement parce qu&amp;#8217;il passe que ça change. Bon, je vais m&amp;#8217;arrêter là avec les pensées profondes. Je n&amp;#8217;ai pas prévu de marquer l&amp;#8217;histoire de la philosophie avec ce billet. Ce qui m&amp;#8217;intéresse ici, c&amp;#8217;est de pouvoir tester des méthodes qui utilisent des objets temporels, et plus précisément des objets du package récent java.time : Instant.now(), LocalDateTime.now(), ZonedDateTime.now(),&amp;#8230;&amp;#8203; Partons sur ce petit exemple, dans lequel on choisit une activité distincte en fonction de l&amp;#8217;heure de la journée. public class ActivityService { private final Action action; public ActivityService(Action action) { this.action = action; } public void chooseActivity() { if (LocalDateTime.now().get(ChronoField.AMPM_OF_DAY) == 0) { action.doSleep(); } else { action.doPlay(); } } } En utilisant le code tel quel, action.doSleep() est appelé si le test est exécuté le matin et action.doPlay() si le code est appelé l&amp;#8217;après-midi. Voyons comment adapter le code pour qu&amp;#8217;on puisse développer tester de façon reproductible.</summary></entry><entry><title type="html">Quand est-ce qu’on change d’heure ?</title><link href="https://blog.alexis-hassler.com//2022/03/01/changement-d-heure.html" rel="alternate" type="text/html" title="Quand est-ce qu’on change d’heure ?" /><published>2022-03-01T00:00:00+00:00</published><updated>2022-03-01T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/03/01/changement-d-heure</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/03/01/changement-d-heure.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/clock-daylight.jpg&quot; alt=&quot;clock daylight&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;C&amp;#8217;est assez facile à retrouver.
+Nous passerons à l&amp;#8217;heure d&amp;#8217;été le dernier dimanche de mars, à 2h00, puis nous repasserons à l&amp;#8217;heure d&amp;#8217;hiver le dernier dimanche d&amp;#8217;octobre, à 3h00.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ce qui m&amp;#8217;intéresse c&amp;#8217;est que mon code puisse connaitre cette information.
+Et comme je veux gérer ça dans mon backend en Java, voyons voir ce que les APIs du JDK proposent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;TLDR&lt;/strong&gt; Toutes les informations sont disponibles via des méthodes publiques depuis le JDK 8, dans le package &lt;strong&gt;&lt;code&gt;java.time&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;cest-quoi-la-règle&quot;&gt;C&amp;#8217;est quoi la règle ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Toute l&amp;#8217;API est basée sur un objet &lt;code&gt;ZoneRules&lt;/code&gt; associé au fuseau horaire.
+On y trouve les décalages horaires par rapport au fuseau UTC, les règles de calcul des transitions, ainsi que les transitions qui précèdent la mise en application de la règle actuelle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Regardons d&amp;#8217;un peu plus près comment est construite une règle :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/zone/ZoneOffsetTransitionRule.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ZoneOffsetTransitionRule&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;month: Month&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dayOfMonthIndicator: int&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dayOfWeek: DayOfWeek&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;localTime: LocalTime&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetBefore: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetAfter: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par exemple, pour notre fuseau horaire, nous avons deux règles :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Mars, 25, Dimanche, 1h00, 1h, 2h : le dimanche après le 25 mars à 1h00 UTC, le décalage passe de 1h à 2h.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Octobre, 25, Dimanche, 1h00, 2h, 1h : le dimanche après le 25 octobre à 1h00 UTC, le décalage passe de 2h à 1h.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;https://www.laminuteduchat.com/&quot;&gt;&lt;img src=&quot;/images/date/chat-changement-heure.jpg&quot; alt=&quot;chat changement heure&quot; width=&quot;400&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Mais à la limite, c&amp;#8217;est aussi bien exprimé dans le &lt;code&gt;toString()&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ZoneId zone = ZoneId.of(&quot;Europe/Paris&quot;);
+zone.getRules().getTransitionRules().stream().forEach(System.out::println);
+// TransitionRule[Gap +01:00 to +02:00, SUNDAY on or after MARCH 25 at 01:00 UTC]
+// TransitionRule[Overlap +02:00 to +01:00, SUNDAY on or after OCTOBER 25 at 01:00 UTC]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;OK, comme ça on a compris la règle, mais concrètement c&amp;#8217;est quand notre prochaine transition ?&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;cest-quand-la-prochaine-transition&quot;&gt;C&amp;#8217;est quand la prochaine transition ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Une transition, c&amp;#8217;est un instant, un décalage avant et un décalage après.
+C&amp;#8217;est donc plus concret qu&amp;#8217;une règle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ZoneOffsetTransition&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;instant: Instant&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetBefore: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetAfter: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et pour connaître la prochaine transition, on le demande à l&amp;#8217;objet &lt;em&gt;rules&lt;/em&gt; de notre fuseau horaire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ZoneId zoneId = ZoneId.of(&quot;Europe/Paris&quot;);
+ZoneOffsetTransition transition = zoneId.getRules().nextTransition(Instant.now());
+System.out.println(transition)
+// Transition[Gap at &lt;strong&gt;2022-03-27T02:00&lt;/strong&gt;+01:00 to +02:00]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La réponse à la question en titre (&quot;Quand est-ce qu&amp;#8217;on change d&amp;#8217;heure ?&quot;) est donc le 27 mars 2022.
+A 2h00 heure locale, le décalage passera de 1h à 2h.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Attention au piège, l&amp;#8217;objet &lt;em&gt;rules&lt;/em&gt; a une méthode &lt;code&gt;getTransitions()&lt;/code&gt; qui ne peut pas être utilisée pour notre besoin.
+Cette méthode renvoie la liste des transitions qui ne respectent pas la règle.
+Pour notre fuseau horaire, ce sont les transitions qui sont antérieures à l&amp;#8217;entrée en application de la règle actuelle en 1996.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;partout-dans-le-monde&quot;&gt;Partout dans le monde&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div id=&quot;daylight-world&quot; class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/daylight-world.svg&quot; alt=&quot;daylight world&quot; width=&quot;800&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Je me suis trouvé confronté à cette question sur un projet IoT chez &lt;a href=&quot;https://rtone.fr&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Rtone&lt;/a&gt;.
+Lorsqu&amp;#8217;on configure un appareil, on lui envoie le décalage par rapport à l&amp;#8217;heure UTC dans son nouveau fuseau horaire.
+A chaque fois qu&amp;#8217;on déplace l&amp;#8217;appareil, il faut lui renvoyer le décalage.
+Et, évidemment, sans déplacement, il faut renvoyer le décalage au changement d&amp;#8217;heure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le backend doit connaître le prochain changement d&amp;#8217;heure dans le monde et connaitre le fuseau horaire concerné.
+Pour ça:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;comment&quot;&gt;// On parcourt tous les fuseaux horaires.&lt;/span&gt;
+ZoneId.getAvailableZoneIds().stream()
+      .map(ZoneId::of)
+      &lt;span class=&quot;comment&quot;&gt;// On ne garde que ceux qui ont une future transition.&lt;/span&gt;
+      .filter(zoneId -&amp;gt;
+                  zoneId.getRules()
+                        .nextTransition(Instant.now()) != null
+      )
+      &lt;span class=&quot;comment&quot;&gt;// Et on conserve celui qui a la plus petite date de transition.&lt;/span&gt;
+      .min(
+            comparing(zoneId -&amp;gt;
+                        zoneId.getRules()
+                              .nextTransition(Instant.now())
+                              .getInstant()
+                     )
+      )
+      &lt;span class=&quot;comment&quot;&gt;// Enfin, on planifie l'action qui se déclenchera à la prochaine transition.&lt;/span&gt;
+      .ifPresent(this::scheduleNextTransition);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et le vainqueur est&amp;#8230;&amp;#8203; America/Miquelon qui change d&amp;#8217;heure le 13 mars 2022 à 2h00 UTC et dont le décalage passera de -3h à -2h.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le point d&amp;#8217;entrée est &lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZoneId.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;code&gt;java.time.ZoneId&lt;/code&gt;&lt;/a&gt; qui représente un fuseau horaire dans l&amp;#8217;API de date et heure du JDK 8.
+A partir de là, on récupère l&amp;#8217;ensemble des règles (&lt;code&gt;getRules()&lt;/code&gt;) des changements d&amp;#8217;heure puis on demande la prochaine transition (&lt;code&gt;nextTransition(Instant.now())&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tout ça n&amp;#8217;est public que depuis le JDK 8.
+Les informations étaient déjà présentes avant, mais dans des classes internes du JDK.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Reste que le nombre de pays qui pratiquent le changement d&amp;#8217;heure est en baisse constante.
+Sur le &lt;a href=&quot;#daylight-world&quot;&gt;planisphère ci-dessus&lt;/a&gt;, la couleur orange représente ceux qui l&amp;#8217;ont pratiqué puis ont arrêté.
+L&amp;#8217;Union Européenne a aussi décidé de l&amp;#8217;abandonner, peut-être, un jour.
+A cause de ces décisions basée sur le bien-être des gens, le genre d&amp;#8217;amusement présenté ici pourrait disparaître.
+Nos politiciens pourraient penser au plaisir des développeurs quand ils simplifient les règles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">C&amp;#8217;est assez facile à retrouver. Nous passerons à l&amp;#8217;heure d&amp;#8217;été le dernier dimanche de mars, à 2h00, puis nous repasserons à l&amp;#8217;heure d&amp;#8217;hiver le dernier dimanche d&amp;#8217;octobre, à 3h00. Ce qui m&amp;#8217;intéresse c&amp;#8217;est que mon code puisse connaitre cette information. Et comme je veux gérer ça dans mon backend en Java, voyons voir ce que les APIs du JDK proposent. TLDR Toutes les informations sont disponibles via des méthodes publiques depuis le JDK 8, dans le package java.time.</summary></entry><entry><title type="html">Passer des arguments au build de Docker</title><link href="https://blog.alexis-hassler.com//2022/01/05/docker-build-argument.html" rel="alternate" type="text/html" title="Passer des arguments au build de Docker" /><published>2022-01-05T00:00:00+00:00</published><updated>2022-01-05T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/01/05/docker-build-argument</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/01/05/docker-build-argument.html">&lt;div class=&quot;imageblock right margin-top-3&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/docker/moby-armor.png&quot; alt=&quot;Docker Moby&quot; width=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Depuis quelques années, je gère un repository sur GitHub pour que chacun puisse faire un build à partir du code source de JBoss EAP.
+Récemment, j&amp;#8217;ai voulu automatiser ce build avec Docker, sur plusieurs systèmes (Debian, CentOS, Alpine), pour plusieurs versions du JDK (8 et 11) et pour plusieurs versions de JBoss EAP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;C&amp;#8217;est là que j&amp;#8217;ai découvert la possibilité d&amp;#8217;utiliser des arguments dans &lt;code&gt;Dockerfile&lt;/code&gt; et de les passer en option de &lt;code&gt;docker build&lt;/code&gt;.
+Ainsi, je peux choisir les versions du JDK et de JBoss EAP au lancement du build :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~# docker build &lt;strong&gt;--build-arg&lt;/strong&gt; JDK_VERSION=8 &lt;strong&gt;--build-arg&lt;/strong&gt; EAP_VERSION=7.2.3     \
+                --tag hasalex/eap:7.2.3_jdk8 .&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voyons pourquoi et comment j&amp;#8217;en suis arrivé à ce résultat&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;quest-ce-que-jboss-eap&quot;&gt;Qu&amp;#8217;est-ce que JBoss EAP ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avant de parler des arguments de &lt;em&gt;build&lt;/em&gt; de Docker, je vais remettre en place le contexte.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;JBoss EAP est un serveur d&amp;#8217;application Java EE / Jakarta EE édité de Red Hat.
+Il est payant dans le cadre d&amp;#8217;une souscription.
+Son équivalent gratuit est &lt;a href=&quot;https://www.wildfly.org/&quot;&gt;WildFly&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;https://www.redhat.com/fr/technologies/jboss-middleware/application-platform&quot;&gt;&lt;img src=&quot;/images/redhat/JBossEAP.png&quot; alt=&quot;JBoss EAP&quot; width=&quot;300&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le modèle économique de Red Hat est le même que pour ses distributions Linux :
+RHEL est un produit payant avec une souscription et Fedora est un artéfact gratuit issu d&amp;#8217;un projet communautaire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;JBoss EAP &amp;#8656;&amp;#8658; RHEL et WildFly &amp;#8656;&amp;#8658; Fedora.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;et-pourquoi-faire-un-build-soi-même&quot;&gt;Et pourquoi faire un build soi-même ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Parce que c&amp;#8217;est possible !&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme pour tout ce que fait Red Hat, JBoss EAP est Open Source.
+Et pouvoir accéder au code source sans pouvoir le compiler et l&amp;#8217;utiliser, je trouve ça triste.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a quelques années, j&amp;#8217;ai regardé de plus prêt ce que Red Hat publiait et j&amp;#8217;ai essayé de faire le &lt;em&gt;build&lt;/em&gt;.
+Depuis, j&amp;#8217;ai mis ça en forme dans un repo GitHub et visiblement c&amp;#8217;est utile à quelques personnes.
+Il y a même quelques contributeurs &lt;span class=&quot;icon red&quot;&gt;&lt;i class=&quot;fa fa-heart&quot;&gt;&lt;/i&gt;&lt;/span&gt; &lt;span class=&quot;icon red&quot;&gt;&lt;i class=&quot;fa fa-heart&quot;&gt;&lt;/i&gt;&lt;/span&gt; &lt;span class=&quot;icon red&quot;&gt;&lt;i class=&quot;fa fa-heart&quot;&gt;&lt;/i&gt;&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;le-build-docker&quot;&gt;Le build Docker&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans un premier temps, j&amp;#8217;ai préparé un fichier Dockerfile pour construire une image avec la dernière version de JBoss EAP et le JDK 11, sur un base de Debian.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# =====
+FROM azul/zulu-openjdk-debian:11 as eap-build
+
+RUN apt-get update -y                                            &amp;amp;&amp;amp; \
+    apt-get install -y wget unzip patch curl maven xmlstarlet
+
+WORKDIR eap-build-master
+COPY . ./
+RUN ./build-eap7.sh                                              &amp;amp;&amp;amp; \
+    unzip -q -d /opt dist/jboss-eap-*.zip                        &amp;amp;&amp;amp; \
+    mv /opt/jboss-eap-* /opt/jboss-eap
+
+
+# =====
+FROM azul/zulu-openjdk-debian:11
+
+RUN groupadd -r jboss -g 1000                                    &amp;amp;&amp;amp; \
+    useradd -u 1000 -r -g jboss -m -d /opt/jboss-eap                \
+                    -s /sbin/nologin -c &quot;JBoss user&quot; jboss       &amp;amp;&amp;amp; \
+    chmod 755 /opt/jboss-eap
+
+COPY --from=eap-build --chown=jboss:0 /opt/jboss-eap /opt/jboss-eap
+
+WORKDIR /opt/jboss-eap
+USER jboss
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+EXPOSE 8080
+EXPOSE 9990
+
+CMD [&quot;bin/standalone.sh&quot;, &quot;-b&quot;, &quot;0.0.0.0&quot;, &quot;-bmanagement&quot;, &quot;0.0.0.0&quot;]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par la suite, j&amp;#8217;ai voulu laisser le choix de la version à construire ainsi que la version du JDK à utiliser.
+L&amp;#8217;objectif était de donner un maximum de liberté à l&amp;#8217;utilisateur, mais sans multiplier les fichiers Dockerfile.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Faites le calcul : fin 2021 on pouvait choisir entre 36 versions mineurs et updates de JBoss EAP 7.
+Le build pouvant fonctionner avec tous les JDKs entre les versions 8 et 16, sur 3 systèmes Linux (Debian, CentOS et Alpine), ça fait &lt;strong&gt;presque 1000 possibilités&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;https://docs.docker.com/engine/reference/commandline/build/&quot;&gt;&lt;img src=&quot;/images/docker/docker-build.png&quot; alt=&quot;Docker build&quot; width=&quot;350&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;avec-des-arguments&quot;&gt;&amp;#8230;&amp;#8203; avec des arguments&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La solution à mon problème, c&amp;#8217;est le &lt;em&gt;build argument&lt;/em&gt;.
+Ça se déclare dans le fichier Dockerfile avec l&amp;#8217;instruction &lt;code&gt;&lt;strong&gt;ARG&lt;/strong&gt;&lt;/code&gt;, soit dans le corp du fichier de la même façon qu&amp;#8217;une variable &lt;code&gt;ENV&lt;/code&gt;, soit avant le &lt;code&gt;FROM&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;strong&gt;ARG JDK_VERSION=11&lt;/strong&gt;
+FROM azul/zulu-openjdk-alpine:&lt;strong&gt;$JDK_VERSION&lt;/strong&gt; as eap-build
+
+...
+&lt;strong&gt;ARG EAP_VERSION&lt;/strong&gt;
+RUN ./build-eap7.sh &lt;strong&gt;$EAP_VERSION&lt;/strong&gt;
+...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans cette exemple, la version du JDK a une valeur par défaut et la version d&amp;#8217;EAP est vide par défaut.
+Avec la commande simple, on construit donc la dernière version d&amp;#8217;EAP avec le JDK 11.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~# docker build --tag hasalex/eap .&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En passant les &lt;em&gt;build arguments&lt;/em&gt;, on peut construire une version plus ancienne avec un JDK 8.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~# docker build &lt;strong&gt;--build-arg JDK_VERSION=8&lt;/strong&gt; &lt;strong&gt;--build-arg EAP_VERSION=7.2.3&lt;/strong&gt;     \
+                --tag hasalex/eap:7.2.3_jdk8 .&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec les &lt;em&gt;build arguments&lt;/em&gt; et 3 fichiers &lt;code&gt;Dockerfile&lt;/code&gt;, on s&amp;#8217;ouvre le choix entre près de 1000 combinaisons système / JDK / EAP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si vous voulez essayer, vous trouverez les scripts et les Dockerfile sur le GitHub d&amp;#8217;&lt;a href=&quot;https://github.com/hasalex/eap-build&quot;&gt;eap-build&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="docker" /><summary type="html">Depuis quelques années, je gère un repository sur GitHub pour que chacun puisse faire un build à partir du code source de JBoss EAP. Récemment, j&amp;#8217;ai voulu automatiser ce build avec Docker, sur plusieurs systèmes (Debian, CentOS, Alpine), pour plusieurs versions du JDK (8 et 11) et pour plusieurs versions de JBoss EAP. C&amp;#8217;est là que j&amp;#8217;ai découvert la possibilité d&amp;#8217;utiliser des arguments dans Dockerfile et de les passer en option de docker build. Ainsi, je peux choisir les versions du JDK et de JBoss EAP au lancement du build : ~# docker build --build-arg JDK_VERSION=8 --build-arg EAP_VERSION=7.2.3 \ --tag hasalex/eap:7.2.3_jdk8 . Voyons pourquoi et comment j&amp;#8217;en suis arrivé à ce résultat&amp;#8230;&amp;#8203;</summary></entry><entry><title type="html">Combien de temps dure une semaine ?</title><link href="https://blog.alexis-hassler.com//2021/08/01/duree-semaine.html" rel="alternate" type="text/html" title="Combien de temps dure une semaine ?" /><published>2021-08-01T00:00:00+00:00</published><updated>2021-08-01T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2021/08/01/duree-semaine</id><content type="html" xml:base="https://blog.alexis-hassler.com//2021/08/01/duree-semaine.html">&lt;div class=&quot;imageblock left margin-top-3&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/semainier.jpg&quot; alt=&quot;Semaine&quot; width=&quot;200&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tout le monde sait qu'&lt;strong&gt;une semaine dure 7 jours&lt;/strong&gt; !
+Et même en Java, c&amp;#8217;est simple à vérifier.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LocalDate start = LocalDate.parse(&quot;2000-01-01&quot;);
+System.out.println(
+    ChronoUnit.DAYS.between(start, start.plus(1, ChronoUnit.WEEKS))
+);
+// =&amp;gt; 7 jours&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si on prend un peu de recul, on peut se rappeler que le &lt;a href=&quot;https://fr.wikipedia.org/wiki/Calendrier_r%C3%A9publicain&quot;&gt;calendrier révolutionnaire français&lt;/a&gt; avait une semaine de 10 jours.
+Ça prouve que la durée de 7 jours est arbitraire et qu&amp;#8217;il n&amp;#8217;est pas exclu que des calendriers s&amp;#8217;en éloignent.
+Et quand on parle de la durée d&amp;#8217;un mois ou d&amp;#8217;une année, les exemples sont plus faciles à trouver avec les calendriers lunaires.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voyons comment ça peut se traduire pour un développeur Java&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;chronology&quot;&gt;Chronology&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En Java, la notion de calendrier est implémentée sous la forme d&amp;#8217;instances de &lt;a href=&quot;https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/chrono/Chronology.html&quot;&gt;&lt;code&gt;Chronology&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le &lt;a href=&quot;https://fr.wikipedia.org/wiki/Calendrier_gr%C3%A9gorien&quot;&gt;calendrier grégorien&lt;/a&gt;, à la base du standard &lt;a href=&quot;https://fr.wikipedia.org/wiki/ISO_8601&quot;&gt;ISO 8601&lt;/a&gt;, est utilisé par défaut en Java.
+Ainsi, quand on utilise une &lt;a href=&quot;https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/LocalDate.html&quot;&gt;&lt;code&gt;LocalDate&lt;/code&gt;&lt;/a&gt; ou une &lt;a href=&quot;https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/ZonedDateTime.html&quot;&gt;&lt;code&gt;ZonedDateTime&lt;/code&gt;&lt;/a&gt;, c&amp;#8217;est basé sur &lt;a href=&quot;https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/chrono/IsoChronology.html&quot;&gt;&lt;code&gt;IsoChronology&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;System.out.println(LocalDate.now());
+// =&amp;gt; 2021-07-13&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Java 11 supporte 4 autres chronologies : &lt;a href=&quot;https://fr.wikipedia.org/wiki/Calendrier_h%C3%A9girien&quot;&gt;Hijrah-umalqura&lt;/a&gt;, &lt;a href=&quot;https://fr.wikipedia.org/wiki/Ann%C3%A9e_imp%C3%A9riale_japonaise&quot;&gt;Japanese&lt;/a&gt;, &lt;a href=&quot;https://fr.wikipedia.org/wiki/Calendrier_minguo&quot;&gt;Minguo&lt;/a&gt; et &lt;a href=&quot;https://fr.wikipedia.org/wiki/Calendrier_bouddhiste&quot;&gt;Thai Buddhist&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;System.out.println(HijrahDate.now());
+// =&amp;gt; Hijrah-umalqura AH 1442-12-03&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et en intégrant la librairie &lt;a href=&quot;https://www.threeten.org/threeten-extra/&quot;&gt;ThreeTen Extra&lt;/a&gt;, on récupère une dizaine d&amp;#8217;autres chronologies, parfois un peu exotiques.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;combien-de-temps-dure-un-mois&quot;&gt;Combien de temps dure un mois ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Commençons par étudier la durée d&amp;#8217;un mois, avec les différences entre calendrier solaire et lunaire, on trouvera vite des différences.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LocalDate isoStart = LocalDate.parse(&quot;2000-03-01&quot;);
+System.out.println(
+    ChronoUnit.DAYS.between(isoStart, isoStart.plus(1, ChronoUnit.MONTHS))
+);
+// =&amp;gt; 1 mois = &lt;strong&gt;31 jours&lt;/strong&gt;
+System.out.println(
+    ChronoUnit.DAYS.between(isoStart, isoStart.plus(1, ChronoUnit.YEARS))
+);
+// =&amp;gt; 1 an = &lt;strong&gt;365 jours&lt;/strong&gt;
+
+
+HijrahDate hijrahStart = HijrahDate.from(isoStart);
+System.out.println(
+    ChronoUnit.DAYS.between(hijrahStart, hijrahStart.plus(1, ChronoUnit.MONTHS))
+);
+// =&amp;gt; 1 mois = &lt;strong&gt;29 jours&lt;/strong&gt;
+System.out.println(
+    ChronoUnit.DAYS.between(hijrahStart, hijrahStart.plus(1, ChronoUnit.YEARS))
+);
+// =&amp;gt; 1 an = &lt;strong&gt;354 jours&lt;/strong&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En comparant des mois et années des calendriers grégorien et hégirien, on trouve directement une différence nette.
+Par contre pour toutes les chronologies du JDK ont des semaines de 7 jours.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;une-semaine-dure-forcément-7-jours&quot;&gt;Une semaine dure forcément 7 jours ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si les 5 calendriers supportés par le JDK ont des semaines de jours, ça ne veut pas dire que c&amp;#8217;est une règle universelle.
+J&amp;#8217;ai déjà cité le cas du calendrier révolutionnaire français, mais il est trop ancien.
+En cherchant un peu dans la librairie ThreeTen Extra, je suis tombé sur le &lt;a href=&quot;https://fr.wikipedia.org/wiki/Discordianisme#Pratique_du_discordianisme&quot;&gt;calendrier discordien&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/calendrier-discordien.jpg&quot; alt=&quot;Calendrier discordien&quot; width=&quot;400&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;OK, on n&amp;#8217;utilise pas couramment ce calendrier, mais il permet de répondre à la question en titre : combien de temps dure une semaine ?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;LocalDate isoStart = LocalDate.parse(&quot;2000-03-01&quot;);
+System.out.println(
+    ChronoUnit.DAYS.between(isoStart, isoStart.plus(1, ChronoUnit.WEEKS))
+);
+// =&amp;gt; 1 semaine = &lt;strong&gt;7 jours&lt;/strong&gt;
+
+DiscordianDate discordianStart = DiscordianDate.from(isoStart);
+System.out.println(
+    ChronoUnit.DAYS.between(discordianStart, discordianStart.plus(1, ChronoUnit.WEEKS))
+);
+// =&amp;gt; 1 semaine = &lt;strong&gt;5 jours&lt;/strong&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Donc une semaine dure généralement 7 jours, sauf pour les adeptes du discordianisme pour qui elle dure 5 jours .&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;pourquoi-cest-important&quot;&gt;Pourquoi c&amp;#8217;est important ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Parce que clairement, on n&amp;#8217;utilise pas souvent le calendrier discordien&amp;#8230;&amp;#8203;
+En réalité la question s&amp;#8217;est posée en d&amp;#8217;autres termes : pourquoi est-ce qu&amp;#8217;on ne peut pas ajouter une semaine à un instant ?
+Alors qu&amp;#8217;on peut ajouter 7 jours.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;System.out.println(Instant.EPOCH.plus(7, ChronoUnit.DAYS));
+// =&amp;gt; 1970-01-08T00:00:00Z
+
+System.out.println(Instant.EPOCH.plus(1, ChronoUnit.WEEKS));
+// =&amp;gt; java.time.temporal.UnsupportedTemporalTypeException: &lt;strong&gt;Unsupported unit: Weeks&lt;/strong&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Une instance d&amp;#8217;Instant représente un moment indépendant de tout contexte : calendrier, fuseau horaire, langue,&amp;#8230;&amp;#8203;
+On ne peut lui ajouter que des valeurs dont l&amp;#8217;unité est universelle.
+Le JDK considère que les unités jusqu&amp;#8217;au jour sont utilisables, mais que celles au dessus (semaine, mois,&amp;#8230;&amp;#8203;) sont trop dépendantes du contexte.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par conséquent, pour ajouter une semaine ou un mois, il faut passer par objet temporel contextualisé.
+Plus précisément, il doit être associé à une chronologie.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;et-pourquoi-cest-discutable&quot;&gt;Et pourquoi c&amp;#8217;est discutable ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Jusqu&amp;#8217;ici, on a parlé de calendriers / chronologies qui peuvent avoir une influence sur la durée de semaines, mois ou années.
+Mais il n&amp;#8217;est pas nécessaire de chercher si loin pour trouver des durées instables.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En effet, la durée d&amp;#8217;une journée peut dépendre du &lt;strong&gt;fuseau horaire&lt;/strong&gt;, en fonction des &lt;strong&gt;changements d&amp;#8217;heure&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Instant instantBeforeWinterTime = Instant.parse(&quot;2000-10-29T00:00:00Z&quot;);
+System.out.println(
+    ChronoUnit.HOURS.between(instantBeforeWinterTime,
+                             instantBeforeWinterTime.plus(1, ChronoUnit.DAYS))
+);
+// =&amp;gt; 1 jour = &lt;strong&gt;24 heures&lt;/strong&gt;
+
+ZonedDateTime beforeWinterTimeUtc = ZonedDateTime.ofInstant(
+    instantBeforeWinterTime, ZoneId.of(&quot;UTC&quot;)
+);
+System.out.println(
+    ChronoUnit.HOURS.between(beforeWinterTimeUtc,
+                             beforeWinterTimeUtc.plus(1, ChronoUnit.DAYS))
+);
+// =&amp;gt; 1 jour = &lt;strong&gt;24 heures&lt;/strong&gt; (pas de changement d'heure en UTC)
+
+ZonedDateTime beforeWinterTimeParis = ZonedDateTime.ofInstant(
+    instantBeforeWinterTime, ZoneId.of(&quot;Europe/Paris&quot;)
+);
+System.out.println(
+    ChronoUnit.HOURS.between(beforeWinterTimeParis,
+                             beforeWinterTimeParis.plus(1, ChronoUnit.DAYS))
+);
+// =&amp;gt; 1 jour = &lt;strong&gt;25 heures&lt;/strong&gt; (passage à l'heure d'hiver)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ajouter une journée à une date / heure est donc aussi dépendant d&amp;#8217;un contexte.
+Ajouter 24 heures et ajouter une journée ne sont pas forcément équivalents.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il est toujours important de définir le contexte d&amp;#8217;une opération sur les dates / heures.
+Et il est toujours important de savoir ce qui est significatif.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Références :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://gitlab.com/bojoblog/spring-example/-/tree/master/java-examples/datetime-example&quot;&gt;Exemples de code&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="java" /><category term="date" /><category term="time" /><summary type="html">Tout le monde sait qu'une semaine dure 7 jours ! Et même en Java, c&amp;#8217;est simple à vérifier. LocalDate start = LocalDate.parse(&quot;2000-01-01&quot;); System.out.println( ChronoUnit.DAYS.between(start, start.plus(1, ChronoUnit.WEEKS)) ); // =&amp;gt; 7 jours Si on prend un peu de recul, on peut se rappeler que le calendrier révolutionnaire français avait une semaine de 10 jours. Ça prouve que la durée de 7 jours est arbitraire et qu&amp;#8217;il n&amp;#8217;est pas exclu que des calendriers s&amp;#8217;en éloignent. Et quand on parle de la durée d&amp;#8217;un mois ou d&amp;#8217;une année, les exemples sont plus faciles à trouver avec les calendriers lunaires. Voyons comment ça peut se traduire pour un développeur Java&amp;#8230;&amp;#8203;</summary></entry><entry><title type="html">J’aime pas les custom repositories</title><link href="https://blog.alexis-hassler.com//2021/07/09/spring-custom-repository.html" rel="alternate" type="text/html" title="J’aime pas les custom repositories" /><published>2021-07-09T00:00:00+00:00</published><updated>2021-07-09T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2021/07/09/spring-custom-repository</id><content type="html" xml:base="https://blog.alexis-hassler.com//2021/07/09/spring-custom-repository.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-logo.svg&quot; alt=&quot;Spring logo&quot; width=&quot;140&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On parle de &lt;strong&gt;Spring Data JPA&lt;/strong&gt;, dont le but est de simplifier le développement de requêtes JPA.
+On y implémente un accès à une base de données relationnelle en déclarant quelques méthodes aux noms bien choisis dans des interfaces, ou en ajoutant des requêtes JPQL via des annotations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Bref, avec les repositories de Spring Data JPA, on ne fait plus de code.
+Sauf si ce qui est proposé en standard ne suffit pas et dans ce cas il faut faire des &lt;strong&gt;custom repositories&lt;/strong&gt;.
+C&amp;#8217;est précisément ça que je n&amp;#8217;aime pas.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;jaime-bien-les-repositories&quot;&gt;J&amp;#8217;aime bien les repositories&amp;#8230;&amp;#8203;&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans l&amp;#8217;ensemble j&amp;#8217;aime bien Spring Data JPA, ça réduit de beaucoup le code pour accéder à une base de données relationnelle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par exemple, en faisant une interface qui hérite de &lt;a href=&quot;https://docs.spring.io/spring-data/jpa/docs/2.5.2/api/org/springframework/data/jpa/repository/JpaRepository.html&quot;&gt;&lt;code&gt;JpaRepository&lt;/code&gt;&lt;/a&gt;, on a directement les méthodes pour &lt;em&gt;&lt;strong&gt;F&lt;/strong&gt;ind all&lt;/em&gt;, &lt;em&gt;&lt;strong&gt;F&lt;/strong&gt;ind by id&lt;/em&gt;, &lt;em&gt;&lt;strong&gt;U&lt;/strong&gt;pdate&lt;/em&gt; / &lt;em&gt;&lt;strong&gt;C&lt;/strong&gt;reate&lt;/em&gt; et &lt;em&gt;&lt;strong&gt;D&lt;/strong&gt;elete&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface UserRepository extends &lt;strong&gt;JpaRepository&lt;/strong&gt;&amp;lt;User, Long&amp;gt; {
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En ajoutant des méthodes abstraites, par la convention de nommage, on spécifie les critères de sélection pour des recherches avec des critères plus complexes.
+Par exemple, dans un UserRepository une méthode &lt;code&gt;findByLogin(&amp;#8230;&amp;#8203;)&lt;/code&gt; génèrera une requête avec une clause where sur le login.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {
+    List&amp;lt;User&amp;gt; &lt;strong&gt;findByLogin&lt;/strong&gt;(String login);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, si ça ne suffit pas, on peut aussi écrire une requête JPQL dans l&amp;#8217;annotation &lt;a href=&quot;https://docs.spring.io/spring-data/jpa/docs/2.5.2/api/org/springframework/data/jpa/repository/Query.html&quot;&gt;&lt;code&gt;@Query&lt;/code&gt;&lt;/a&gt; d&amp;#8217;une méthode.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {
+    List&amp;lt;User&amp;gt; findByLogin(String login);
+
+    &lt;strong&gt;@Query&lt;/strong&gt;(&quot;SELECT u FROM User u JOIN u.contract c &quot; +
+            &quot;WHERE u.id in (:ids) &quot; +g
+            &quot;AND u.active = true &quot; +
+            &quot;AND c.validityStart &amp;lt;= current_date &quot; +
+            &quot;AND (c.validityEnd IS NULL OR current_date &amp;lt;= c.validityEnd) &quot; +
+            &quot;ORDER BY u.lastname, u.firstname&quot;)
+    List&amp;lt;User&amp;gt; &lt;strong&gt;findWithValidContract&lt;/strong&gt;(Set&amp;lt;String&amp;gt; ids);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;sauf-pour-les-méthodes-trop-longues&quot;&gt;&amp;#8230;&amp;#8203;sauf pour les méthodes trop longues&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si la technique de requêtage par convention de nommage est pratique, elle atteint ses limites en lisibilité quand on augmente le nombre de critères.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {
+    List&amp;lt;User&amp;gt; &lt;strong&gt;findByLastnameLikeAndFirstnameLikeAndBirthdateAfterAndBirthdateBefore&lt;/strong&gt;
+                    (String lastnamePrefix, String firstnamePrefix,
+                     Instant birthdateIntervalLow, Instant birthdateIntervalHigh);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette méthode fait un peu tache dans l&amp;#8217;interface &lt;code&gt;UserRepository&lt;/code&gt;.
+Mais surtout elle fait tache dans les méthodes qui doivent l&amp;#8217;utiliser.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour ce problème, on peut utiliser une &lt;em&gt;default method&lt;/em&gt; dans l&amp;#8217;interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {
+  List&amp;lt;User&amp;gt; findByLastnameLikeAndFirstnameLikeAndBirthdateAfterAndBirthdateBefore(
+                String lastnamePrefix, String firstnamePrefix,
+                Instant birthdateIntervalLow, Instant birthdateIntervalHigh);
+
+  &lt;em&gt;default&lt;/em&gt; List&amp;lt;User&amp;gt; &lt;strong&gt;findByIdentity&lt;/strong&gt;(UserIdentity identity) {
+    return findByLastnameLikeAndFirstnameLikeAndBirthdateAfterAndBirthdateBefore(
+                identity.getLastname(), identity.getFirstname(),
+                identity.getBirthdateIntervalLow(), identity.getBirthdateIntervalHigh());
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La méthode au nom à rallonge peut toujours être utilisé, mais on préfèrera &lt;code&gt;findByIdentity(&amp;#8230;&amp;#8203;)&lt;/code&gt; bien plus lisible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;sauf-pour-les-critères-dynamiques&quot;&gt;&amp;#8230;&amp;#8203;sauf pour les critères dynamiques&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le gros point faible des repositories c&amp;#8217;est qu&amp;#8217;ils sont prévus pour des requêtes statiques.
+Or il est classique de générer des requêtes en fonction des critères.
+L&amp;#8217;API &lt;em&gt;Criteria&lt;/em&gt; de JPA est assez pratique pour ça.
+Mais c&amp;#8217;est assez antinomique avec la logique des repositories.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec une classe repository codée, on aurait à peu près ça :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Repository
+public class UserDao {
+    private EntityManager em;
+
+    public List&amp;lt;User&amp;gt; &lt;strong&gt;findByIdentity&lt;/strong&gt;(UserIdentity identity) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery&amp;lt;User&amp;gt; query = cb.createQuery(v.class);
+        Root&amp;lt;User&amp;gt; root = query.from(User.class);
+
+        List&amp;lt;Predicate&amp;gt; predicates = new ArrayList&amp;lt;&amp;gt;();
+        predicates.add(cb.like(root.get(&quot;lastname&quot;), identity.getLastname()));
+        predicates.add(cb.like(root.get(&quot;firstname&quot;), identity.getFirstname()));
+        if (identity.getBirthdateIntervalLow() != null) {
+          predicates.add(
+            cb.greaterThan(root.get(&quot;birthdate&quot;), identity.getBirthdateIntervalLow()));
+        }
+        if (identity.getBirthdateIntervalHigh() != null) {
+          predicates.add(
+            cb.lessThan(root.get(&quot;birthdate&quot;), identity.getBirthdateIntervalHigh()));
+        }
+        query.where(predicates.toArray(new Predicate[] {}));
+
+        return em.createQuery(query).getResultList();
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Spring Data propose la notion de Specification pour utiliser les JPA &lt;em&gt;Criteria&lt;/em&gt;.
+Pour ça, l&amp;#8217;interface de repository doit hériter de &lt;a href=&quot;https://docs.spring.io/spring-data/jpa/docs/2.5.2/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html&quot;&gt;&lt;code&gt;JpaSpecificationExecutor&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Repository
+public interface UserRepository
+    extends JpaRepository&amp;lt;User, Long&amp;gt;, &lt;strong&gt;JpaSpecificationExecutor&amp;lt;User&amp;gt;&lt;/strong&gt; {
+  &lt;em&gt;default&lt;/em&gt; List&amp;lt;User&amp;gt; &lt;strong&gt;findByIdentity&lt;/strong&gt;(UserIdentity identity) {
+    return this.&lt;strong&gt;findAll&lt;/strong&gt;(
+        (root, query, cb) -&amp;gt; {
+          List&amp;lt;Predicate&amp;gt; predicates = new ArrayList&amp;lt;&amp;gt;();
+          predicates.add(cb.like(root.get(&quot;lastname&quot;), identity.getLastname()));
+          predicates.add(cb.like(root.get(&quot;firstname&quot;), identity.getFirstname()));
+          if (identity.getBirthdateIntervalLow() != null) {
+            predicates.add(
+              cb.greaterThan(root.get(&quot;birthdate&quot;), identity.getBirthdateIntervalLow()));
+          }
+          if (identity.getBirthdateIntervalHigh() != null) {
+            predicates.add(
+              cb.lessThan(root.get(&quot;birthdate&quot;), identity.getBirthdateIntervalHigh()));
+          }
+          return cb.and(predicates.toArray(new Predicate[] {}));
+    });
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et on n&amp;#8217;a toujours pas eu besoin de classe pour ça, tout tient dans l&amp;#8217;interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;sauf-pour-aller-plus-loin&quot;&gt;&amp;#8230;&amp;#8203;sauf pour aller plus loin&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour aller plus loin avec l&amp;#8217;API &lt;em&gt;Criteria&lt;/em&gt;, comme par exemple ajouter des jointures, on aurait besoin d&amp;#8217;utiliser l&amp;#8217;API dans son ensemble.
+Le sous-ensemble proposé par Specification ne suffit plus.
+Mais pour ça, il faudrait avoir accès à l&amp;#8217;EntityManager, et ça ce n&amp;#8217;est pas possible dans une interface.
+&amp;#8230;&amp;#8203; à moins qu&amp;#8217;on contourne le problème.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si on avait une méthode &lt;code&gt;getEntityManager()&lt;/code&gt; dans notre repositor_y, on pourrait l&amp;#8217;utiliser dans nos méthodes &lt;em&gt;default&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Qu&amp;#8217;à celà ne tienne, faisons une telle interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@NoRepositoryBean
+public interface EntityManagerRepository {
+  &lt;strong&gt;EntityManager getEntityManager();&lt;/strong&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et maintenant créons une classe qui implémente cette interface, avec l&amp;#8217;injection de l&amp;#8217;EntityManager.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class SewaRepositoryImpl&amp;lt;T, ID extends Serializable&amp;gt;
+    extends SimpleJpaRepository&amp;lt;T, ID&amp;gt;
+    implements EntityManagerRepository {
+
+  private final EntityManager entityManager;
+
+  public SewaRepositoryImpl(
+            JpaEntityInformation&amp;lt;T, ?&amp;gt; entityInformation,
+            EntityManager entityManager) {
+    super(entityInformation, entityManager);
+    this.entityManager = entityManager;
+  }
+
+  @Override
+  public EntityManager getEntityManager() {
+    return entityManager;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, faisons en sorte que les instances de &lt;em&gt;repositories&lt;/em&gt; héritent de cette classe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@EnableJpaRepositories(&lt;strong&gt;repositoryBaseClass = SewaRepositoryImpl.class&lt;/strong&gt;)
+public class SewaApplication {
+  ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A partir de là, je peux utiliser l'&lt;em&gt;entity manager&lt;/em&gt; dans n&amp;#8217;importe quelle interface de &lt;em&gt;repository&lt;/em&gt;, il suffit qu&amp;#8217;elle hérite de &lt;code&gt;EntityManagerRepository&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Repository
+public interface UserRepository
+    extends JpaRepository&amp;lt;User, Long&amp;gt;, &lt;strong&gt;EntityManagerRepository&lt;/strong&gt; {
+  &lt;em&gt;default&lt;/em&gt; List&amp;lt;User&amp;gt; &lt;strong&gt;findByIdentity&lt;/strong&gt;(UserIdentity identity) {
+    EntityManager em = this.getEntityManager();
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaQuery&amp;lt;User&amp;gt; query = cb.createQuery(v.class);
+    Root&amp;lt;User&amp;gt; root = query.from(User.class);
+
+    //...
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;finalement-cest-pas-grave&quot;&gt;Finalement c&amp;#8217;est pas grave&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Finalement, j&amp;#8217;aime pas les custom repositories mais c&amp;#8217;est pas grave.
+Avec les techniques décrites ci-dessus (default method, Specification et repositoryBaseClass), il n&amp;#8217;y en a presque jamais besoin.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Référence :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.custom-implementations&quot;&gt;Spring Data reference&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://gitlab.com/bojoblog/spring-example/-/tree/master/repository-examples&quot;&gt;Exemples de code&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="spring" /><category term="jpa" /><summary type="html">On parle de Spring Data JPA, dont le but est de simplifier le développement de requêtes JPA. On y implémente un accès à une base de données relationnelle en déclarant quelques méthodes aux noms bien choisis dans des interfaces, ou en ajoutant des requêtes JPQL via des annotations. Bref, avec les repositories de Spring Data JPA, on ne fait plus de code. Sauf si ce qui est proposé en standard ne suffit pas et dans ce cas il faut faire des custom repositories. C&amp;#8217;est précisément ça que je n&amp;#8217;aime pas.</summary></entry><entry><title type="html">Comment j’ai ralenti mon réseau local</title><link href="https://blog.alexis-hassler.com//2021/06/21/latence-reseau-local.html" rel="alternate" type="text/html" title="Comment j’ai ralenti mon réseau local" /><published>2021-06-21T00:00:00+00:00</published><updated>2021-06-21T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2021/06/21/latence-reseau-local</id><content type="html" xml:base="https://blog.alexis-hassler.com//2021/06/21/latence-reseau-local.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/network/loading.gif&quot; alt=&quot;Loading&amp;#8230;&amp;#8203;&quot; width=&quot;140&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En 2018, je présentais les &lt;a href=&quot;https://prez.sewatech.fr/http2/&quot;&gt;avantages du protocole HTTP/2&lt;/a&gt; en terme de temps de chargement des pages Web.
+Ma première démo reprenait un classique : comparer le temps de chargment d&amp;#8217;une image scindée entre HTTP/1 et HTTP/2.
+On la trouve par exemple sur le site d&amp;#8217;&lt;a href=&quot;https://http2.akamai.com/demo&quot;&gt;Akamai&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour éviter le risque avec les accès réseaux, il fallait qu&amp;#8217;elles soient en local alors que pour être visuelles, il faut de la latence.
+Pour résoudre cette contradiction, j&amp;#8217;ai choisi d&amp;#8217;utiliser des conteneurs Docker et d&amp;#8217;ajouter volontairement de la latence au niveau du réseau virtuel.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;préparer-lenvironnement-avec-un-réseau-docker&quot;&gt;Préparer l&amp;#8217;environnement avec un réseau Docker&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Evidemment, Docker est un outil pratique pour ce genre de démo.
+Ça permet d&amp;#8217;isoler les serveurs les uns des autres et de remonter l&amp;#8217;environnement en quelques commandes &lt;code&gt;docker pull &amp;#8230;&amp;#8203;&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/docker/logo-engine.png&quot; alt=&quot;Docker logo&quot; width=&quot;180&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au passage, ça permet aussi de configurer un réseau virtuel dédié à la démo.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker network create  \
+    -o &quot;com.docker.network.bridge.name&quot;=&quot;&lt;strong&gt;br-demo&lt;/strong&gt;&quot; \
+    --subnet=172.44.0.0/16 \
+    &lt;strong&gt;demo&lt;/strong&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au démarrage, les conteneurs doivent être configurés pour utiliser ce réseau.
+Voici ce que ça donne pour &lt;em&gt;nginx&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#! /bin/bash
+docker run --network &lt;strong&gt;demo&lt;/strong&gt; -d nginx&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/docker/network-custom.svg&quot; alt=&quot;Docker custom network&quot; width=&quot;500&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tel quel, l&amp;#8217;accès au serveur Web est rapide, de l&amp;#8217;ordre de 15 à 20 ms pour la page d&amp;#8217;accueil.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;start=$(date +%s%3N)                      &amp;amp;&amp;amp; \
+&lt;strong&gt;curl -s -o /dev/null http://172.44.0.2&lt;/strong&gt;    &amp;amp;&amp;amp; \
+echo $(($(date +%s%3N) - $start))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Une telle latence est trop basse pour que les démos soient visuelles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;augmenter-la-latence-réseau&quot;&gt;Augmenter la latence réseau&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on est équipé de conteneurs et d&amp;#8217;un réseau dédié, on va faire quelques incatations magiques pour qu&amp;#8217;il soit plus lent.
+Pour ça, un sorcier, qu&amp;#8217;on appelle parfois ingénieur réseau, m&amp;#8217;a conseillé la commande Linux &lt;code&gt;tc&lt;/code&gt; (pour &lt;em&gt;traffic control&lt;/em&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo tc qdisc add dev &lt;strong&gt;br-demo&lt;/strong&gt; root handle 1: netem &lt;strong&gt;delay&lt;/strong&gt; 80msec&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il semblerait que ça injecte une sorte de filtre entre le driver de la carte du réseau br-demo et la couche IP, capable d&amp;#8217;&lt;a href=&quot;https://wiki.linuxfoundation.org/networking/netem#emulating_wide_area_network_delays&quot;&gt;émuler un délai&lt;/a&gt; supplémentaire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/network/netem.svg&quot; alt=&quot;netem&quot; width=&quot;500&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant, la lecture de la page d&amp;#8217;accueil met aux alentours de 180 ms.
+La différence est de 2 x 80ms, soit le délai ajouté pour la requête plus celui pour la réponse.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour revenir en arrière, il faut supprimer le filtre.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo tc qdisc &lt;strong&gt;del&lt;/strong&gt; dev br-demo root netem&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;brider-le-débit&quot;&gt;Brider le débit&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Habituellement, le débit est un facteur plus important que la latence pour tester les applications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo tc qdisc add dev &lt;strong&gt;br-demo&lt;/strong&gt; root handle 1: netem &lt;strong&gt;rate&lt;/strong&gt; 10MBit&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On peut aussi cumuler les deux contraintes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo tc qdisc add dev &lt;strong&gt;br-demo&lt;/strong&gt; root handle 1: netem &lt;strong&gt;delay&lt;/strong&gt; 80msec &lt;strong&gt;rate&lt;/strong&gt; 10MBit&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et la technique peut aussi être appliquée à localhost.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo tc qdisc add dev &lt;strong&gt;lo&lt;/strong&gt; root handle 1: netem &lt;strong&gt;delay&lt;/strong&gt; 80msec &lt;strong&gt;rate&lt;/strong&gt; 10MBit&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voilà, c&amp;#8217;est bizarre de faire tous ces efforts pour ralentir le réseau.
+Mais c&amp;#8217;est pour la bonne cause.
+En ralentissant un réseau local à la machine, son comportement ressemble à un réseau distant et rend les tests locaux plus crédibles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;références-et-ajouts&quot;&gt;Références et ajouts&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tout ce qui est décrit a été fait et testé sur un poste de travail &lt;strong&gt;Ubuntu 20.04&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;ai utilisé les pages Web ci-dessous pour préparer mes démos et ce billet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://bencane.com/2012/07/16/tc-adding-simulated-network-latency-to-your-linux-server/&quot;&gt;Adding simulated network latency to your Linux server&lt;/a&gt; par Benjamin Cane&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://wiki.linuxfoundation.org/networking/netem&quot;&gt;netem&lt;/a&gt; par The Linux Foundation&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="network" /><category term="docker" /><summary type="html">En 2018, je présentais les avantages du protocole HTTP/2 en terme de temps de chargement des pages Web. Ma première démo reprenait un classique : comparer le temps de chargment d&amp;#8217;une image scindée entre HTTP/1 et HTTP/2. On la trouve par exemple sur le site d&amp;#8217;Akamai. Pour éviter le risque avec les accès réseaux, il fallait qu&amp;#8217;elles soient en local alors que pour être visuelles, il faut de la latence. Pour résoudre cette contradiction, j&amp;#8217;ai choisi d&amp;#8217;utiliser des conteneurs Docker et d&amp;#8217;ajouter volontairement de la latence au niveau du réseau virtuel.</summary></entry><entry><title type="html">Utiliser Moment.js pour afficher les dates en anglais</title><link href="https://blog.alexis-hassler.com//2021/05/21/momentjs-en.html" rel="alternate" type="text/html" title="Utiliser Moment.js pour afficher les dates en anglais" /><published>2021-05-21T00:00:00+00:00</published><updated>2021-05-21T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2021/05/21/momentjs-en</id><content type="html" xml:base="https://blog.alexis-hassler.com//2021/05/21/momentjs-en.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/i18n/momentjs.svg&quot; alt=&quot;Moment.js logo&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ce billet prend racine dans un problème d&amp;#8217;internationalisation de mon application, plus précisément pour la mise en forme des dates avec &lt;a href=&quot;https://momentjs.com/&quot;&gt;Moment.JS&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Mais avant de me lancer, j&amp;#8217;aimerais partager mon émotion.
+J&amp;#8217;ai commencé ce blog il y a un peu plus de 10 ans, et c&amp;#8217;est mon premier billet sur du développement front.
+Autant vous dire que je me sens complètement illégitime, mais comme ça fait longtemp que ce sentiment ne me freine plus, je me lance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;afficher-les-dates-en-anglais&quot;&gt;Afficher les dates en anglais&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans un premier temps, mon application doit supporter le français et l&amp;#8217;anglais.
+On stocke la langue préférée d&amp;#8217;un utilisateur dans son profil et s&amp;#8217;il n&amp;#8217;a enregistré aucune préférence, on se base sur celle qui est configurée pour son navigateur.
+La langue est utilisée pour tous les textes, mais aussi pour adapter le format des nombres, des dates et des heures.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour la mise en forme des dates et heures, on utilise Moment.JS.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voici comment les dates sont affichées en français :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;moment.locale('&lt;strong&gt;fr&lt;/strong&gt;');
+const date = moment('2000-12-31');
+const short = date.format('L');        // 31/12/2000
+const medium = date.format('ll');      // 31 déc. 2000
+const long = date.format('dddd LL');   // dimanche 31 décembre 2000&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et voici comment elles sont affichées en anglais :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;moment.locale('&lt;strong&gt;en&lt;/strong&gt;');
+const date = moment('2000-12-31');
+const short = date.format('L');        // 12/31/2000
+const medium = date.format('ll');      // Dec 31, 2000
+const long = date.format('dddd LL');   // Sunday December 31, 2000&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et là, les anglais, australiens et néo-zélandais commencent à râler parce que ce n&amp;#8217;est pas leur façon de présenter des dates.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En effet, en utilisant la &lt;em&gt;locale&lt;/em&gt; 'en', la librairie utilise le format des américains.
+En effet les américains sont à peu près les seuls au monde à adopter un format aussi peu logique.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Amazingly comprehensive  map of every  country in the world that uses the MMDDYYYY format&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/i18n/map-MMDDYYYY.jpeg&quot; alt=&quot;Map&quot; width=&quot;50%&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;attribution&quot;&gt;
+&amp;#8212; &lt;a href=&quot;https://twitter.com/amazingmap/status/599931666803597312&quot;&gt;@amazingmap&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Je ne dois pas me contenter de supporter l&amp;#8217;anglais mais aussi ses différentes variantes : l&amp;#8217;anglais américains (en-US), l&amp;#8217;anglais britannique (en-GB), l&amp;#8217;anglais australiens (en-AU),&amp;#8230;&amp;#8203;
+Il y a ainsi une dizaine de cultures de langue anglaise.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;langlais-américain-contre-langlais-britannique&quot;&gt;L&amp;#8217;anglais américain contre l&amp;#8217;anglais britannique&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ou alors, je peux supporter explicitement l&amp;#8217;anglais américain (en-US), avec ses dates toutes bizarres, et faire en sorte que l&amp;#8217;anglais générique (en) se rapproche de l&amp;#8217;anglais britannique (en-GB).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Revenons à Moment.js.
+Il peut fournir la liste des &lt;em&gt;locales&lt;/em&gt; supportées :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;moment.locales();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et là on constate que en-US n&amp;#8217;existe pas.
+Ça semble logique puisque c&amp;#8217;est implémenté dans en.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La solution est donc de personnaliser Moment.js, en lui ajoutant la culture manquante puis de reconfigurer la langue en pour qu&amp;#8217;elle soit britannique.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    moment.defineLocale('en-us', {parentLocale:'en'});
+    moment.updateLocale('en', {...moment.localeData('en-gb')._config, abbr: 'en'});&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans cette nouvelle configuration, voici comment les dates sont affichées en anglais :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;moment.locale('&lt;strong&gt;en&lt;/strong&gt;');
+const date = moment('2000-12-31');
+const short = date.format('L');        // 31/12/2000
+const medium = date.format('ll');      // 31 Dec 2000
+const long = date.format('dddd LL');   // Sunday 31 December 2000&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+Le format &lt;code&gt;ll&lt;/code&gt; ne donne pas toujours le résultat attendu lorsqu&amp;#8217;on reconfigure Moment.js à la volée.
+En revanche, ça fonctionne de façon plus stable si la personnalisation est faite dès le démarrage.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;le-résultat&quot;&gt;Le résultat&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En conclusion, l&amp;#8217;erreur initiale a été de considérer que la mise en forme des dates dépend de la langue.
+En réalité, il dépend plus du pays.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph center&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Date_format_by_country&quot;&gt;&lt;span class=&quot;image&quot;&gt;&lt;img src=&quot;/images/i18n/date-format-by-country.svg&quot; alt=&quot;Formats de dates par pays&quot;&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Finalement, il ne faut que 3 lignes de codes pour que l&amp;#8217;anglais générique soit celui des britanniques et pas celui des américains.
+Mais ça reste de la bidouille, et le jour où il faudra virer Moment.js ça ne marchera plus.
+Vous pouvez les voir à l&amp;#8217;oeuvre dans ce &lt;a href=&quot;https://jsfiddle.net/sewatech/eq3j5ods/&quot;&gt;bac à sable&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="javascript" /><category term="momentjs" /><category term="i18n" /><summary type="html">Ce billet prend racine dans un problème d&amp;#8217;internationalisation de mon application, plus précisément pour la mise en forme des dates avec Moment.JS. Mais avant de me lancer, j&amp;#8217;aimerais partager mon émotion. J&amp;#8217;ai commencé ce blog il y a un peu plus de 10 ans, et c&amp;#8217;est mon premier billet sur du développement front. Autant vous dire que je me sens complètement illégitime, mais comme ça fait longtemp que ce sentiment ne me freine plus, je me lance.</summary></entry></feed>
