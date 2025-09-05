@@ -1,0 +1,2991 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://blog.alexis-hassler.com//feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.alexis-hassler.com//" rel="alternate" type="text/html" hreflang="fr" /><updated>2025-09-05T11:44:52+00:00</updated><id>https://blog.alexis-hassler.com//feed.xml</id><title type="html">Bojo Blog</title><subtitle>&lt;p&gt;J'ai créé la société &lt;b&gt;Sewatech&lt;/b&gt; en 2005, pour y exercer mon métier de développeur &lt;i title=&quot;ie. je fais du Java et de l'Angular&quot;&gt;full stack&lt;/i&gt;, à dominante &lt;i title=&quot;ie. je suis meilleur en Spring qu'en CSS&quot;&gt;back end&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;Vous pouvez me &lt;a href=&quot;https://www.sewatech.fr/contacts.html&quot;&gt;contacter&lt;/a&gt; si vous cherchez un développeur indépendant expérimenté (plus de 25 ans d'expérience) pour intégrer votre équipe de projet. Je peux aussi intervenir pour un audit ou une mission de conseil.&lt;/p&gt; &lt;p&gt;Enfin, je donne des formations sur &lt;a href=&quot;https://www.sewatech.fr/formation-spring.html&quot;&gt;Spring&lt;/a&gt;, &lt;a href=&quot;https://www.sewatech.fr/formation-vertx.html&quot;&gt;Vert.x&lt;/a&gt;, &lt;a href=&quot;https://www.sewatech.fr/formation-wildfly.html&quot;&gt;WildFly&lt;/a&gt;,... en intra sur site ou à distance.&lt;/p&gt;
+</subtitle><author><name>Alexis Hassler</name></author><entry><title type="html">Développement avec l’IA, retour d’expérience</title><link href="https://blog.alexis-hassler.com//2025/06/30/ia.html" rel="alternate" type="text/html" title="Développement avec l’IA, retour d’expérience" /><published>2025-06-30T00:00:00+00:00</published><updated>2025-06-30T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2025/06/30/ia</id><content type="html" xml:base="https://blog.alexis-hassler.com//2025/06/30/ia.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/dev-genia.svg&quot; alt=&quot;Développeur GenIA&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;ai beaucoup hésité avant de me lancer&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;D&amp;#8217;une part, le sujet est vraiment partout, et il me semble plus ancré que les hypes précédentes, comme le metaverse ou les cryptomonnaies.
+C&amp;#8217;est difficile de l&amp;#8217;ignorer quand on est développeur.
+D&amp;#8217;autre part, le sujet soulève tellement de questions environnementales et sociétales.
+C&amp;#8217;est irresponsable de s&amp;#8217;y engager dans son état actuel.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Vous aurez compris que je parle d&amp;#8217;IA générative, plus précisément de l&amp;#8217;utilisation d'&lt;strong&gt;IA générative&lt;/strong&gt; dans le &lt;strong&gt;développement Java&lt;/strong&gt;.
+Je vais vous expliquer comment j&amp;#8217;ai abordé le sujet et ce que j&amp;#8217;en retire pour le moment.
+Et comme ça bouge très vite, notez bien la date de publication du billet&amp;#160;: c&amp;#8217;est fin &lt;strong&gt;juin 2025&lt;/strong&gt;.
+Il n&amp;#8217;est pas impossible que je change d&amp;#8217;avis pendant l&amp;#8217;été&amp;#160;!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;mes-premiers-pas&quot;&gt;Mes premiers pas&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans des projets précédents, mes collègues m&amp;#8217;ont poussé à utiliser des outils d&amp;#8217;IA générative pour certaines tâches de développement.
+A l&amp;#8217;époque, début 2023, je n&amp;#8217;avais pas d&amp;#8217;outil spécifique pour le développement et j&amp;#8217;utilisais ChatGPT.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le premier cas d&amp;#8217;usage qu&amp;#8217;on m&amp;#8217;a demandé d&amp;#8217;explorer, c&amp;#8217;était la &lt;strong&gt;génération de documentation technique&lt;/strong&gt;.
+Son mode de fonctionnement par chat dans le navigateur limitait fortement les possibilités puisqu&amp;#8217;on lui transmet les informations par copier/coller.
+Il n&amp;#8217;avait pas de contexte dans lequel replacer chaque classe.
+Bref, c&amp;#8217;était une impasse.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Du coup, on s&amp;#8217;est rabattus sur la &lt;strong&gt;génération de Javadoc&lt;/strong&gt;.
+Mais là aussi, sans contexte la génération se limitait à dire que &lt;code&gt;getLabel()&lt;/code&gt; retournait le &lt;em&gt;label&lt;/em&gt; et que &lt;code&gt;buildProduct(&amp;#8230;&amp;#8203;)&lt;/code&gt; construisait un produit.
+Bref, c&amp;#8217;était digne de Captain Obvious.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/captain-obvious.svg&quot; alt=&quot;Captain Obvious&quot; width=&quot;240&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le second cas d&amp;#8217;usage était l'&lt;strong&gt;exploration technique&lt;/strong&gt;.
+Par exemple, on avait besoin de projections un peu élaborées avec Hibernate.
+Ses réponses inventaient des classes dans Hibernate et tournaient en rond quand j&amp;#8217;essayais de recadrer.
+Bref, j&amp;#8217;ai perdu pas mal de temps.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;ai retenté ma chance début &lt;strong&gt;2025&lt;/strong&gt;.
+D&amp;#8217;abord parce que l&amp;#8217;écosystème a changé avec des outils spécialisés et adaptés au métier de développeurs.
+Et plus particulièrement parce que Jetbrains a une offre intégrée dans son IDE que j&amp;#8217;utilise depuis pas mal d&amp;#8217;années.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ensuite parce que je travaille sur un projet qui se prête à cette expérimentation, avec une équipe limitée à un seul développeur, avec une planification un peu chaotique et des spécifications assez instables.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;lia-avec-intellij&quot;&gt;L&amp;#8217;IA avec IntelliJ&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/jetbrains-intellij.svg&quot; alt=&quot;IntelliJ IDEA&quot; width=&quot;60&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le projet a commencé en 2024 sans outil d&amp;#8217;IA, mais avec mon IDE habituel, IntelliJ IDEA.
+Pour une transition douce, je souhaitais continuer avec celui-ce plutôt que de basculer sur des outils à la mode.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;IntelliJ propose propose quatre niveaux d&amp;#8217;intégration de l&amp;#8217;IA&amp;#160;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;avec la complétion de code,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;via des menus contextuels,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;en chat via un assistant IA,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;en interaction complète dans le code via un agent.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;complétion&quot;&gt;Complétion&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première utilisation de l&amp;#8217;IA dans IntelliJ se fait assez facilement.
+C&amp;#8217;est juste un enrichissement de la complétion, lorsqu&amp;#8217;on fait CTRL+SPACE.
+Pour simplifier, avant elle proposait un mot (variable, méthode,&amp;#8230;&amp;#8203;) maintenant c&amp;#8217;est une ligne complète ou quelques lignes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/singleline-completion.gif&quot; alt=&quot;AI single-line completion example&quot; width=&quot;800&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La valeur ajoutée est limitée, mais avec peu d&amp;#8217;inconvénients.
+Ça n&amp;#8217;implique pas de changement dans la façon de travailler.
+Et ça utilise un petit modèle spécialisé, en local (JetBrains Mellum, 100 Mo / langage).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La variante plus poussée consiste à écrire un commentaire dans le code.
+L&amp;#8217;IA complète le commentaire et propose une série de lignes de code pour l&amp;#8217;implémenter.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/multiline-completion.gif&quot; alt=&quot;AI multi-line completion example&quot; width=&quot;800&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;ai du mal avec ce mode, je trouve ça un peu déstabilisant, car ça génère souvent trop de choses par rapport à mon souhait.
+Tyîquement sur l&amp;#8217;exemple ci-dessus, pourquoi est-ce que ça ajoute &lt;code&gt;System.err.println(&amp;#8230;&amp;#8203;)&lt;/code&gt; ?
+Et j&amp;#8217;ai du mal à régler mon commentaire/prompt pour obtenir le bon résultat.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;actions-dia&quot;&gt;Actions d&amp;#8217;IA&lt;/h3&gt;
+&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/jetbrains-ai.svg&quot; alt=&quot;Jetbrain AI&quot; width=&quot;60&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le menu &quot;Generate with AI&quot; (ou son raccourci) est un peu plus explicite.
+Ça ouvre une zone de prompt et génère directement du code à l&amp;#8217;emplacement du curseur.
+Par contre, c&amp;#8217;est un peu moins fluide, avec plus de temps de &lt;em&gt;réflexion&lt;/em&gt;, signe que ça passe par un modèle externe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/action-generation.gif&quot; alt=&quot;AI code generation&quot; width=&quot;800&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le menu contextuel &quot;IA Actions&quot; propose aussi de générer des tests unitaires, de générer de la documentation, d&amp;#8217;expliquer du code ou de proposer un refactoring.
+J&amp;#8217;ai peu utilisé ces actions, je n&amp;#8217;ai donc pas encore de recul.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;chat&quot;&gt;Chat&lt;/h3&gt;
+&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/jetbrains-ai-chat.svg&quot; alt=&quot;Jetbrain AI Chat&quot; width=&quot;60&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec le chat, on revient à un mode de fonctionnement plus classique.
+L&amp;#8217;avantage avec un chat traditionnel, c&amp;#8217;est qu&amp;#8217;il est intégré à l&amp;#8217;IDE.
+Et cette intégration est sa valeur ajoutée puisqu&amp;#8217;il peut utiliser le code du projet comme contexte.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;S&amp;#8217;il peut lire le code du projet, il n&amp;#8217;y écrit rien.
+Il donne ses réponses dans le chat avec du code et des explications.
+Honnêtement, je ne lis presque jamais les explications, c&amp;#8217;est le code qui m&amp;#8217;intéresse.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour cette fonctionnalité, on utilise un modèle classique (GPT, Claude, Gemini,&amp;#8230;&amp;#8203;) hébergé par Jetbrains ou un modèle auto-hébergé.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;utilise ceci pour des explorations, pour trouver des solutions avec des librairies que je connais peu.
+Le meilleur exemple, c&amp;#8217;était pour une personnalisation un peu fine de graphiques avec jfreechart.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;junie&quot;&gt;Junie&lt;/h3&gt;
+&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/ai/jetbrains-junie.svg&quot; alt=&quot;Jetbrain Junie&quot; width=&quot;60&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le mode le plus intégré, c&amp;#8217;est Junie.
+C&amp;#8217;est aussi le mode hype et le plus controversé.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le point de départ est aussi un chat, mais avec cette fonctionnalité un &lt;strong&gt;agent&lt;/strong&gt; intervient directement sur le code.
+Evidemment, tous les changements sont détaillé dans le chat et accompagnés d&amp;#8217;explications.
+Et chacune peut être acceptée ou refusée via un diff, comme avec git.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La valeur ajoutée se situe dans l&amp;#8217;utilisation d&amp;#8217;un fichier de guidelines.
+Il ressemble aux guidelines qu&amp;#8217;on écrirait pour embarquer un humain dans le projet.
+Comme j&amp;#8217;ai commencé à utiliser Junie bien après le début du projet, j&amp;#8217;ai fait générer le fichier par Junie à partir du code existant.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;avais quelques réticences, mais elles se sont estompées au fur et à mesure.
+Aujourd&amp;#8217;hui, j&amp;#8217;utilise Junie pour générer du code classique, comme du simple &lt;strong&gt;F&lt;/strong&gt;ind/&lt;strong&gt;U&lt;/strong&gt;pdate/&lt;strong&gt;C&lt;/strong&gt;reate/&lt;strong&gt;R&lt;/strong&gt;emove.
+Il est aussi assez efficace pour générer de la documentation technique ou des tests unitaires.
+Pour ces derniers, je n&amp;#8217;ai pas encore trouvé le bon réglage car ils sont trop verbeux à mon goût.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ce qui me perturbe le plus au quotidient, c&amp;#8217;est assez lent.
+Il faudrait que je trouve une occupation pendant qu&amp;#8217;il travaille, sans que ça me sorte du sujet.
+C&amp;#8217;est vraiment différent des mes habitudes de travail.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;qualité-du-code&quot;&gt;Qualité du code&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il arrive régulièrement que le code généré ne compile pas ou qu&amp;#8217;il faille pas mal d&amp;#8217;itérations pour que les tests passent au vert.
+Quand on parle de génération, ça ne se limite vraiment pas à cliquer sur un bouton.
+Ça peut prendre du temps.
+Ça peut aussi être énervant de le voir patauger, il faut de la patience.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans tous les modes, le code a généralement des &lt;strong&gt;défauts&lt;/strong&gt;, avec des portions pas optimisées et souvent trop verbeuses.
+Dans tous les cas, ça demande une surveillance et de retouches.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ces quelques semaines d&amp;#8217;expérimentation ont bien changé mon point de vue.
+L&amp;#8217;IA générative apporte probablement un &lt;strong&gt;gain de productivité&lt;/strong&gt;, sans que je puisse le quantifier.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Elle apporte une plus-value dans la production de code classique du projet (FUCR) et pour des parties classiques pour d&amp;#8217;autres, mais pas pour moi.
+Elle n&amp;#8217;est pas à l&amp;#8217;aise dans les parties plus pointues techniquement, comme des personnalisations fines du framework.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Je pense que ce sont des outils intéressants à condition que le développeur reste aux commandes.
+Dans l&amp;#8217;état actuel, je ne laisserais pas un agent libre de proposer ses pull requests car ça impliquerait trop de travail de revue de code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Évidemment, mes conclusions peuvent être remises en question dans les prochaines semaines.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a aussi une question subsidiaire.
+Est-ce qu&amp;#8217;on peut considérer le gain suffisant par rapport aux &lt;strong&gt;coûts environnementaux et sociétaux&lt;/strong&gt;&amp;#160;?
+La réponse est certainement différente entre les fonctionnalités à petit modèle local et celle à gros modèle généraliste.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph small margin-bottom-0&quot;&gt;
+&lt;p&gt;P.S.&amp;#160;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist small&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Le billet a été totalement écrit par un humain.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Les dessins d&amp;#8217;illustration ont été générés par une IA et modifiés par un humain.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">J&amp;#8217;ai beaucoup hésité avant de me lancer&amp;#8230;&amp;#8203; D&amp;#8217;une part, le sujet est vraiment partout, et il me semble plus ancré que les hypes précédentes, comme le metaverse ou les cryptomonnaies. C&amp;#8217;est difficile de l&amp;#8217;ignorer quand on est développeur. D&amp;#8217;autre part, le sujet soulève tellement de questions environnementales et sociétales. C&amp;#8217;est irresponsable de s&amp;#8217;y engager dans son état actuel. Vous aurez compris que je parle d&amp;#8217;IA générative, plus précisément de l&amp;#8217;utilisation d'IA générative dans le développement Java. Je vais vous expliquer comment j&amp;#8217;ai abordé le sujet et ce que j&amp;#8217;en retire pour le moment. Et comme ça bouge très vite, notez bien la date de publication du billet&amp;#160;: c&amp;#8217;est fin juin 2025. Il n&amp;#8217;est pas impossible que je change d&amp;#8217;avis pendant l&amp;#8217;été&amp;#160;!</summary></entry><entry><title type="html">Afficher un historique avec Hibernate Envers</title><link href="https://blog.alexis-hassler.com//2024/09/08/historique-envers.html" rel="alternate" type="text/html" title="Afficher un historique avec Hibernate Envers" /><published>2024-09-08T00:00:00+00:00</published><updated>2024-09-08T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2024/09/08/historique-envers</id><content type="html" xml:base="https://blog.alexis-hassler.com//2024/09/08/historique-envers.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/hibernate/envers-logo.svg&quot; alt=&quot;Hibernate Envers logo&quot; width=&quot;200&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Sur un projet en cours, on stocke l&amp;#8217;historique complet des modifications sur les entités.
+Le projet utilise les frameworks classiques: &lt;strong&gt;Spring Boot 3&lt;/strong&gt; et &lt;strong&gt;JPA / Hibernate 6&lt;/strong&gt;.
+Nous avons ajouté &lt;a href=&quot;https://hibernate.org/orm/envers/&quot;&gt;&lt;strong&gt;Hibernate Envers&lt;/strong&gt;&lt;/a&gt; pour stocker les changements dans des tables d&amp;#8217;audit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Entity
+&lt;strong&gt;@Audited&lt;/strong&gt;(withModifiedFlag = true)
+public class Product extends AbstractEntity&amp;lt;UUID&amp;gt; {
+    ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La façon d&amp;#8217;enregistrer ces modifications est bien documentée, je n&amp;#8217;y reviendrai pas.
+Pour ce projet, nous avons voulu ajouter une façon générique d&amp;#8217;afficher l&amp;#8217;historique des changements pour chaque instance d&amp;#8217;entité.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;query-api-denvers&quot;&gt;Query API d&amp;#8217;Envers&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Envers a une API de requêtage qui permet d&amp;#8217;interroger les tables d&amp;#8217;audit sans se préoccuper de la façon dont les données sont stockées.
+Par exemple, pour avoir l&amp;#8217;état d&amp;#8217;une instance de l&amp;#8217;entité &lt;code&gt;Document&lt;/code&gt; à une certaine révision, on crée une &lt;em&gt;query&lt;/em&gt; à laquelle on passe l&amp;#8217;identifiant et le numéro de révision.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;AuditQuery query = AuditReaderFactory.get(entityManager)
+        .createQuery()
+        .forEntitiesAtRevision(Customer.class, &lt;strong&gt;revNumer&lt;/strong&gt;)
+        .add(AuditEntity.id().eq(&lt;strong&gt;id&lt;/strong&gt;));
+Document document = (Document) query.getSingleResult();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;API permet de faire pas mal de choses, plus ou moins complexes.
+La capacité qui nous intéresse c&amp;#8217;est d&amp;#8217;avoir une liste des révisions d&amp;#8217;une instance d&amp;#8217;entité, avec les changements qui ont été réalisés sur pour chaque révision.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;AuditQuery auditQuery = AuditReaderFactory.get(entityManager)
+        .createQuery()
+        .forRevisionsOfEntityWithChanges(entityClass, true)
+        .add(AuditEntity.id().eq(id))
+        .addOrder(AuditEntity.revisionNumber().desc());
+List&amp;lt;Object[]&amp;gt; list = auditQuery.getResultList();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première chose qui saute aux yeux, c&amp;#8217;est le faible niveau de typage.
+Pour l&amp;#8217;entité simple, il a fallu transtyper le résultat et pour la liste des révisions, c&amp;#8217;est pire puisque chaque ligne du résultat est un tableau d&amp;#8217;objets avec:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;à l&amp;#8217;index 0, il y a l&amp;#8217;entité, dans son état pour la révision,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;à l&amp;#8217;index 1, il y a la révision (l&amp;#8217;entité, pas juste le n°)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;à l&amp;#8217;index 2, il y a le type de révision (ADD, MOD, DEL)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;à l&amp;#8217;index 3, il y a la liste des propriétés qui ont changé.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;amélioration-simple&quot;&gt;Amélioration simple&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première amélioration qu&amp;#8217;on a introduite a été de transformer ce tableau d&amp;#8217;objets en &lt;em&gt;record&lt;/em&gt;, pour avoir une structure lisible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public record RevisionWithEntity&amp;lt;T&amp;gt; (T data, Integer rev, RevisionType type,
+                                     Instant at, Set&amp;lt;String&amp;gt; changes) {
+    public RevisionWithEntity(T data,
+                              DefaultRevisionEntity revision,
+                              RevisionType type,
+                              Set&amp;lt;String&amp;gt; changes) {
+        this(data, revision.getId(), type,
+                revision.getRevisionDate().toInstant(), changes);
+    }
+
+    public RevisionWithEntity(Object[] line) {
+        this((T) line[0], (DefaultRevisionEntity) line[1], (RevisionType) line[2],
+                line.length &amp;gt; 3 ? (Set&amp;lt;String&amp;gt;) line[3] : Set.of());
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Évidemment, il n&amp;#8217;y a pas de magie, on a toujours autant de transtypage.
+Mais avec ce &lt;em&gt;record&lt;/em&gt;, c&amp;#8217;est encapsulé dans le constructeur.
+Il ne reste plus qu&amp;#8217;à ajouter ça après l&amp;#8217;appel de l&amp;#8217;API de &lt;em&gt;query&lt;/em&gt;, et d&amp;#8217;enpacqueter ça dans une méthode publique.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public &amp;lt;E&amp;gt; List&amp;lt;RevisionWithEntity&amp;lt;E&amp;gt;&amp;gt; findHistoryById(Class&amp;lt;E&amp;gt; entityClass, Object id) {
+    AuditQuery auditQuery = AuditReaderFactory.get(entityManager)
+                .createQuery()
+                .forRevisionsOfEntityWithChanges(entityClass, true)
+                .add(AuditEntity.id().eq(id))
+                .addOrder(AuditEntity.revisionNumber().desc());
+
+    List&amp;lt;Object[]&amp;gt; list = auditQuery.getResultList();
+    Stream&amp;lt;RevisionWithEntity&amp;lt;E&amp;gt;&amp;gt; revisionWithEntityStream = list.stream()
+                .map(RevisionWithEntity::new);
+    return revisionWithEntityStream.toList();
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette petite amélioration permet de manipuler des variables typées.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;component&amp;gt;&amp;gt;&lt;br&gt;
+HistoryRepository&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;+ findHistoryById(entityClass: Class&amp;lt;E&amp;gt;, id: Object): List&amp;lt;RevisionWithEntity&amp;lt;E&amp;gt;&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;record&amp;gt;&amp;gt;&lt;br&gt;
+RevisionWithEntity&amp;lt;T&amp;gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;data: T&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;rev: Integer&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;type: RevisionType&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;at: Instant&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;changes: Set&amp;lt;String&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;service-dhistorique&quot;&gt;Service d&amp;#8217;historique&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour répondre au besoin, il faut travailler sur un service et des types plus spécifiques, qui permettent de stocker plus d&amp;#8217;informations sur les différentes modifications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;component&amp;gt;&amp;gt;&lt;br&gt;
+&lt;strong&gt;HistoryService&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;+ &lt;strong&gt;getHistoryById(entityClass: Class&amp;lt;E&amp;gt;, id: K): List&amp;lt;HistoryDto&amp;lt;K&amp;gt;&amp;gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le service retourne un DTO qui contient la liste des modifications.
+Celles-ci portent soit sur des champs (&lt;code&gt;fieldChanges&lt;/code&gt;) soit sur des relations (&lt;code&gt;toManyRelationChanges&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;record&amp;gt;&amp;gt;&lt;br&gt;
+&lt;strong&gt;HistoryDto&amp;lt;K&amp;gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;revNumber: Integer&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;id: K&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;modificationInstant: Instant&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fieldChanges: Set&amp;lt;SimpleChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;toManyRelationChanges: Set&amp;lt;RelationChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voyons maintenant comment construire ces ensembles de changements à partir de l&amp;#8217;API d&amp;#8217;Envers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;champs-et-associations-xxxtoone&quot;&gt;Champs et associations &lt;code&gt;@XxxToOne&lt;/code&gt;&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour répondre au besoin, il faut travailler sur des types plus spécifiques, qui permettent de stocker plus d&amp;#8217;informations sur les différentes modifications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par exemple, pour chaque changement il nous faut les valeurs avant et après.
+C&amp;#8217;est assez facile à faire pour des propriétés simples, c&amp;#8217;est plus compliqué pour les relations de type &lt;code&gt;@XxxToMany&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour les champs simples, on introduit un nouveau &lt;em&gt;record&lt;/em&gt; &lt;code&gt;SimpleChange&lt;/code&gt;.
+Il permet de gérer les champs simples (String, Long,&amp;#8230;&amp;#8203;) mais aussi les associations &lt;code&gt;@XxxToOne&lt;/code&gt; et assimilés.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public record SimpleChange(String propertyName, Object oldValue, Object newValue) {
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour chaque révision, on construit une instance de &lt;code&gt;SimpleChange&lt;/code&gt; par propriété modifiée.
+On y met le nom de la propriété modifiée, la valeur à la révision (&lt;code&gt;newValue&lt;/code&gt;) et la valeur à la révision précédente (&lt;code&gt;oldValue&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private &amp;lt;T extends AbstractEntity&amp;lt;?&amp;gt;&amp;gt; Set&amp;lt;SimpleChange&amp;gt; buildSimpleChanges(
+        RevisionWithEntity&amp;lt;T&amp;gt; revision, RevisionWithEntity&amp;lt;T&amp;gt; previousRevision) {
+    PropertyAccessor oldDataAccessor = buildPropertyAccessor(previousRevision);
+    PropertyAccessor newDataAccessor = buildPropertyAccessor(revision);
+    Set&amp;lt;String&amp;gt; changeNames = revision.changes().stream()
+            .filter(not(&quot;class&quot;::equals))
+            .collect(Collectors.toSet());
+    return changeNames.stream()
+            .filter(change -&amp;gt; !isRelationChange(change, newDataAccessor))
+            .map(change -&amp;gt;
+                    new SimpleChange(
+                            change,
+                            buildPropertyValue(change, oldDataAccessor),
+                            buildPropertyValue(change, newDataAccessor))
+            )
+            .collect(Collectors.toSet());
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour les relations &lt;code&gt;@XxxToOne&lt;/code&gt;, on aurait pu passer l&amp;#8217;objet relié, et laisser le front-end se débrouiller.
+Le risque serait d&amp;#8217;envoyer trop d&amp;#8217;informations en JSON.
+On aurait aussi pu passer un simple &lt;code&gt;toString()&lt;/code&gt;, mais ce n&amp;#8217;est pas son rôle.
+On préfère passer un résumé (&lt;code&gt;EntitySummary&lt;/code&gt;), avec l&amp;#8217;identifiant et un contenu personnalisé avec une fonction &lt;code&gt;historyDisplay()&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private Object buildPropertyValue(String propertyName, PropertyAccessor data) {
+    if (data == null) {
+        return null;
+    }
+    Object value = data.getPropertyValue(propertyName);
+    if (value instanceof AbstractEntity&amp;lt;?&amp;gt; entity) {
+        return EntitySummary.fromEntity(entity);
+    } else {
+        return value;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ça c&amp;#8217;est la partie simple, voyons maintenant les relations plus complexes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;component&amp;gt;&amp;gt;&lt;br&gt;
+HistoryService&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;+ getHistoryById(entityClass: Class&amp;lt;E&amp;gt;, id: K): List&amp;lt;HistoryDto&amp;lt;K&amp;gt;&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- &lt;strong&gt;buildSimpleChanges(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; revision: RevisionWithEntity&amp;lt;T&amp;gt;,&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; previousRevision: RevisionWithEntity&amp;lt;T&amp;gt;)&lt;/strong&gt;: List&amp;lt;SimpleChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- &lt;strong&gt;buildFieldValue(data: PropertyAccessor, change: String)&lt;/strong&gt;: Object&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;record&amp;gt;&amp;gt;&lt;br&gt;
+SimpleChange&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;fieldName: String&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;oldValue: Object&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;newValue: Object&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;associations-xxxtomany&quot;&gt;Associations &lt;code&gt;@XxxToMany&lt;/code&gt;&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On considère que pour une relation &lt;code&gt;@XxxToMany&lt;/code&gt; on a une collection et que les changements peuvent être de deux types: ajout ou suppression.
+Pour les relations ordonnées, on a un troisième type de changement: réordonnancement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme pour les changements simples, on crée un &lt;em&gt;record&lt;/em&gt; pour manipuler les informations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public record RelationChange&amp;lt;K&amp;gt;(
+        @JsonIgnore AbstractEntity&amp;lt;K&amp;gt; entity, String change, String type) {
+    public EntitySummary&amp;lt;K&amp;gt; getElement() {
+        return EntitySummary.fromEntity(entity);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ça commence de la même façon que pour les changements simple et la partie complexe est isolée dans la méthode &lt;code&gt;buildToManyRelationChangesStream(&amp;#8230;&amp;#8203;)&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private &amp;lt;T extends AbstractEntity&amp;lt;?&amp;gt;&amp;gt; Set&amp;lt;RelationChange&amp;gt; buildToManyRelationChanges(
+        RevisionWithEntity&amp;lt;T&amp;gt; revision, RevisionWithEntity&amp;lt;T&amp;gt; previousRevision) {
+    PropertyAccessor oldDataAccessor = buildPropertyAccessor(previousRevision);
+    PropertyAccessor newDataAccessor = buildPropertyAccessor(revision);
+    return revision.changes().stream()
+            .filter(change -&amp;gt; isRelationChange(change, newDataAccessor))
+            .flatMap(change -&amp;gt; buildToManyRelationChangesStream(
+                                        newDataAccessor, oldDataAccessor, change))
+            .collect(Collectors.toSet());
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private Stream&amp;lt;RelationChange&amp;gt; buildToManyRelationChangesStream(
+            PropertyAccessor newDataAccessor, PropertyAccessor oldDataAccessor, String change) {
+    TypeDescriptor changeDescriptor = newData.getPropertyTypeDescriptor(change);
+    if (changeDescriptor == null) {
+        return Stream.empty();
+    }
+
+    Collection&amp;lt;?&amp;gt; oldCollectionValue =
+        (Collection&amp;lt;?&amp;gt;) buildPropertyValue(change, oldDataAccessor);
+    Collection&amp;lt;?&amp;gt; newCollectionValue =
+        (Collection&amp;lt;?&amp;gt;) buildPropertyValue(change, newDataAccessor);
+
+    // 1st type of change: REMOVED
+    List&amp;lt;?&amp;gt; removed = oldCollectionValue.stream()
+            .filter(element -&amp;gt; !newCollectionValue.contains(element))
+            .toList();
+    Stream&amp;lt;RelationChange&amp;gt; removeChanges = removed.stream()
+            .map(AbstractEntity.class::cast)
+            .map(element -&amp;gt; buildRelationChange(element, change, REMOVED));
+
+    // 2nd type of change: ADDED
+    List&amp;lt;?&amp;gt; added = newCollectionValue.stream()
+            .filter(element -&amp;gt; !oldCollectionValue.contains(element))
+            .toList();
+    Stream&amp;lt;RelationChange&amp;gt; addChanges = added.stream()
+            .map(AbstractEntity.class::cast)
+            .map(element -&amp;gt; buildRelationChange(element, change, ADDED));
+
+    // 3nd type of change: REORDERED, only for ordered relations
+    if (changeDescriptor.hasAnnotation(OrderBy.class)) {
+        List&amp;lt;?&amp;gt; oldOrderedList = new ArrayList&amp;lt;&amp;gt;(oldCollectionValue);
+        oldOrderedList.removeAll(removedEntities);
+        List&amp;lt;?&amp;gt; newOrderedList = new ArrayList&amp;lt;&amp;gt;(newCollectionValue);
+        newOrderedList.removeAll(addedEntities);
+
+        Stream&amp;lt;RelationChange&amp;gt; reordered = IntStream.range(0, oldOrderedList.size())
+                .filter(i -&amp;gt; !oldOrderedList.get(i).equals(newOrderedList.get(i)))
+                .mapToObj(oldOrderedList::get)
+                .map(AbstractEntity.class::cast)
+                .map(element -&amp;gt; buildRelationChange(element, change, REORDERED));
+        return Stream.concat(Stream.concat(removeChanges, addChanges), reordered);
+    } else {
+        return Stream.concat(removeChanges, addChanges);
+    }
+}
+
+private RelationChange buildRelationChange(
+            AbstractEntity&amp;lt;?&amp;gt; element, String change, RelationRevisionType type) {
+    return new RelationChange(type, change, element);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;component&amp;gt;&amp;gt;&lt;br&gt;
+HistoryService&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;+ getHistoryById(entityClass: Class&amp;lt;E&amp;gt;, id: K): List&amp;lt;HistoryDto&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildSimpleChanges(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; revision: RevisionWithEntity&amp;lt;T&amp;gt;,&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; previousRevision: RevisionWithEntity&amp;lt;T&amp;gt;): List&amp;lt;SimpleChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildFieldValue(data: PropertyAccessor, change: String): Object&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- &lt;strong&gt;buildToManyRelationChanges(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; revision: RevisionWithEntity&amp;lt;T&amp;gt;, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; previousRevision: RevisionWithEntity&amp;lt;T&amp;gt;)&lt;/strong&gt;: List&amp;lt;RelationChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- &lt;strong&gt;buildToManyRelationChangesStream(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; newData: PropertyAccessor, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; oldData: PropertyAccessor , &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; change: String)&lt;/strong&gt;: Stream&amp;lt;RelationChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- &lt;strong&gt;buildRelationChange(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; element: AbstractEntity&amp;lt;?&amp;gt;, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; change: String, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; type: RelationRevisionType)&lt;/strong&gt;: RelationChange&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;record&amp;gt;&amp;gt;&lt;br&gt;
+RelationChange&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;type: RelationRevisionType&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fieldName: String&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;entity: AbstractEntity&amp;lt;?&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;assemblage&quot;&gt;Assemblage&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voilà.
+Il ne reste plus qu&amp;#8217;à assembler tout ça en implémentant la méthode publique &lt;code&gt;getHistoryById(&amp;#8230;&amp;#8203;)&lt;/code&gt; d'&lt;code&gt;HistoryService&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour chaque révision trouvée par Envers, nous détectons si elle&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public &amp;lt;E extends AbstractEntity&amp;lt;K&amp;gt;, K&amp;gt; List&amp;lt;HistoryDto&amp;gt; getHistoryById(
+            Class&amp;lt;E&amp;gt; entityClass, K id) {
+    List&amp;lt;RevisionWithEntity&amp;lt;T&amp;gt;&amp;gt; revisions = repository.findHistoryById(entityClass, id);
+    return revisions.stream()
+            .map((RevisionWithEntity&amp;lt;T&amp;gt; revision) -&amp;gt; {
+                RevisionWithEntity&amp;lt;T&amp;gt; previousRevision = revisions.stream()
+                        .filter(element -&amp;gt; element.rev() &amp;lt; revision.rev())
+                        .findFirst()
+                        .orElse(null);
+                return new HistoryDto(
+                        revision.rev(),
+                        revision.type(),
+                        revision.data().getId(),
+                        revision.at(),
+                        revision.author(),
+                        &lt;strong&gt;buildSimpleChanges&lt;/strong&gt;(revision, previousRevision),
+                        &lt;strong&gt;buildToManyRelationChanges&lt;/strong&gt;(revision, previousRevision));
+            })
+            .toList();
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;lt;&amp;lt;component&amp;gt;&amp;gt;&lt;br&gt;
+&lt;strong&gt;HistoryService&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;+ &lt;strong&gt;getHistoryById(entityClass: Class&amp;lt;E&amp;gt;, id: K): List&amp;lt;HistoryDto&amp;gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildSimpleChanges(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; revision: RevisionWithEntity&amp;lt;T&amp;gt;,&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; previousRevision: RevisionWithEntity&amp;lt;T&amp;gt;): List&amp;lt;SimpleChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildFieldValue(data: PropertyAccessor, change: String): Object&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildToManyRelationChanges(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; revision: RevisionWithEntity&amp;lt;T&amp;gt;, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; previousRevision: RevisionWithEntity&amp;lt;T&amp;gt;): List&amp;lt;RelationChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildToManyRelationChangesStream(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; newData: PropertyAccessor, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; oldData: PropertyAccessor , &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; change: String): Stream&amp;lt;RelationChange&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;- buildRelationChange(&lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; element: AbstractEntity&amp;lt;?&amp;gt;, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; change: String, &lt;br&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160; type: RelationRevisionType): RelationChange&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;endpoint&quot;&gt;Endpoint&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour finir, il reste à utiliser le service qu&amp;#8217;on vient de concevoir dans des endpoints.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@RestController
+@RequestMapping(&quot;/document&quot;)
+public class DocumentController {
+    ...
+
+    @GetMapping(&quot;/{id}/history&quot;)
+    public List&amp;lt;HistoryDto&amp;gt; getHistory(@PathVariable UUID id) {
+        return &lt;strong&gt;historyService.getHistory(Document.class, id)&lt;/strong&gt;;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Après avoir créé un document, puis fait quelques modifications, on obtient l&amp;#8217;historique suivant:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock margin-top-0 width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~$ curl -sw &quot;\n&quot; http://localhost:8080/api/product/1/history | jq
+[
+  {
+    &quot;revNumber&quot;: 3,
+    &quot;id&quot;: 1,
+    &quot;type&quot;: &quot;MOD&quot;,
+    &quot;at&quot;: &quot;2024-09-09T21:24:49.375Z&quot;,
+    &quot;toManyRelationChanges&quot;: [
+      {
+        &quot;change&quot;: &quot;tags&quot;,
+        &quot;type&quot;: &quot;REORDERED&quot;,
+        &quot;element&quot;: {
+          &quot;id&quot;: 3,
+          &quot;description&quot;: &quot;Tag#3&quot;,
+          &quot;clazz&quot;: &quot;info.jtips.spring.model.Tag&quot;
+        }
+      },
+      {
+        &quot;change&quot;: &quot;tags&quot;,
+        &quot;type&quot;: &quot;REORDERED&quot;,
+        &quot;element&quot;: {
+          &quot;id&quot;: 5,
+          &quot;description&quot;: &quot;Tag#5&quot;,
+          &quot;clazz&quot;: &quot;info.jtips.spring.model.Tag&quot;
+        }
+      }
+    ]
+  },
+  {
+    &quot;revNumber&quot;: 2,
+    &quot;id&quot;: 1,
+    &quot;type&quot;: &quot;MOD&quot;,
+    &quot;at&quot;: &quot;2024-09-09T21:24:49.364Z&quot;,
+    &quot;fieldChanges&quot;: [
+      {
+        &quot;fieldName&quot;: &quot;title&quot;,
+        &quot;oldValue&quot;: &quot;Product#1&quot;,
+        &quot;newValue&quot;: &quot;Product#1bis&quot;
+      },
+      {
+        &quot;fieldName&quot;: &quot;category&quot;,
+        &quot;oldValue&quot;: {
+          &quot;id&quot;: 1,
+          &quot;description&quot;: &quot;Category#1&quot;,
+          &quot;clazz&quot;: &quot;info.jtips.spring.model.Category&quot;
+        },
+        &quot;newValue&quot;: {
+          &quot;id&quot;: 2,
+          &quot;description&quot;: &quot;Category#2&quot;,
+          &quot;clazz&quot;: &quot;info.jtips.spring.model.Category&quot;
+        }
+      }
+    ],
+    &quot;toManyRelationChanges&quot;: [
+      {
+        &quot;change&quot;: &quot;tags&quot;,
+        &quot;type&quot;: &quot;REMOVED&quot;,
+        &quot;element&quot;: {
+          &quot;id&quot;: 2,
+          &quot;description&quot;: &quot;Tag#2&quot;,
+          &quot;clazz&quot;: &quot;info.jtips.spring.model.Tag&quot;
+        }
+      },
+      {
+        &quot;change&quot;: &quot;tags&quot;,
+        &quot;type&quot;: &quot;ADDED&quot;,
+        &quot;element&quot;: {
+          &quot;id&quot;: 5,
+          &quot;description&quot;: &quot;Tag#5&quot;,
+          &quot;clazz&quot;: &quot;info.jtips.spring.model.Tag&quot;
+        }
+      }
+    ]
+  },
+  {
+    &quot;revNumber&quot;: 1,
+    &quot;id&quot;: 1,
+    &quot;type&quot;: &quot;ADD&quot;,
+    &quot;at&quot;: &quot;2024-09-09T21:24:49.321Z&quot;
+  }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour être tout à fait honnête, j&amp;#8217;ai simplifié quelques passages pour rendre le billet plus lisible.
+Par exemple, on a dû gérer quelques cas particuliers pour les relations, et on a dû gérer des erreurs en particulier pour les relations avec des entités revisées de façon conditionnelle.
+Et dans notre application on fait du &lt;em&gt;soft delete&lt;/em&gt; ainsi que de la pagination, que j&amp;#8217;ai exclus ici.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par ailleurs, on n&amp;#8217;utilise qu&amp;#8217;une partie des possibilités des relations de JPA et Hibernate.
+Il y a certainement des ajustements à prévoir.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, la solution utilise une structure d&amp;#8217;entité qui n&amp;#8217;est pas universelle, avec l&amp;#8217;héritage de &lt;code&gt;AbstractEntity&lt;/code&gt;.
+C&amp;#8217;est suffisant pour notre projet, mais peut-être pas dans un autre contexte.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center margin-top-0&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;AbstractEntity&amp;lt;K&amp;gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;id: K&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;historyDisplay(): Supplier&amp;lt;String&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le code utilisé dans les exemples est consultable et exécutable sur le &lt;a href=&quot;https://gitlab.com/jtips/jtips-examples/-/tree/main/spring-boot-example&quot;&gt;compte GitLab de JTips&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="hibernate" /><summary type="html">Sur un projet en cours, on stocke l&amp;#8217;historique complet des modifications sur les entités. Le projet utilise les frameworks classiques: Spring Boot 3 et JPA / Hibernate 6. Nous avons ajouté Hibernate Envers pour stocker les changements dans des tables d&amp;#8217;audit. @Entity @Audited(withModifiedFlag = true) public class Product extends AbstractEntity&amp;lt;UUID&amp;gt; { ... } La façon d&amp;#8217;enregistrer ces modifications est bien documentée, je n&amp;#8217;y reviendrai pas. Pour ce projet, nous avons voulu ajouter une façon générique d&amp;#8217;afficher l&amp;#8217;historique des changements pour chaque instance d&amp;#8217;entité.</summary></entry><entry><title type="html">Retour d’expérience, migration à Spring Boot 3</title><link href="https://blog.alexis-hassler.com//2023/04/06/migration-boot-3.html" rel="alternate" type="text/html" title="Retour d’expérience, migration à Spring Boot 3" /><published>2023-04-06T00:00:00+00:00</published><updated>2023-04-06T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2023/04/06/migration-boot-3</id><content type="html" xml:base="https://blog.alexis-hassler.com//2023/04/06/migration-boot-3.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-boot-migration-2-3.svg&quot; alt=&quot;Spring Boot logo version 2 to version 3&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ces dernières semaines, j&amp;#8217;ai dû faire une migration de Spring Boot 2 à Spring Boot 3.
+Comme dans Spring Boot il y a toute une suite de frameworks et librairies, avec en particulier Spring Framework, Spring Security, Hibernate, ça fait pas mal de galères potientielles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;ai lu quelques articles et billets sur le sujet, en particulier le &lt;a href=&quot;https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide&quot;&gt;guide de migration du projet Spring&lt;/a&gt;.
+J&amp;#8217;en ai conclu que ça n&amp;#8217;allait pas être très compliqué, avec surtout un gros rechercher/remplacer de &lt;code&gt;javax.*&lt;/code&gt; pour &lt;code&gt;jakarta.*&lt;/code&gt;.
+Evidemment ça ne s&amp;#8217;est pas passé aussi simplement que prévu, c&amp;#8217;est ce que je vais raconter ici.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;application est construite sur des bases classiques.
+Elle implémente un API Web, avec du contenu JSON.
+Elle est organisée en couches avec des &lt;em&gt;controllers&lt;/em&gt;, des services et des &lt;em&gt;repositories&lt;/em&gt;.
+Pour ces derniers, on utilise &lt;em&gt;Spring Data JPA&lt;/em&gt;, avec &lt;em&gt;Hibernate&lt;/em&gt; et une base de données PostgreSQL.
+Bref, une application comme il en existe plein.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tâches-préalables&quot;&gt;Tâches préalables&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme ça avait été &lt;a href=&quot;https://spring.io/blog/2021/09/02/a-java-17-and-jakarta-ee-9-baseline-for-spring-framework-6&quot;&gt;annoncé dès 2021&lt;/a&gt;, nous savions que nous devions utiliser un &lt;strong&gt;JDK 17&lt;/strong&gt; pour pouvoir utiliser Spring Boot 3.
+Bien avant la migration, on avait passé notre code du JDK 11 au JDK 17.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a eu un peu plus de surprise avec &lt;strong&gt;Swagger&lt;/strong&gt;.
+On utilisait SpringFox pour générer la documentation de l&amp;#8217;API à afficher dans SwaggerUI.
+Or SpringFox n&amp;#8217;a pas été mis à jour pour être compatible avec Spring Boot 3.
+Je l&amp;#8217;ai donc abandonné pour Springdoc.
+Au passage, on utilisait des annotation Swagger v2 qu&amp;#8217;il a fallut remplacer par des annotations OpenAPI v3.
+J&amp;#8217;en ai profité pour poser mes &lt;a href=&quot;https://www.jtips.info/Spring/Swagger&quot;&gt;notes de configuration de Springdoc sur JTips&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le passage de Hibernate 5 à &lt;strong&gt;Hibernate 6&lt;/strong&gt; implique pas mal de changements, dont l&amp;#8217;abandon du support direct d'&lt;strong&gt;Ehcache&lt;/strong&gt;.
+Pour continuer de l&amp;#8217;utiliser, il faut utiliser &lt;strong&gt;JCache&lt;/strong&gt; (ou JSR-101) et faire en sorte qu&amp;#8217;Ehcache en soit le &lt;em&gt;provider&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;authentification se fait avec &lt;strong&gt;OIDC&lt;/strong&gt; sur un serveur d&amp;#8217;autorisation intégré à l&amp;#8217;application, basé sur Spring Authorization Server.
+Au démarrage du projet, cette librairie était en version 0.3.
+Forcément, comme on n&amp;#8217;était pas en version finale, on pouvait craindre à pas mal de changements.
+En l&amp;#8217;occurence, les changements se sont fait sur la version 0.4, compatible avec Spring Boot 2 ; le passage à la version 1.0, compatible avec Spring Boot 3, est beaucoup moins important.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En plus de quelques changements de packages, il a fallu modifier toutes les références à la classe ProviderContext qui a changé de nom pour AuthorizationServerContext.
+Par ailleurs, le support d&amp;#8217;OIDC n&amp;#8217;est plus activé par défaut, il faut le déclarer explicitement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;    authorizationServerConfigurer.oidc(oidcConfigurer -&amp;gt; {});&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec tout ça, on était prêt à passer à Spring Boot 3.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tâches-prévues&quot;&gt;Tâches prévues&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Grâce à lecture du guide de migration et de quelques autres billets, on connaissait un certain nombre de tâches.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a pas mal de petits changements sur &lt;strong&gt;Spring Security&lt;/strong&gt;, au point où il a son &lt;a href=&quot;https://docs.spring.io/spring-security/reference/migration/index.html&quot;&gt;guide de migration&lt;/a&gt; dédié.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;WebSecurityConfigurerAdapter n&amp;#8217;existe plus.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Quelques méthodes de HttpSecurity ont changé.&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;securityMatcher(&amp;#8230;&amp;#8203;) remplace requestMatcher(&amp;#8230;&amp;#8203;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;authorizeHttpRequests(&amp;#8230;&amp;#8203;) remplace authorizeRequests(&amp;#8230;&amp;#8203;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;requestMatchers(&amp;#8230;&amp;#8203;) remplace antMatchers(&amp;#8230;&amp;#8203;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour &lt;strong&gt;Spring integration&lt;/strong&gt;, les changements se limitent à une plus grande utilisation de &lt;code&gt;Instant&lt;/code&gt; à la place de &lt;code&gt;Date&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Dans la classe &lt;code&gt;Trigger&lt;/code&gt;, &lt;code&gt;nextExecutionTime()&lt;/code&gt; remplacé par &lt;code&gt;nextExecution()&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Dans la classe &lt;code&gt;TriggerContext&lt;/code&gt;, &lt;code&gt;lastActualExecutionTime()&lt;/code&gt; est déprécié en faveur de &lt;code&gt;lastActualExecution()&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le gros morceau semblait être le passage de Java EE à &lt;strong&gt;Jakarta EE&lt;/strong&gt;, avec plusieurs packages qui sont renommés de &lt;code&gt;javax.zzz&lt;/code&gt; à &lt;code&gt;jakarta.zzz&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Servlet: &lt;code&gt;javax.servlet&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.servlet&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JPA: &lt;code&gt;javax.persistence&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.persistence&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Bean Validation: &lt;code&gt;javax.validation&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.validation&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Annotations: &lt;code&gt;javax.annotation&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.annotation&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Mail: &lt;code&gt;javax.mail&lt;/code&gt; &amp;#8658; &lt;code&gt;jakarta.mail&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Finalement le changement de &lt;em&gt;packages&lt;/em&gt; est rapide, mais il faut aussi mettre à jour les librairies qui dépendent de Java EE.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;com.fasterxml.jackson.datatype:jackson-datatype-hibernate5&lt;/code&gt; &amp;#8658; &lt;code&gt;com.fasterxml.jackson.datatype:jackson-datatype-hibernate5-jakarta&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;com.vladmihalcea:hibernate-types-55&lt;/code&gt; &amp;#8658; &lt;code&gt;io.hypersistence:hypersistence-utils-hibernate-62&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tâches-pas-prévues&quot;&gt;Tâches pas prévues&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Peut-être que j&amp;#8217;ai manqué de concentration en lisant le &lt;a href=&quot;https://docs.jboss.org/hibernate/orm/6.0/migration-guide/migration-guide.html&quot;&gt;guide de migration à &lt;strong&gt;Hibernate 6&lt;/strong&gt;&lt;/a&gt;, mais je ne pensais pas que le changement sur la gestion des types aurait autant d&amp;#8217;impact.
+On avait anticipé les gros changemenents dans la classe &lt;code&gt;UserType&lt;/code&gt; en remplaçant nos types personnalisés par ceux de la librairie Hypersistence Utils de &lt;a href=&quot;https://vladmihalcea.com/&quot;&gt;Vlad Mihalcea&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ensuite, il a fallu retoucher pas mal d&amp;#8217;annotations et remplacer du texte par des classes.
+C&amp;#8217;est plus typé, c&amp;#8217;est mieux, plus propre.
+Avant, pour associer une propriété à une colonne de type &lt;code&gt;jsonb&lt;/code&gt;, il fallait déclarer le type au niveau de la classe, puis l&amp;#8217;utiliser par son nom au niveau de la propriété.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;strong&gt;@TypeDef(name = &quot;jsonb&quot;, typeClass = JsonBinaryType.class)&lt;/strong&gt;
+public class Product {
+  &lt;strong&gt;@Type(type = &quot;jsonb&quot;)&lt;/strong&gt;
+  private String detailAsJson;
+  ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans Hibernate 6, l&amp;#8217;annotation &lt;code&gt;@TypeDef&lt;/code&gt; a disparu et l&amp;#8217;annotation &lt;code&gt;@Type&lt;/code&gt; fait directement référence à la classe de description du type jsonb.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class Product {
+  &lt;strong&gt;@Type(JsonBinaryType.class)&lt;/strong&gt;
+  private String detailAsJson;
+  ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour le type &lt;strong&gt;UUID&lt;/strong&gt;, la gestion a aussi pas mal changé, pour plus de simplicité.
+Avec Hibernate 6, on retire les annotations &lt;code&gt;@Type(type = &quot;org.hibernate.type.UUIDCharType&quot;)&lt;/code&gt;.
+A la place on choisit la façon d&amp;#8217;associer les propriétés UUID via la propriété &lt;code&gt;preferred_uuid_jdbc_type&lt;/code&gt; d&amp;#8217;Hibernate (CHAR, VARCHAR, UUID).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;spring.jpa.properties.hibernate.type.&lt;strong&gt;preferred_uuid_jdbc_type&lt;/strong&gt;=VARCHAR&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au passage, comme on utilise beaucoup les &lt;strong&gt;filtres&lt;/strong&gt; d&amp;#8217;Hibernate et qu&amp;#8217;il y a un &lt;a href=&quot;https://hibernate.atlassian.net/browse/HHH-16179&quot;&gt;bug gênant&lt;/a&gt; dans la version 6.0, on est directement passé à la version 6.2.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, il y a eu un travail important sur l&amp;#8217;intégration de la &lt;a href=&quot;https://www.rfc-editor.org/rfc/rfc7807&quot;&gt;&lt;strong&gt;RFC-7807&lt;/strong&gt;&lt;/a&gt; (Problem Details for HTTP APIs).
+On utilisait Zalando Problem qui n&amp;#8217;a pas été migrée et qui ne le sera probablement jamais puisque qu&amp;#8217;elle est devenue inutile.
+En effet, &lt;a href=&quot;https://www.jtips.info/Spring/Problem&quot;&gt;Spring Framework 6 a intégré le support de RFC-7807&lt;/a&gt;.
+Il a donc fallu jeter tout le travail qui avait été réalisé et le réimplanté dans la nouvelle version.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Après tout ça, l&amp;#8217;application fonctionnait, mais pas les tests d&amp;#8217;intégration.
+On utilise &lt;strong&gt;RestTemplate&lt;/strong&gt; avec une configuration adaptée aux tests, pour les redirection et la gestion relachée des cookies.
+Le passage de Apache HttpClient 4 à &lt;strong&gt;Apache HttpComponents 5&lt;/strong&gt; est documenté, mais j&amp;#8217;ai passé plus de temps que prévu sur le sujet.
+Pour la gestion des cookies, la configuration a juste un peu changé.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  // Apache HttpClient 4
+  private static HttpClient buildHttpClient() {
+    RequestConfig requestConfig = RequestConfig.custom()
+            .setCookieSpec(&lt;strong&gt;CookieSpecs.STANDARD_STRICT&lt;/strong&gt;)
+            .build();
+    return HttpClientBuilder.create()
+            .setDefaultRequestConfig(requestConfig)
+            .setRedirectStrategy(&lt;strong&gt;new LaxRedirectStrategy()&lt;/strong&gt;)
+            .build();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  // Apache HttpComponents 5
+  private static HttpClient buildHttpClient() {
+    RequestConfig requestConfig = RequestConfig.custom()
+            .setCookieSpec(&lt;strong&gt;StandardCookieSpec.RELAXED&lt;/strong&gt;)
+            .build();
+    return HttpClientBuilder.create()
+            .setDefaultRequestConfig(requestConfig)
+            .setRedirectStrategy(&lt;strong&gt;new DefaultRedirectStrategy()&lt;/strong&gt;)
+            .build();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Malheureusement, ça n&amp;#8217;a pas suffit pour la gestion des redirections de requêtes POST vers GET.
+Dans la nouvelle version, la classe &lt;strong&gt;RedirectExec&lt;/strong&gt; ne joint jamais les cookies à la requête GET.
+La seule solution pour y arriver a été de faire ma propre classe CustomRedirectExec identique à l&amp;#8217;original mais avec une récupération des headers en plus.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;    ...
+    currentRequest = redirectBuilder.build();
+    // Ça c'est l'ajout perso
+    currentRequest.setHeaders(scope.originalRequest.getHeaders());
+    EntityUtils.consume(response.getEntity());
+    response.close();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enfin, il a fallu faire quelques petits ajustements dans les tests d&amp;#8217;intégration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Les URLs sont gérés avec plus de rigueur pour le '/' de fin.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Les content types demandent aussi plus de rigueur.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;J&amp;#8217;avais planifié &lt;strong&gt;une petite semaine&lt;/strong&gt; pour cette migration.
+Au final, elle m&amp;#8217;a pris plus du double.
+Pour être plus précis, j&amp;#8217;ai passé environs &lt;strong&gt;80 heures&lt;/strong&gt; pour identifier, comprendre et résoudre les problèmes que j&amp;#8217;ai présenté ici, plus quelques pétouilles qui n&amp;#8217;ont pas d&amp;#8217;intérêt ici.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="spring" /><summary type="html">Ces dernières semaines, j&amp;#8217;ai dû faire une migration de Spring Boot 2 à Spring Boot 3. Comme dans Spring Boot il y a toute une suite de frameworks et librairies, avec en particulier Spring Framework, Spring Security, Hibernate, ça fait pas mal de galères potientielles. J&amp;#8217;ai lu quelques articles et billets sur le sujet, en particulier le guide de migration du projet Spring. J&amp;#8217;en ai conclu que ça n&amp;#8217;allait pas être très compliqué, avec surtout un gros rechercher/remplacer de javax.* pour jakarta.*. Evidemment ça ne s&amp;#8217;est pas passé aussi simplement que prévu, c&amp;#8217;est ce que je vais raconter ici.</summary></entry><entry><title type="html">Tests d’intégration, comment vérifier que le ménage a été fait ?</title><link href="https://blog.alexis-hassler.com//2022/07/02/test-menage.html" rel="alternate" type="text/html" title="Tests d’intégration, comment vérifier que le ménage a été fait ?" /><published>2022-07-02T00:00:00+00:00</published><updated>2022-07-02T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/07/02/test-menage</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/07/02/test-menage.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/junit/junit5-db.svg&quot; alt=&quot;JUnit 5 logo with database&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Encore un billet sur les tests, et plus précisément sur les tests d&amp;#8217;intégration en Java.
+Dans ma mission actuelle, il y a beaucoup de tests d&amp;#8217;intégration, trop à mon goût.
+Et ce sont généralement des tests avec une intégration complète : le test envoie une requête HTTP à laquelle le &lt;em&gt;backend&lt;/em&gt; testé renvoie une réponse construite avec des données issue d&amp;#8217;une base de données de test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour les faire fonctionner de façon reproductible, aussi bien en local qu&amp;#8217;en intégration continue, ça demande quelques contorsions.
+J&amp;#8217;ai donc cherché des idées pour les améliorer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Aujourd&amp;#8217;hui, je vais vous expliquer ce qu&amp;#8217;on a fait pour résoudre le problème du ménage dans les données.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;le-problème&quot;&gt;Le problème&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lorsqu&amp;#8217;on développe un test d&amp;#8217;intégration, on doit laisser le système dans l&amp;#8217;état dans lequel on l&amp;#8217;a trouvé en arrivant.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/endroit-propre.jpg&quot; alt=&quot;endroit propre&quot; width=&quot;400&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ça concerne en particulier les données en base.
+On initialise des données pour chaque test, le test lui-même peut ajouter ou modifier des données.
+Pour que le test suivant se déroule correctement, il faut faire le ménage après chaque test ou chaque classe de test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;metricsRepository.deleteAll();
+deviceRepository.deleteAll();&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le problème avec ces tests d&amp;#8217;intégration, c&amp;#8217;est qu&amp;#8217;on ne cherche pas à isoler un composant particulier.
+De ce fait, certaines actions peuvent impacter plusieurs tables.
+A plusieurs reprises, l&amp;#8217;auteur du test a oublié des données, parce qu&amp;#8217;il n&amp;#8217;avait pas conscience qu&amp;#8217;elle avaient pu être créées.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Nous avons décidé de mettre en place un dispositif d&amp;#8217;aide au développeur pour l&amp;#8217;alerter s&amp;#8217;il oublie des données.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;extension-junit&quot;&gt;Extension JUnit&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Nous utilisons &lt;strong&gt;JUnit 5&lt;/strong&gt; qui a un système d&amp;#8217;extension très puissant.
+Par rapport à JUnit 4, il a été complètement remis à plat et remplace à la fois les &lt;em&gt;runners&lt;/em&gt; et les &lt;em&gt;rules&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ce qui va nous intéressé, c&amp;#8217;est la possibilité de s&amp;#8217;insérer dans le cycle de vie des tests.
+Ça marche un peu à la façon des méthodes annotées &lt;code&gt;@BeforeAll&lt;/code&gt;, &lt;code&gt;@BeforeEach&lt;/code&gt;, &lt;code&gt;@AfterEach&lt;/code&gt; ou &lt;code&gt;@AfterAll&lt;/code&gt;, mais dans une classe indépendante et réutilisable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/junit/lifecycle-extension.svg&quot; alt=&quot;JUnit Extension lifecycle&quot; width=&quot;600&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour vérifier l&amp;#8217;état de la base de données, on développe une classe qui implémente &lt;code&gt;AfterAllCallback&lt;/code&gt;.
+Ça devient une sorte de méthode &lt;code&gt;@AfterAll&lt;/code&gt; pour chaque classe de test qui déclare l&amp;#8217;extension.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class CheckEntitiesExtension implements &lt;strong&gt;AfterAllCallback&lt;/strong&gt; {
+
+  @Override
+  public void &lt;strong&gt;afterAll&lt;/strong&gt;(ExtensionContext extensionContext) {
+    // ...
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;extension est activée pour chaque classe de test qui la déclare dans &lt;strong&gt;&lt;code&gt;@ExtendWith&lt;/code&gt;&lt;/strong&gt;.
+Une classe de test peut déclarer plusieurs exensions, ce qui nous arrange puisqu&amp;#8217;on veut ajouter notre vérification à des tests d&amp;#8217;intégration qui ont déjà l&amp;#8217;extension &lt;code&gt;SpringExtension&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;strong&gt;@ExtendWith&lt;/strong&gt;({SpringExtension.class, &lt;strong&gt;CheckEntitiesExtension.class&lt;/strong&gt;})
+public class DeviceApiIT {
+  // ...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;intégration-avec-spring-et-jpa&quot;&gt;Intégration avec Spring et JPA&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Notre architecture se base sur Spring Boot, avec Spring Data JPA.
+La plupart des accès à la base de données se font avec des interfaces &lt;em&gt;repository&lt;/em&gt;, à base de méthodes abstraites et de conventions de nommage.
+Mais Spring Boot a des beans qui nous permettent de faire du pur JPA.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;span class=&quot;image&quot;&gt;&lt;img src=&quot;/images/spring/spring-boot.svg&quot; alt=&quot;Spring Boot&quot; height=&quot;120&quot;&gt;&lt;/span&gt;
+&amp;#160; &amp;#160; &amp;#160; &amp;#160;
+&lt;span class=&quot;image&quot;&gt;&lt;img src=&quot;/images/spring/spring-data.svg&quot; alt=&quot;Spring Data&quot; height=&quot;120&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première étape est de récupérer le contexte d&amp;#8217;application qui a été démarré par l&amp;#8217;extension Spring.
+On l&amp;#8217;utilise pour récupérer quelques beans comme l'`EntityManager` et le &lt;code&gt;TransactionManager&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Override
+  public void afterAll(ExtensionContext extensionContext) {
+    ApplicationContext applicationContext
+        = &lt;strong&gt;SpringExtension&lt;/strong&gt;.getApplicationContext(extensionContext);
+
+    &lt;strong&gt;EntityManager&lt;/strong&gt; entityManager = applicationContext.getBean(EntityManager.class);
+    &lt;strong&gt;PlatformTransactionManager&lt;/strong&gt; transactionManager =
+        applicationContext.getBean(PlatformTransactionManager.class);
+
+    //...
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A partir de là, on peut se concentrer sur les données avec JPA.
+On récupère la liste des entités via les méta-données de l'&lt;em&gt;entity manager&lt;/em&gt;.
+Pour chaque entité, on compte le nombre d&amp;#8217;occurences en base et si ce nombre est positif c&amp;#8217;est qu&amp;#8217;il reste des données dans le table. Dans ce cas, on fait échouer le test.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Override
+  public void afterAll(ExtensionContext extensionContext) {
+    //...
+    List&amp;lt;String&amp;gt; found =
+        entityManager.getMetamodel()
+            .getEntities()
+            .stream()
+            .filter(entityType -&amp;gt; &lt;em&gt;count&lt;/em&gt;(entityManager, entityType) &amp;gt; 0)
+            .map(EntityType::getName)
+            .collect(Collectors.toList());
+
+    if (!found.isEmpty()) {
+      &lt;strong&gt;fail&lt;/strong&gt;(&quot;Data found : &quot; + String.join(&quot;, &quot;, found));
+    }
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour compter le nombre d&amp;#8217;occurences en base de données, j&amp;#8217;ai utilisé l&amp;#8217;API Criteria de JPA.
+Le code est générique sans grand effort.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  private static Long count(EntityManager entityManager, EntityType&amp;lt;?&amp;gt; entityType) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery&amp;lt;Long&amp;gt; query = criteriaBuilder.createQuery(Long.class);
+    query.select(criteriaBuilder.&lt;strong&gt;count&lt;/strong&gt;(query.from(entityType)));
+    return entityManager.createQuery(query).getSingleResult();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;OK, c&amp;#8217;est pas un bout de code très élégant, mais caché dans une méthode, ça passe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;améliorations&quot;&gt;Améliorations&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Vous vous demandez peut-être pourquoi je compte le nombre d&amp;#8217;occurences et pourquoi je ne me contente pas d&amp;#8217;un &lt;code&gt;exists&lt;/code&gt;.
+C&amp;#8217;est parce que je veux afficher cette information dans le &lt;em&gt;fail&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;De plus, certaines données sont initialisées au démarrage de Spring.
+Il ne faut pas faire le ménage dans ces données et les exclure de la vérification.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  private final Set&amp;lt;String&amp;gt; excludedEntityNames =
+      Set.of(
+          UserDbEntity.class.getSimpleName(),
+          TermsDbEntity.class.getSimpleName(),
+          FirmwareDbEntity.class.getSimpleName());
+
+  @Override
+  public void afterAll(ExtensionContext extensionContext) {
+    // ...
+
+    List&amp;lt;String&amp;gt; found =
+        entityManager.getMetamodel()
+            .getEntities()
+            .stream()
+            .&lt;strong&gt;filter(entityType -&amp;gt; !excludedEntityNames.contains(entityType.getName()))&lt;/strong&gt;
+    // ...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On ne se contente pas de vérifier que le ménage a été fait, mais on fait la suppression des données dans l&amp;#8217;extension.
+Le but n&amp;#8217;est pas de mettre en place un ménage automatique.
+On reste sur l&amp;#8217;objectif d&amp;#8217;alerter le développeur.
+C&amp;#8217;est lui qui est responsable de son test, de la préparation jusqu&amp;#8217;à la remise en état.
+Non, on fait ça pour éviter qu&amp;#8217;un test mal nettoyé ne fasse resortir tous les autres tests en échec.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans la pratique, on a directement intégré ces améliorations, mais je n&amp;#8217;ai présenté qu&amp;#8217;un code simplifié.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;synthèse&quot;&gt;Synthèse&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La première préoccupation lorsqu&amp;#8217;on intégre ce genre de vérification, avec beaucoup d&amp;#8217;accès à la base de données, c&amp;#8217;est le surcoût en temps de build.
+Sur mon poste de travail, il est de sept dizièmes de seconde, pour un build complet de trois minutes.
+En environnement d&amp;#8217;intégration (CI), il est d&amp;#8217;une seconde et demi, pour un build complet de dix minutes.
+Autant dire que c&amp;#8217;est négligeable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans notre projet toutes les classes de tests d&amp;#8217;intégration héritent d&amp;#8217;une classe abstrait &lt;code&gt;AbstractIT&lt;/code&gt;.
+Il suffit d&amp;#8217;ajouter l&amp;#8217;extension à cette classe abstraite pour que tous les tests d&amp;#8217;intégration en profitent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/failed-ci.svg&quot; alt=&quot;CI failed&quot; width=&quot;90&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;effet immédiat, ça a été de casser le build.
+C&amp;#8217;est dû à plusieurs tests qui ne faisaient pas bien leur ménage.
+Ça tombe bien, c&amp;#8217;est justement ce qu&amp;#8217;on cherche à identifier.
+On a dû leur ajouter des appels à &lt;code&gt;repository.deleteAll()&lt;/code&gt; dans des méthodes &lt;code&gt;@AfterAll&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Une fois ce ménage fait, que le &lt;em&gt;build&lt;/em&gt; passe, l&amp;#8217;extension commence à remplir son objectif principal :
+quand un développeur oublie des données en fin de test, son test ne passe plus, ni en local ni en CI.
+Il est obligé de faire son ménage, et s&amp;#8217;en rend compte directement dans l&amp;#8217;IDE.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gr&quot;&gt;java.lang.AssertionError: Data found : DeviceDbEntity(1)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette simple extension, c&amp;#8217;est la fin du casse-tête sur les builds qui ne passent pas à l&amp;#8217;appel de &lt;code&gt;mvn verify&lt;/code&gt; alors qu&amp;#8217;ils passent seuls.
+On ne s&amp;#8217;arrache plus les cheveux parce qu&amp;#8217;un nouveau test d&amp;#8217;intégration est en échec à cause du test passé avant lui qui avait laissé des données en trop.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par contre, il reste plein de problèmes liés aux traitements asynchrones, et ça j&amp;#8217;en parlerai dans un prochain billet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="spring" /><category term="jpa" /><category term="junit" /><summary type="html">Encore un billet sur les tests, et plus précisément sur les tests d&amp;#8217;intégration en Java. Dans ma mission actuelle, il y a beaucoup de tests d&amp;#8217;intégration, trop à mon goût. Et ce sont généralement des tests avec une intégration complète : le test envoie une requête HTTP à laquelle le backend testé renvoie une réponse construite avec des données issue d&amp;#8217;une base de données de test. Pour les faire fonctionner de façon reproductible, aussi bien en local qu&amp;#8217;en intégration continue, ça demande quelques contorsions. J&amp;#8217;ai donc cherché des idées pour les améliorer. Aujourd&amp;#8217;hui, je vais vous expliquer ce qu&amp;#8217;on a fait pour résoudre le problème du ménage dans les données.</summary></entry><entry><title type="html">Comment vérifier l’envoi d’e-mails en test d’intégration ?</title><link href="https://blog.alexis-hassler.com//2022/05/04/spring-test-mail.html" rel="alternate" type="text/html" title="Comment vérifier l’envoi d’e-mails en test d’intégration ?" /><published>2022-05-04T00:00:00+00:00</published><updated>2022-05-04T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/05/04/spring-test-mail</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/05/04/spring-test-mail.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/mailbox.jpg&quot; alt=&quot;mailbox&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En avril, je traitais le sujet de la date dans les tests.
+Je continue sur ma lancée avec les tests, mais cette fois-ci il s&amp;#8217;agit de tests d&amp;#8217;intégration et de l&amp;#8217;envoi d&amp;#8217;e-mails.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lorsqu&amp;#8217;une application envoie des e-mails, ses tests d&amp;#8217;intégration doivent d&amp;#8217;une part avoir accès à un serveur SMTP, mais ils doivent aussi pouvoir valider que les messages envoyés sont conformes aux attentes.
+Nous allons aborder ces deux aspects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;docker-évidemment&quot;&gt;Docker, évidemment&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Docker va nous apporter plus qu&amp;#8217;un simple accès, il permet aussi de l&amp;#8217;isolation et de la reproductibilité des tests.
+En utilisant &lt;strong&gt;Testcontainers&lt;/strong&gt;, on peut démarrer des conteneurs directement depuis les tests, en récupérer la configuration pour l&amp;#8217;utiliser pour paramétrer la connexion.
+Je ne vais pas développer ce sujet ici, j&amp;#8217;y ai déjà consacré une page sur &lt;strong&gt;JTips&lt;/strong&gt;, globalement pour les &lt;a href=&quot;https://www.jtips.info/JUnit/Testcontainers&quot;&gt;tests d&amp;#8217;intégration&lt;/a&gt; d&amp;#8217;un part et plus spécifiquement pour les &lt;a href=&quot;https://www.jtips.info/Spring/Testcontainers&quot;&gt;tests avec Spring&lt;/a&gt; d&amp;#8217;autre part.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-testcontainers-mailhog.svg&quot; alt=&quot;Spring + Testcontainers + MailHog&quot; height=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On va se concentrer sur l&amp;#8217;utilisation d&amp;#8217;un conteneur basé sur &lt;a href=&quot;https://github.com/mailhog/MailHog&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;strong&gt;MailHog&lt;/strong&gt;&lt;/a&gt;.
+Cette application se comporte comme un serveur SMTP et stocke les messages pour les restituer via une page Web.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans l&amp;#8217;exemple ci-dessous, je démarre un serveur MailHog dans un environnement Spring Boot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class TestContextInitializer
+    implements ApplicationContextInitializer&amp;lt;ConfigurableApplicationContext&amp;gt; {
+
+  @Override
+  public void initialize(ConfigurableApplicationContext context) {
+    // &lt;strong&gt;Démarrage du conteneur&lt;/strong&gt;
+    GenericContainer smtp = new GenericContainer&amp;lt;&amp;gt;(&quot;mailhog/mailhog&quot;)
+        .withExposedPorts(1025, 8025);
+    smtp.start();
+
+    // &lt;strong&gt;Injection des caractéristiques dans les propriétés de Spring Boot&lt;/strong&gt;
+    TestPropertyValues
+        .of(&quot;spring.mail.host=&quot; + smtp.getContainerIpAddress())
+        .of(&quot;spring.mail.port=&quot; + smtp.getMappedPort(1025))
+        .of(&quot;spring.mail.http-port=&quot; + smtp.getMappedPort(8025))
+        .applyTo(context);
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on a un serveur SMTP et que nos e-mails y sont envoyés, voyons comment on peut vérifier qu&amp;#8217;on lui envoie les bons messages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On a vu en préambule que MailHog donnait accès aux messages via une page Web.
+Il offre aussi une API HTTP pour y accéder par programme, dont les pincipaux endpoints :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Lire tous les messages : &lt;code&gt;GET /api/v2/messages&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Supprimer tous les messages : &lt;code&gt;DELETE /api/v1/messages&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Lire un message : &lt;code&gt;GET /api/v1/messages/{id}&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Supprimer un message : &lt;code&gt;DELETE /api/v1/messages/{id}&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette API permet de vérifier le nombre de messages envoyés avec succès et le contenu des messages envoyés.
+Le plus pratique est probablement d&amp;#8217;encapsuler l&amp;#8217;API dans une classe &lt;code&gt;MailHogClient&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Test
+  void action_should_send_message() {
+    // GIVeN
+    mailHogClient.deleteAllMessages();
+
+    // WHeN
+    service.doAction();
+
+    // THeN
+    Message message = mailHogClient.findLatestMessages();
+    assertThat(message).isNotNull();
+    assertThat(message.getContentType()).startsWith(&quot;text/html&quot;);
+    assertThat(message.getSubject()).startsWith(&quot;Hello World&quot;);
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au final, ça fait beaucoup de tuyauterie pour valider qu&amp;#8217;on a envoyé les bons messages.
+Il faut du Docker avec Testcontainers, et du code pour les messages par l&amp;#8217;API.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;mock&quot;&gt;Mock&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-mockito.svg&quot; alt=&quot;Spring + Mockito&quot; height=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Plutôt que de déployer tout ça, on pourrait opter pour une solution plus simple en remplaçant le composant d&amp;#8217;envoi d&amp;#8217;e-mails par un &lt;em&gt;mock&lt;/em&gt;.
+Dans Spring, ce composant est un bean de type MailSender ou JavaMailSender.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+public class IntegrationTestConfiguration {
+
+  @Bean
+  public JavaMailSender mockJavaMailSender() {
+    return &lt;strong&gt;mock(JavaMailSender.class)&lt;/strong&gt;;
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec Spring Boot, il n&amp;#8217;y a pas de conflit puisque le MailSender classique n&amp;#8217;est instancié que s&amp;#8217;il n&amp;#8217;y a pas d&amp;#8217;instance par ailleurs.
+Sinon, on peut toujours ajouter &lt;code&gt;@Primary&lt;/code&gt; pour résoudre le conflit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ensuite, on injecte le bean dans le test et on l&amp;#8217;utilise comme un &lt;em&gt;mock&lt;/em&gt; normal.
+Sauf qu&amp;#8217;il faut le réinitialiser.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class SomeIT {
+
+  &lt;strong&gt;@Autowired JavaMailSender mailSender&lt;/strong&gt;
+
+  @BeforeEach
+  public void before() {
+    //reset mock
+    &lt;strong&gt;reset(mailSender)&lt;/strong&gt;;
+  }
+
+  @Test
+  public void action_should_send_email() {
+    // GIVeN
+    //...
+
+    // WHeN
+    service.action();
+
+    // THeN
+    verify(mailSender, times(1)).send(any(MimeMessage));
+    verify(mailSender, never()) .send(any(MimeMessage[]));
+    verify(mailSender, never()) .send(any(MimeMessagePreparator));
+    verify(mailSender, never()) .send(any(MimeMessagePreparator[]));
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette solution impose moins de tuyauterie, mais resteint le périmètre de l&amp;#8217;intégration.
+On ne vérifie pas que l&amp;#8217;envoi de messages se passe bien, mais uniquement qu&amp;#8217;on a essayé.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;les-deux-mon-capitaine&quot;&gt;Les deux mon capitaine&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il est possible de combiner les avantages des deux solutions.
+Pour ça, on va concerver un vrai &lt;code&gt;MailSender&lt;/code&gt; et lui adjoindre une variante décorée (&lt;em&gt;spy&lt;/em&gt;) par Mockito.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/spring/spring-mockito-mailhog.svg&quot; alt=&quot;Spring + Mockito + MailHog&quot; height=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour avoir les deux beans, c&amp;#8217;est assez facile avec Spring Framework sans Boot.
+On crée une classe de configuration dédiée aux tests, avec une méthode de fabrique MailSender espionné, dans laquelle on injecte le bean normal.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+@EnableConfigurationProperties(MailProperties.class)
+public class MainConfiguration {
+  @Bean
+  public &lt;strong&gt;JavaMailSender mailSender(MailProperties properties)&lt;/strong&gt; {
+    JavaMailSender mailSender = new JavaMailSender();
+    // ...
+    return mailSender;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+public class IntegrationTestConfiguration {
+  @Bean
+  &lt;strong&gt;@Primary&lt;/strong&gt;
+  public JavaMailSender spyMailSender(
+        &lt;strong&gt;@Qualifier(&quot;mailSender&quot;)&lt;/strong&gt; JavaMailSender mailSender) {
+    return &lt;strong&gt;&lt;em&gt;spy&lt;/em&gt;(&lt;/strong&gt;mailSender&lt;strong&gt;)&lt;/strong&gt;;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec Spring Boot, c&amp;#8217;est un peu plus complexe.
+Comme on l&amp;#8217;a vu dans le chapitre précédent, lorsqu&amp;#8217;on déclare un nouveau bean de type MailSender pour les tests, Boot ne produit plus son MailSender normal.
+C&amp;#8217;était bien partique avec le &lt;em&gt;mock&lt;/em&gt;, puisqu&amp;#8217;on ne voulait plus du bean normal.
+Avec le &lt;em&gt;spy&lt;/em&gt;, ça nous oblige à dupliquer du code existant pour instancier explicitement le JavaMailSender à espionner.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+@EnableConfigurationProperties(MailProperties.class)
+public class IntegrationTestConfiguration {
+
+  @Bean
+  public &lt;strong&gt;JavaMailSender spyJavaMailSender(MailProperties properties)&lt;/strong&gt; {
+    return &lt;strong&gt;&lt;em&gt;spy&lt;/em&gt;(&lt;/strong&gt;buildMailSender(properties, sender)&lt;strong&gt;)&lt;/strong&gt;;
+  }
+
+  private JavaMailSender buildMailSender(MailProperties properties) {
+    JavaMailSenderImpl sender = new JavaMailSenderImpl();
+
+    sender.setHost(properties.getHost());
+    if (properties.getPort() != null) {
+      sender.setPort(properties.getPort());
+    }
+    sender.setUsername(properties.getUsername());
+    sender.setPassword(properties.getPassword());
+    sender.setProtocol(properties.getProtocol());
+    if (properties.getDefaultEncoding() != null) {
+      sender.setDefaultEncoding(properties.getDefaultEncoding().name());
+    }
+    if (!properties.getProperties().isEmpty()) {
+      sender.setJavaMailProperties(asProperties(properties.getProperties()));
+    }
+
+    return sender;
+  }
+
+  private Properties asProperties(Map&amp;lt;String, String&amp;gt; source) {
+    Properties properties = new Properties();
+    properties.putAll(source);
+    return properties;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette configuration, on valide que les messages partent bien en SMTP et on peut vérifier le contenu de ce qu&amp;#8217;on envoie.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/pigeon-messager.png&quot; alt=&quot;Pigeon messager de guerre&quot; width=&quot;500&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A vous de choisir le niveau de tuyauterie et de vérification vous souhaitez implémenter.
+En tout, il n&amp;#8217;y a aucune raison de ne pas vérifier que l&amp;#8217;envoi de messages est conforme.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note edit&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Edit&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On me souffle dans l&amp;#8217;oreillette que j&amp;#8217;aurais pu simplifier mon code en déclarant un &lt;em&gt;mock&lt;/em&gt; local avec l&amp;#8217;annotation de Spring Boot &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/mock/mockito/MockBean.html&quot; target=&quot;&lt;em&gt;blank&quot;&gt;&lt;code&gt;@MockBean&lt;/code&gt;&lt;/a&gt;, ou un _spy&lt;/em&gt; local avec &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/mock/mockito/SpyBean.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;code&gt;@SpyBean&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">En avril, je traitais le sujet de la date dans les tests. Je continue sur ma lancée avec les tests, mais cette fois-ci il s&amp;#8217;agit de tests d&amp;#8217;intégration et de l&amp;#8217;envoi d&amp;#8217;e-mails. Lorsqu&amp;#8217;une application envoie des e-mails, ses tests d&amp;#8217;intégration doivent d&amp;#8217;une part avoir accès à un serveur SMTP, mais ils doivent aussi pouvoir valider que les messages envoyés sont conformes aux attentes. Nous allons aborder ces deux aspects.</summary></entry><entry><title type="html">Une histoire de temps et de tests</title><link href="https://blog.alexis-hassler.com//2022/04/01/test-date-time.html" rel="alternate" type="text/html" title="Une histoire de temps et de tests" /><published>2022-04-01T00:00:00+00:00</published><updated>2022-04-01T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/04/01/test-date-time</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/04/01/test-date-time.html">&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/clepsydre.jpg&quot; alt=&quot;clepsydre&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le temps, c&amp;#8217;est compliqué, ça change tout le temps.
+Et je ne parle pas de météo, mais bien du temps qui passe.
+Et c&amp;#8217;est justement parce qu&amp;#8217;il passe que ça change.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Bon, je vais m&amp;#8217;arrêter là avec les pensées profondes.
+Je n&amp;#8217;ai pas prévu de marquer l&amp;#8217;histoire de la philosophie avec ce billet.
+Ce qui m&amp;#8217;intéresse ici, c&amp;#8217;est de pouvoir tester des méthodes qui utilisent des objets temporels, et plus précisément des objets du package récent &lt;code&gt;java.time&lt;/code&gt; : &lt;code&gt;Instant.now()&lt;/code&gt;, &lt;code&gt;LocalDateTime.now()&lt;/code&gt;, &lt;code&gt;ZonedDateTime.now()&lt;/code&gt;,&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Partons sur ce petit exemple, dans lequel on choisit une activité distincte en fonction de l&amp;#8217;heure de la journée.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+
+  public ActivityService(Action action) {
+    this.action = action;
+  }
+
+  public void chooseActivity() {
+    if (&lt;strong&gt;LocalDateTime.now()&lt;/strong&gt;.get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En utilisant le code tel quel, &lt;code&gt;action.doSleep()&lt;/code&gt; est appelé si le test est exécuté le matin et &lt;code&gt;action.doPlay()&lt;/code&gt; si le code est appelé l&amp;#8217;après-midi.
+Voyons comment adapter le code pour qu&amp;#8217;on puisse développer tester de façon reproductible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;on-a-toujours-fait-comme-ça&quot;&gt;On a toujours fait comme ça&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Commençons par la technique la plus classique, que j&amp;#8217;utilise et vois utilisée depuis une bonne vingtaine d&amp;#8217;années.
+Elle consiste à déléguer la création des dates à un &lt;em&gt;builder&lt;/em&gt;, qu&amp;#8217;on injecte dans notre classe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+  private final DateBuilder dateBuilder;
+
+  public ActivityService(Action action, &lt;strong&gt;DateBuilder dateBuilder&lt;/strong&gt;) {
+    this.action = action;
+    this.dateBuilder = dateBuilder;
+  }
+
+  public void chooseActivity() {
+    if (&lt;strong&gt;dateBuilder.currentLocalDateTime()&lt;/strong&gt;.get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;bâtisseur-de-dates&quot;&gt;Bâtisseur de dates&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette façon de procéder, on n&amp;#8217;appelle jamais &lt;code&gt;Instant.now()&lt;/code&gt; directement, ni aucune méthode autre méthode &lt;code&gt;Xxx.now()&lt;/code&gt;.
+Le &lt;em&gt;builder&lt;/em&gt; est la seule classe ayant cette responsabilité.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class DateBuilder {
+
+  public Instant &lt;strong&gt;currentInstant()&lt;/strong&gt; {
+    return Instant.now();
+  }
+
+  public LocalDateTime &lt;strong&gt;currentLocalDateTime()&lt;/strong&gt; {
+    return LocalDateTime.now();
+  }
+
+  //...
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour supporter toutes les méthodes &lt;code&gt;Xxx.now()&lt;/code&gt;, on doit implémenter une dizaine de méthodes dans &lt;code&gt;DateBuilder&lt;/code&gt;.
+A ça il faut ajouter les variantes qui prennent un paramètre de type &lt;code&gt;ZoneId&lt;/code&gt; (&lt;code&gt;LocalDateTime.now(ZoneId zone)&lt;/code&gt;, &lt;code&gt;ZonedDateTime.now(ZoneId zone)&lt;/code&gt;,&amp;#8230;&amp;#8203;), ce qui nous fait monter à une petite vingtaine de méthodes (19 pour être précis).&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;moquons-le-maçon&quot;&gt;Moquons le maçon&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour tester unitairement &lt;code&gt;ActivityService&lt;/code&gt;, on va créer des &lt;em&gt;mocks&lt;/em&gt; des dépendances, y compris pour &lt;code&gt;DateBuilder&lt;/code&gt;.
+De cette façon, à chaque appel, l&amp;#8217;objet produira la date et l&amp;#8217;heure qu&amp;#8217;on a choisies dans la préparation du test.
+Et donc le test est parfaitement indépendant de l&amp;#8217;heure d&amp;#8217;exécution et devient reproductible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Test
+  void chooseActivity_should_play_in_the_afternoon() {
+    // GIVeN
+    var action = mock(Action.class);
+    var dateBuilder = &lt;strong&gt;mock(DateBuilder.class)&lt;/strong&gt;;
+    when(dateBuilder.currentLocalDateTime())
+        .thenReturn(LocalDateTime.parse(&quot;1970-01-01T21:00&quot;));
+
+    var activityService = new ActivityService(action, dateBuilder);
+
+    // WHeN
+    activityService.chooseActivity();
+
+    // THeN
+    verify(action, never()).doSleep();
+    verify(action, times(1)).doPlay();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;remettons-lhorloge-au-centre-du-village&quot;&gt;Remettons l&amp;#8217;horloge au centre du village&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/horloge-tassin.jpg&quot; alt=&quot;horloge tassin&quot; width=&quot;600&quot;&gt;
+&lt;/div&gt;
+&lt;div class=&quot;title&quot;&gt;&lt;span class=&quot;small&quot;&gt;source: &lt;a href=&quot;https://numelyo.bm-lyon.fr/BML:BML_01ICO001014cd12f1d2bdd1&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Bibliothèque municipale de Lyon&lt;/a&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Depuis le JDK 8, il existe une autre solution, suggérée directement dans la javadoc du JDK.
+Dans les explications sur la classe abstraite &lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot;&gt;&lt;code&gt;Clock&lt;/code&gt;&lt;/a&gt;, on trouve ce passage :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All key date-time classes also have a now() factory method that uses the system clock in the default time zone.
+The primary purpose of this abstraction is to allow alternate clocks to be plugged in as and when required.
+Applications use an object to obtain the current time rather than a static method.
+&lt;strong&gt;This can simplify testing.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;attribution&quot;&gt;
+&amp;#8212; java.time.Clock&lt;br&gt;
+&lt;cite&gt;javadoc&lt;/cite&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cette classe permettrait donc de simplifier les tests.
+C&amp;#8217;est exactement ce qu&amp;#8217;on recherche, on va donc s&amp;#8217;y intéresser.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;rock-around-the-clock&quot;&gt;&lt;span class=&quot;text-black&quot;&gt;Rock around the &lt;code&gt;Clock&lt;/code&gt;&lt;/span&gt;&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avant de voir comment elle peut nous simplifier les tests, voyons ce qu&amp;#8217;elle fait.
+Et pour ça, revenons à la javadoc.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A clock providing access to the current instant, date and time using a time-zone.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;attribution&quot;&gt;
+&amp;#8212; java.time.Clock&lt;br&gt;
+&lt;cite&gt;javadoc&lt;/cite&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Clock&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;instant(): Instant&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;getZone(): ZoneId&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Son rôle, c&amp;#8217;est de fournir l&amp;#8217;instant courant, et c&amp;#8217;est à peu près tout.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;L&amp;#8217;implémentation par défaut fait ça avec les informations du système, via la méthode native &lt;code&gt;System.currentTimeMillis()&lt;/code&gt;.
+C&amp;#8217;est celle qui est utilisée lorsqu&amp;#8217;on appelle une méthode &lt;code&gt;Xxx.now()&lt;/code&gt; sans paramètre.
+Toutes ces méthodes ont une variante avec un paramètre &lt;code&gt;Clock&lt;/code&gt; permettant de s&amp;#8217;appuyer sur un autre référenciel.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Instant.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Instant&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(): Instant&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(Clock clock): Instant&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/LocalDateTime.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;LocalDateTime&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(): LocalDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(Clock clock): LocalDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZonedDateTime.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;ZonedDateTime&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(): ZonedDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;now(Clock clock): ZonedDateTime&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;donnons-du-temps-au-temps&quot;&gt;Donnons du temps au temps&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on a posé ces bases, on se rend compte qu&amp;#8217;on peut très bien injecter une instance de &lt;code&gt;Clock&lt;/code&gt; plutôt qu&amp;#8217;un &lt;code&gt;DateBuilder&lt;/code&gt;.
+Pour en profiter, il faut s&amp;#8217;obliger à utiliser les méthodes &lt;code&gt;Xxx.now(&amp;#8230;&amp;#8203;)&lt;/code&gt; qui prennent un paramètre de type &lt;code&gt;Clock&lt;/code&gt;, au détriment des variantes sans paramètre.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+  private final Clock clock;
+
+  public ActivityService(Action action, &lt;strong&gt;Clock clock&lt;/strong&gt;) {
+    this.action = action;
+    this.clock = clock;
+  }
+
+  public void chooseActivity() {
+    if (&lt;strong&gt;LocalDateTime.now(clock)&lt;/strong&gt;.get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On abandonne l&amp;#8217;idée d&amp;#8217;un &lt;em&gt;builder&lt;/em&gt; construit par nos soins et on n&amp;#8217;utilise que des classes de l&amp;#8217;API standard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;un-jour-jirai-à-new-york-avec-toi&quot;&gt;Un jour j&amp;#8217;irai à New-York avec toi&lt;/h3&gt;
+&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/clock-timezone.jpg&quot; alt=&quot;clock timezone&quot; width=&quot;200&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Plus haut, j&amp;#8217;avais dit que les méthodes &lt;code&gt;Xxx.now()&lt;/code&gt; avaient presque toutes une variante avec une instance de &lt;code&gt;ZoneId&lt;/code&gt; en paramètre, pour positionner les objets temporels dans un fuseau horaire.
+Ça ne concerne pas &lt;code&gt;Instant&lt;/code&gt;, mais &lt;code&gt;LocalDateTime&lt;/code&gt;, &lt;code&gt;ZonedDateTime&lt;/code&gt;,&amp;#8230;&amp;#8203;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant qu&amp;#8217;on a abandonné les méthodes sans paramètre au profit de la variante avec un paramètre de type &lt;code&gt;Clock&lt;/code&gt;, voyons ce que ça donne avec les fuseaux horaires.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il n&amp;#8217;y a pas de variante avec deux paramètres &lt;code&gt;Xxx.now(clock, zoneId)&lt;/code&gt; comme on pourrait s&amp;#8217;y attendre.
+C&amp;#8217;est l&amp;#8217;objet &lt;code&gt;Clock&lt;/code&gt; qui porte les informations de fuseau.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Clock&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;system(ZoneId zone): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;getZone(): ZoneId&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;withZone(ZoneId zone): Clock&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Grâce à la méthode &lt;code&gt;withZone(&amp;#8230;&amp;#8203;)&lt;/code&gt; appelée sur l&amp;#8217;objet injecté, on crée une copie positionnée sur le fuseau horaire de notre choix.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class ActivityService {
+
+  private final Action action;
+  private final Clock clock;
+
+  public ActivityService(Action action, &lt;strong&gt;Clock clock&lt;/strong&gt;) {
+    this.action = action;
+    this.clock = clock;
+  }
+
+  public void chooseActivity(ZoneId zoneId) {
+    if (LocalDateTime.now(&lt;strong&gt;clock.withZone(zoneId)&lt;/strong&gt;).get(ChronoField.AMPM_OF_DAY) == 0) {
+      action.doSleep();
+    } else {
+      action.doPlay();
+    }
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ceci soulève une autre question.
+La question originelle.
+Comment l&amp;#8217;instance injectée doit-elle être créée ?
+Une instance de &lt;code&gt;Clock&lt;/code&gt; pouvant être positionnée dans un fuseau horaire, comment faut-il instancier l&amp;#8217;horloge de référence ?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;Clock&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;systemUTC(): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;systemDefaultZone(): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class=&quot;static&quot;&gt;system(ZoneId zone): Clock&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme on parle d&amp;#8217;horloge de référence, on va la positionner sur le fuseau horaire de référence, le fuseau UTC.
+On va utiliser la méthode statique &lt;code&gt;systemUTC()&lt;/code&gt;, qui est d&amp;#8217;ailleurs utilisée par &lt;code&gt;Xxx.now()&lt;/code&gt; sans paramètre.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;ni-clou-ni-vis&quot;&gt;Ni clou, ni vis&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans la première solution, on pouvait tester la classe de service grâce à des objets &lt;em&gt;mock&lt;/em&gt;.
+On pourrait aussi faire un &lt;em&gt;mock&lt;/em&gt; de &lt;code&gt;Clock&lt;/code&gt; afin de figer la date et l&amp;#8217;heure qu&amp;#8217;il fournit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Clock clock = mock(Clock.class);
+    when(clock.getZone()).thenReturn(ZoneOffset.UTC);
+    when(clock.instant()).thenReturn(Instant.EPOCH.plus(21, HOURS));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock right&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/fixe-tout.png&quot; alt=&quot;fixe tout&quot; width=&quot;80&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ça fonctionne, mais avec &lt;code&gt;Clock&lt;/code&gt;, il n&amp;#8217;y plus besoin de ça.
+En effet, le JDK fournit directement une implémentation adaptée aux tests.
+Elle se présente sous la forme d&amp;#8217;une horloge fixe, qui retourne toujours la même heure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Clock clock = Clock.fixed(Instant.EPOCH.plus(21, HOURS), ZoneOffset.UTC);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec cette horloge, tous les instants créés seront à la même heure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Instant instant1 = Instant.now(clock);
+    logger.info(instant1)
+    &lt;span class=&quot;comment&quot;&gt;// 1970-01-01T21:00:00Z&lt;/span&gt;
+    ...
+    // Later
+    Instant instant2 = Instant.now(clock);
+    logger.info(instant2)
+    &lt;span class=&quot;comment&quot;&gt;// 1970-01-01T21:00:00Z&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voici ce que devient le test unitaire avec une telle horloge.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  @Test
+  void chooseActivity_should_play_in_the_afternoon() {
+    // GIVeN
+    var action = mock(Action.class);
+    var clock = Clock.fixed(Instant.EPOCH.plus(21, HOURS), ZoneOffset.UTC);;
+
+    var activityService = new ActivityService(action, clock);
+
+    // WHeN
+    activityService.chooseActivity();
+
+    // THeN
+    verify(action, never()).doSleep();
+    verify(action, times(1)).doPlay();
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;au-vent-en-emporte-le-temps&quot;&gt;Au vent en emporte le temps&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A partir du moment où on utilise des objets temporels du paquetage &lt;code&gt;java.time&lt;/code&gt;, une classe &lt;code&gt;DateBuilder&lt;/code&gt; ne sert à rien.
+C&amp;#8217;est même une abstraction inutile.
+En injectant un objet (ou bean) de type &lt;code&gt;Clock&lt;/code&gt;, on arrive à avoir un code tout aussi facile à tester, en restant sur l&amp;#8217;API standard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par contre, si on utilise encore les anciennes API avec &lt;code&gt;java.util.Date&lt;/code&gt; et &lt;code&gt;java.util.Calendar&lt;/code&gt;, on n&amp;#8217;a pas le choix, il faut passer par un &lt;em&gt;builder&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et comme j&amp;#8217;ai commencé par de la philosophie de haut niveau, je vais conclure avec de la poésie de haut niveau.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;openblock inline center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour le bonheur&lt;br&gt;
+De nos deux cœurs&lt;br&gt;
+&lt;strong&gt;Arrête le temps et les heures&lt;/strong&gt;&lt;br&gt;
+Je t&amp;#8217;en supplie&lt;br&gt;
+A l&amp;#8217;infini&lt;br&gt;
+Retiens la nuit&lt;/p&gt;
+&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/misc/jauni.jpg&quot; alt=&quot;jauni&quot; height=&quot;170&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">Le temps, c&amp;#8217;est compliqué, ça change tout le temps. Et je ne parle pas de météo, mais bien du temps qui passe. Et c&amp;#8217;est justement parce qu&amp;#8217;il passe que ça change. Bon, je vais m&amp;#8217;arrêter là avec les pensées profondes. Je n&amp;#8217;ai pas prévu de marquer l&amp;#8217;histoire de la philosophie avec ce billet. Ce qui m&amp;#8217;intéresse ici, c&amp;#8217;est de pouvoir tester des méthodes qui utilisent des objets temporels, et plus précisément des objets du package récent java.time : Instant.now(), LocalDateTime.now(), ZonedDateTime.now(),&amp;#8230;&amp;#8203; Partons sur ce petit exemple, dans lequel on choisit une activité distincte en fonction de l&amp;#8217;heure de la journée. public class ActivityService { private final Action action; public ActivityService(Action action) { this.action = action; } public void chooseActivity() { if (LocalDateTime.now().get(ChronoField.AMPM_OF_DAY) == 0) { action.doSleep(); } else { action.doPlay(); } } } En utilisant le code tel quel, action.doSleep() est appelé si le test est exécuté le matin et action.doPlay() si le code est appelé l&amp;#8217;après-midi. Voyons comment adapter le code pour qu&amp;#8217;on puisse développer tester de façon reproductible.</summary></entry><entry><title type="html">Quand est-ce qu’on change d’heure ?</title><link href="https://blog.alexis-hassler.com//2022/03/01/changement-d-heure.html" rel="alternate" type="text/html" title="Quand est-ce qu’on change d’heure ?" /><published>2022-03-01T00:00:00+00:00</published><updated>2022-03-01T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/03/01/changement-d-heure</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/03/01/changement-d-heure.html">&lt;div class=&quot;imageblock left&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/clock-daylight.jpg&quot; alt=&quot;clock daylight&quot; width=&quot;120&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;C&amp;#8217;est assez facile à retrouver.
+Nous passerons à l&amp;#8217;heure d&amp;#8217;été le dernier dimanche de mars, à 2h00, puis nous repasserons à l&amp;#8217;heure d&amp;#8217;hiver le dernier dimanche d&amp;#8217;octobre, à 3h00.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ce qui m&amp;#8217;intéresse c&amp;#8217;est que mon code puisse connaitre cette information.
+Et comme je veux gérer ça dans mon backend en Java, voyons voir ce que les APIs du JDK proposent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;TLDR&lt;/strong&gt; Toutes les informations sont disponibles via des méthodes publiques depuis le JDK 8, dans le package &lt;strong&gt;&lt;code&gt;java.time&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;cest-quoi-la-règle&quot;&gt;C&amp;#8217;est quoi la règle ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Toute l&amp;#8217;API est basée sur un objet &lt;code&gt;ZoneRules&lt;/code&gt; associé au fuseau horaire.
+On y trouve les décalages horaires par rapport au fuseau UTC, les règles de calcul des transitions, ainsi que les transitions qui précèdent la mise en application de la règle actuelle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Regardons d&amp;#8217;un peu plus près comment est construite une règle :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/zone/ZoneOffsetTransitionRule.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ZoneOffsetTransitionRule&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;month: Month&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dayOfMonthIndicator: int&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dayOfWeek: DayOfWeek&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;localTime: LocalTime&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetBefore: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetAfter: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par exemple, pour notre fuseau horaire, nous avons deux règles :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Mars, 25, Dimanche, 1h00, 1h, 2h : le dimanche après le 25 mars à 1h00 UTC, le décalage passe de 1h à 2h.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Octobre, 25, Dimanche, 1h00, 2h, 1h : le dimanche après le 25 octobre à 1h00 UTC, le décalage passe de 2h à 1h.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;https://www.laminuteduchat.com/&quot;&gt;&lt;img src=&quot;/images/date/chat-changement-heure.jpg&quot; alt=&quot;chat changement heure&quot; width=&quot;400&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Mais à la limite, c&amp;#8217;est aussi bien exprimé dans le &lt;code&gt;toString()&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ZoneId zone = ZoneId.of(&quot;Europe/Paris&quot;);
+zone.getRules().getTransitionRules().stream().forEach(System.out::println);
+// TransitionRule[Gap +01:00 to +02:00, SUNDAY on or after MARCH 25 at 01:00 UTC]
+// TransitionRule[Overlap +02:00 to +01:00, SUNDAY on or after OCTOBER 25 at 01:00 UTC]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;OK, comme ça on a compris la règle, mais concrètement c&amp;#8217;est quand notre prochaine transition ?&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;cest-quand-la-prochaine-transition&quot;&gt;C&amp;#8217;est quand la prochaine transition ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Une transition, c&amp;#8217;est un instant, un décalage avant et un décalage après.
+C&amp;#8217;est donc plus concret qu&amp;#8217;une règle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist uml center&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ZoneOffsetTransition&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;instant: Instant&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetBefore: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;offsetAfter: ZoneOffset&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et pour connaître la prochaine transition, on le demande à l&amp;#8217;objet &lt;em&gt;rules&lt;/em&gt; de notre fuseau horaire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ZoneId zoneId = ZoneId.of(&quot;Europe/Paris&quot;);
+ZoneOffsetTransition transition = zoneId.getRules().nextTransition(Instant.now());
+System.out.println(transition)
+// Transition[Gap at &lt;strong&gt;2022-03-27T02:00&lt;/strong&gt;+01:00 to +02:00]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La réponse à la question en titre (&quot;Quand est-ce qu&amp;#8217;on change d&amp;#8217;heure ?&quot;) est donc le 27 mars 2022.
+A 2h00 heure locale, le décalage passera de 1h à 2h.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Attention au piège, l&amp;#8217;objet &lt;em&gt;rules&lt;/em&gt; a une méthode &lt;code&gt;getTransitions()&lt;/code&gt; qui ne peut pas être utilisée pour notre besoin.
+Cette méthode renvoie la liste des transitions qui ne respectent pas la règle.
+Pour notre fuseau horaire, ce sont les transitions qui sont antérieures à l&amp;#8217;entrée en application de la règle actuelle en 1996.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;partout-dans-le-monde&quot;&gt;Partout dans le monde&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div id=&quot;daylight-world&quot; class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/date/daylight-world.svg&quot; alt=&quot;daylight world&quot; width=&quot;800&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Je me suis trouvé confronté à cette question sur un projet IoT chez &lt;a href=&quot;https://rtone.fr&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Rtone&lt;/a&gt;.
+Lorsqu&amp;#8217;on configure un appareil, on lui envoie le décalage par rapport à l&amp;#8217;heure UTC dans son nouveau fuseau horaire.
+A chaque fois qu&amp;#8217;on déplace l&amp;#8217;appareil, il faut lui renvoyer le décalage.
+Et, évidemment, sans déplacement, il faut renvoyer le décalage au changement d&amp;#8217;heure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le backend doit connaître le prochain changement d&amp;#8217;heure dans le monde et connaitre le fuseau horaire concerné.
+Pour ça:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;comment&quot;&gt;// On parcourt tous les fuseaux horaires.&lt;/span&gt;
+ZoneId.getAvailableZoneIds().stream()
+      .map(ZoneId::of)
+      &lt;span class=&quot;comment&quot;&gt;// On ne garde que ceux qui ont une future transition.&lt;/span&gt;
+      .filter(zoneId -&amp;gt;
+                  zoneId.getRules()
+                        .nextTransition(Instant.now()) != null
+      )
+      &lt;span class=&quot;comment&quot;&gt;// Et on conserve celui qui a la plus petite date de transition.&lt;/span&gt;
+      .min(
+            comparing(zoneId -&amp;gt;
+                        zoneId.getRules()
+                              .nextTransition(Instant.now())
+                              .getInstant()
+                     )
+      )
+      &lt;span class=&quot;comment&quot;&gt;// Enfin, on planifie l'action qui se déclenchera à la prochaine transition.&lt;/span&gt;
+      .ifPresent(this::scheduleNextTransition);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Et le vainqueur est&amp;#8230;&amp;#8203; America/Miquelon qui change d&amp;#8217;heure le 13 mars 2022 à 2h00 UTC et dont le décalage passera de -3h à -2h.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le point d&amp;#8217;entrée est &lt;a href=&quot;https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/ZoneId.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;code&gt;java.time.ZoneId&lt;/code&gt;&lt;/a&gt; qui représente un fuseau horaire dans l&amp;#8217;API de date et heure du JDK 8.
+A partir de là, on récupère l&amp;#8217;ensemble des règles (&lt;code&gt;getRules()&lt;/code&gt;) des changements d&amp;#8217;heure puis on demande la prochaine transition (&lt;code&gt;nextTransition(Instant.now())&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tout ça n&amp;#8217;est public que depuis le JDK 8.
+Les informations étaient déjà présentes avant, mais dans des classes internes du JDK.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Reste que le nombre de pays qui pratiquent le changement d&amp;#8217;heure est en baisse constante.
+Sur le &lt;a href=&quot;#daylight-world&quot;&gt;planisphère ci-dessus&lt;/a&gt;, la couleur orange représente ceux qui l&amp;#8217;ont pratiqué puis ont arrêté.
+L&amp;#8217;Union Européenne a aussi décidé de l&amp;#8217;abandonner, peut-être, un jour.
+A cause de ces décisions basée sur le bien-être des gens, le genre d&amp;#8217;amusement présenté ici pourrait disparaître.
+Nos politiciens pourraient penser au plaisir des développeurs quand ils simplifient les règles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">C&amp;#8217;est assez facile à retrouver. Nous passerons à l&amp;#8217;heure d&amp;#8217;été le dernier dimanche de mars, à 2h00, puis nous repasserons à l&amp;#8217;heure d&amp;#8217;hiver le dernier dimanche d&amp;#8217;octobre, à 3h00. Ce qui m&amp;#8217;intéresse c&amp;#8217;est que mon code puisse connaitre cette information. Et comme je veux gérer ça dans mon backend en Java, voyons voir ce que les APIs du JDK proposent. TLDR Toutes les informations sont disponibles via des méthodes publiques depuis le JDK 8, dans le package java.time.</summary></entry><entry><title type="html">WildFly 25, la promotion d’elytron</title><link href="https://blog.alexis-hassler.com//2022/02/28/wildfly-25.html" rel="alternate" type="text/html" title="WildFly 25, la promotion d’elytron" /><published>2022-02-28T00:00:00+00:00</published><updated>2022-02-28T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/02/28/wildfly-25</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/02/28/wildfly-25.html">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Depuis la version 11, &lt;strong&gt;WildFly&lt;/strong&gt; est livré avec 2 sous-systèmes de sécurité, &lt;strong&gt;PicketBox&lt;/strong&gt; et &lt;strong&gt;Elytron&lt;/strong&gt;.
+PicketBox était actif par défaut, et un script jboss-cli permettait de passer sous Elytron.
+Depuis WildFly 25, Elytron a été promu au rang de sous-système de sécurité par défaut.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+Ce billet était initialement publié sur le site de &lt;a href=&quot;https://www.sewatech.fr&quot;&gt;Sewatech&lt;/a&gt;. Il a migré ici suite à l&amp;#8217;abandon de la section &lt;em&gt;Articles&lt;/em&gt;.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;picketbox&quot;&gt;PicketBox&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;PicketBox est utilisé pour la sécurité depuis la nuit des temps.
+On le trouvait déjà en 2002 dans JBoss AS 3.0, sous le nom de JBoss SX.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On trouve la preuve d&amp;#8217;une filiation forte dans la classe SecureIdentityLoginModule qui permet d&amp;#8217;utiliser des mots de passe chiffrés dans les datasource.
+L&amp;#8217;algorithme n&amp;#8217;a pas changé, c&amp;#8217;est toujours du Blowfish, et la clé de chiffrement est toujours &quot;jaas is the way&quot;.
+J&amp;#8217;ai fait un peu d&amp;#8217;archéologie, pour comparer le code à une quinzaine d&amp;#8217;années d&amp;#8217;écart.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   // &lt;strong&gt;JBoss AS 3.2 (2005)&lt;/strong&gt;
+   private static char[] decode(String secret)
+      throws NoSuchPaddingException, NoSuchAlgorithmException,
+      InvalidKeyException, BadPaddingException, IllegalBlockSizeException
+   {
+      byte[] kbytes = &lt;strong&gt;&quot;jaas is the way&quot;&lt;/strong&gt;.getBytes();
+      SecretKeySpec key = new SecretKeySpec(kbytes, &lt;strong&gt;&quot;Blowfish&quot;&lt;/strong&gt;);
+
+      BigInteger n = new BigInteger(secret, 16);
+      byte[] encoding = n.toByteArray();
+
+      Cipher cipher = Cipher.getInstance(&lt;strong&gt;&quot;Blowfish&quot;&lt;/strong&gt;);
+      cipher.init(Cipher.DECRYPT_MODE, key);
+      byte[] decode = cipher.doFinal(encoding);
+      return new String(decode).toCharArray();
+   }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour la version actuelle, j&amp;#8217;ai un peu triché en enlevant quelques lignes de code qui corrigent 2 bugs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   // &lt;strong&gt;WildFly 25 (2021)&lt;/strong&gt;
+   private static char[] decode(String secret)
+      throws NoSuchPaddingException, NoSuchAlgorithmException,
+      InvalidKeyException, BadPaddingException, IllegalBlockSizeException
+   {
+      byte[] kbytes = &lt;strong&gt;&quot;jaas is the way&quot;&lt;/strong&gt;.getBytes();
+      SecretKeySpec key = new SecretKeySpec(kbytes, &lt;strong&gt;&quot;Blowfish&quot;&lt;/strong&gt;);
+
+      BigInteger n = new BigInteger(secret, 16);
+      byte[] encoding = n.toByteArray();
+
+      //SECURITY-344: fix leading zeros
+      ...
+
+      Cipher cipher = Cipher.getInstance(&lt;strong&gt;&quot;Blowfish&quot;&lt;/strong&gt;);
+      cipher.init(Cipher.DECRYPT_MODE, key);
+      byte[] decode = cipher.doFinal(encoding);
+      return new String(decode).toCharArray();
+   }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le nom PicketBox apparait dans les modules de WildFly, mais pas dans la configuration (standalone.xml).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;subsystem xmlns=&quot;urn:jboss:domain:security:1.2&quot;&amp;gt;
+      &amp;lt;security-domains&amp;gt;
+        ...
+      &amp;lt;/security-domains&amp;gt;
+  &amp;lt;/subsystem&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;passage-à-elytron&quot;&gt;Passage à Elytron&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans WildFly 10, un module &lt;code&gt;org.wildfly.security.elytron&lt;/code&gt; est apparu, sans configuration associée.
+Une &lt;a href=&quot;https://docs.jboss.org/author/display/WFLY/WildFly%20Elytron%20Security.html&quot;&gt;documentation touffue&lt;/a&gt; (l&amp;#8217;export PDF fait plus de 60 pages) explique comment l&amp;#8217;utiliser et une &lt;a href=&quot;https://docs.jboss.org/author/display/WFLY/Migrate%20Legacy%20Security%20to%20Elytron%20Security.html&quot;&gt;doc de migration&lt;/a&gt; (plus de 40 pages).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le sous-système elytron est apparu dans &lt;a href=&quot;https://www.wildfly.org/news/2017/10/24/WildFly11-Final-Released/&quot;&gt;WildFly 11&lt;/a&gt;, en 2017, avec une centaine de lignes de configuration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;subsystem xmlns=&quot;urn:wildfly:elytron:1.2&quot; final-providers=&quot;combined-providers&quot; disallowed-providers=&quot;OracleUcrypto&quot;&amp;gt;
+      &amp;lt;providers&amp;gt;
+        ...
+      &amp;lt;/providers&amp;gt;
+      &amp;lt;audit-logging&amp;gt;
+        ...
+      &amp;lt;/audit-logging&amp;gt;
+      &amp;lt;security-domains&amp;gt;
+        ...
+      &amp;lt;/security-domains&amp;gt;
+      &amp;lt;security-realms&amp;gt;
+        ...
+      &amp;lt;/security-realms&amp;gt;
+      &amp;lt;mappers&amp;gt;
+      &amp;lt;/mappers&amp;gt;
+      &amp;lt;http&amp;gt;
+        ...
+      &amp;lt;/http&amp;gt;
+      &amp;lt;sasl&amp;gt;
+        ...
+      &amp;lt;/sasl&amp;gt;
+  &amp;lt;/subsystem&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il faut utilise le script &lt;code&gt;enable-elytron.cli&lt;/code&gt; pour faire la bascule.
+Il y a une quinzaine de lignes pour basculer une configuration standalone, 4x plus pour le domaine.
+Donc si ce sous-système n&amp;#8217;est pas utilisé par défaut, c&amp;#8217;est assez facile de l&amp;#8217;activer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec &lt;a href=&quot;https://www.wildfly.org/news/2021/10/05/WildFly25-Final-Released/&quot;&gt;WildFly 25&lt;/a&gt;, le sous-système elytron est utilisé par défaut, et le sous-système security a tout simplement disparu.
+La doc elytron fait maintenant 250 pages !
+Mais pas très pratique, avec beaucoup de code et peu de configuration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;fonctionnalité-de-elytron&quot;&gt;Fonctionnalité de Elytron&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si la doc est si grosse, c&amp;#8217;est que Elytron a beaucoup de fonctionnalités.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il sert à la fois pour la sécurisation des interfaces de management et pour less applications.
+Il sert à la fois pour l&amp;#8217;authn/authz et pour le TLS.
+Il gère l&amp;#8217;auth à l&amp;#8217;ancienne avec du LDAP, de la DB.
+Il gère l&amp;#8217;auth avec token, supporte JWT et Oauth2
+Il gère le stockage sécurisé des secrets, en remplacement des caveaux.
+Il propose beaucoup de souplesse, ce qui implique une certaine complexité, avec des couches d&amp;#8217;abstraction .&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Elytron apporte un vent de modernité à la sécurité de WildFly.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Mais aussi de la complexité.
+Alors qu&amp;#8217;un effort est fait régulièrement pour simplifier la configuration par défaut, pour privilégier l&amp;#8217;implicite et alléger le fichier standalone.xml, le sous-système elytron arrive avec 160 lignes !
+Et chaque opération demande plusieurs lignes de script.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="wildfly" /><summary type="html">Depuis la version 11, WildFly est livré avec 2 sous-systèmes de sécurité, PicketBox et Elytron. PicketBox était actif par défaut, et un script jboss-cli permettait de passer sous Elytron. Depuis WildFly 25, Elytron a été promu au rang de sous-système de sécurité par défaut. Ce billet était initialement publié sur le site de Sewatech. Il a migré ici suite à l&amp;#8217;abandon de la section Articles.</summary></entry><entry><title type="html">Passer des arguments au build de Docker</title><link href="https://blog.alexis-hassler.com//2022/01/05/docker-build-argument.html" rel="alternate" type="text/html" title="Passer des arguments au build de Docker" /><published>2022-01-05T00:00:00+00:00</published><updated>2022-01-05T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2022/01/05/docker-build-argument</id><content type="html" xml:base="https://blog.alexis-hassler.com//2022/01/05/docker-build-argument.html">&lt;div class=&quot;imageblock right margin-top-3&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/docker/moby-armor.png&quot; alt=&quot;Docker Moby&quot; width=&quot;100&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Depuis quelques années, je gère un repository sur GitHub pour que chacun puisse faire un build à partir du code source de JBoss EAP.
+Récemment, j&amp;#8217;ai voulu automatiser ce build avec Docker, sur plusieurs systèmes (Debian, CentOS, Alpine), pour plusieurs versions du JDK (8 et 11) et pour plusieurs versions de JBoss EAP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;C&amp;#8217;est là que j&amp;#8217;ai découvert la possibilité d&amp;#8217;utiliser des arguments dans &lt;code&gt;Dockerfile&lt;/code&gt; et de les passer en option de &lt;code&gt;docker build&lt;/code&gt;.
+Ainsi, je peux choisir les versions du JDK et de JBoss EAP au lancement du build :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~# docker build &lt;strong&gt;--build-arg&lt;/strong&gt; JDK_VERSION=8 &lt;strong&gt;--build-arg&lt;/strong&gt; EAP_VERSION=7.2.3     \
+                --tag hasalex/eap:7.2.3_jdk8 .&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voyons pourquoi et comment j&amp;#8217;en suis arrivé à ce résultat&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;quest-ce-que-jboss-eap&quot;&gt;Qu&amp;#8217;est-ce que JBoss EAP ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avant de parler des arguments de &lt;em&gt;build&lt;/em&gt; de Docker, je vais remettre en place le contexte.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;JBoss EAP est un serveur d&amp;#8217;application Java EE / Jakarta EE édité de Red Hat.
+Il est payant dans le cadre d&amp;#8217;une souscription.
+Son équivalent gratuit est &lt;a href=&quot;https://www.wildfly.org/&quot;&gt;WildFly&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;https://www.redhat.com/fr/technologies/jboss-middleware/application-platform&quot;&gt;&lt;img src=&quot;/images/redhat/JBossEAP.png&quot; alt=&quot;JBoss EAP&quot; width=&quot;300&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le modèle économique de Red Hat est le même que pour ses distributions Linux :
+RHEL est un produit payant avec une souscription et Fedora est un artéfact gratuit issu d&amp;#8217;un projet communautaire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;JBoss EAP &amp;#8656;&amp;#8658; RHEL et WildFly &amp;#8656;&amp;#8658; Fedora.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;et-pourquoi-faire-un-build-soi-même&quot;&gt;Et pourquoi faire un build soi-même ?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Parce que c&amp;#8217;est possible !&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Comme pour tout ce que fait Red Hat, JBoss EAP est Open Source.
+Et pouvoir accéder au code source sans pouvoir le compiler et l&amp;#8217;utiliser, je trouve ça triste.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Il y a quelques années, j&amp;#8217;ai regardé de plus prêt ce que Red Hat publiait et j&amp;#8217;ai essayé de faire le &lt;em&gt;build&lt;/em&gt;.
+Depuis, j&amp;#8217;ai mis ça en forme dans un repo GitHub et visiblement c&amp;#8217;est utile à quelques personnes.
+Il y a même quelques contributeurs &lt;span class=&quot;icon red&quot;&gt;&lt;i class=&quot;fa fa-heart&quot;&gt;&lt;/i&gt;&lt;/span&gt; &lt;span class=&quot;icon red&quot;&gt;&lt;i class=&quot;fa fa-heart&quot;&gt;&lt;/i&gt;&lt;/span&gt; &lt;span class=&quot;icon red&quot;&gt;&lt;i class=&quot;fa fa-heart&quot;&gt;&lt;/i&gt;&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;le-build-docker&quot;&gt;Le build Docker&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans un premier temps, j&amp;#8217;ai préparé un fichier Dockerfile pour construire une image avec la dernière version de JBoss EAP et le JDK 11, sur un base de Debian.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# =====
+FROM azul/zulu-openjdk-debian:11 as eap-build
+
+RUN apt-get update -y                                            &amp;amp;&amp;amp; \
+    apt-get install -y wget unzip patch curl maven xmlstarlet
+
+WORKDIR eap-build-master
+COPY . ./
+RUN ./build-eap7.sh                                              &amp;amp;&amp;amp; \
+    unzip -q -d /opt dist/jboss-eap-*.zip                        &amp;amp;&amp;amp; \
+    mv /opt/jboss-eap-* /opt/jboss-eap
+
+
+# =====
+FROM azul/zulu-openjdk-debian:11
+
+RUN groupadd -r jboss -g 1000                                    &amp;amp;&amp;amp; \
+    useradd -u 1000 -r -g jboss -m -d /opt/jboss-eap                \
+                    -s /sbin/nologin -c &quot;JBoss user&quot; jboss       &amp;amp;&amp;amp; \
+    chmod 755 /opt/jboss-eap
+
+COPY --from=eap-build --chown=jboss:0 /opt/jboss-eap /opt/jboss-eap
+
+WORKDIR /opt/jboss-eap
+USER jboss
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+EXPOSE 8080
+EXPOSE 9990
+
+CMD [&quot;bin/standalone.sh&quot;, &quot;-b&quot;, &quot;0.0.0.0&quot;, &quot;-bmanagement&quot;, &quot;0.0.0.0&quot;]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par la suite, j&amp;#8217;ai voulu laisser le choix de la version à construire ainsi que la version du JDK à utiliser.
+L&amp;#8217;objectif était de donner un maximum de liberté à l&amp;#8217;utilisateur, mais sans multiplier les fichiers Dockerfile.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Faites le calcul : fin 2021 on pouvait choisir entre 36 versions mineurs et updates de JBoss EAP 7.
+Le build pouvant fonctionner avec tous les JDKs entre les versions 8 et 16, sur 3 systèmes Linux (Debian, CentOS et Alpine), ça fait &lt;strong&gt;presque 1000 possibilités&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock center&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;https://docs.docker.com/engine/reference/commandline/build/&quot;&gt;&lt;img src=&quot;/images/docker/docker-build.png&quot; alt=&quot;Docker build&quot; width=&quot;350&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;avec-des-arguments&quot;&gt;&amp;#8230;&amp;#8203; avec des arguments&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La solution à mon problème, c&amp;#8217;est le &lt;em&gt;build argument&lt;/em&gt;.
+Ça se déclare dans le fichier Dockerfile avec l&amp;#8217;instruction &lt;code&gt;&lt;strong&gt;ARG&lt;/strong&gt;&lt;/code&gt;, soit dans le corp du fichier de la même façon qu&amp;#8217;une variable &lt;code&gt;ENV&lt;/code&gt;, soit avant le &lt;code&gt;FROM&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;strong&gt;ARG JDK_VERSION=11&lt;/strong&gt;
+FROM azul/zulu-openjdk-alpine:&lt;strong&gt;$JDK_VERSION&lt;/strong&gt; as eap-build
+
+...
+&lt;strong&gt;ARG EAP_VERSION&lt;/strong&gt;
+RUN ./build-eap7.sh &lt;strong&gt;$EAP_VERSION&lt;/strong&gt;
+...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dans cette exemple, la version du JDK a une valeur par défaut et la version d&amp;#8217;EAP est vide par défaut.
+Avec la commande simple, on construit donc la dernière version d&amp;#8217;EAP avec le JDK 11.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~# docker build --tag hasalex/eap .&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;En passant les &lt;em&gt;build arguments&lt;/em&gt;, on peut construire une version plus ancienne avec un JDK 8.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~# docker build &lt;strong&gt;--build-arg JDK_VERSION=8&lt;/strong&gt; &lt;strong&gt;--build-arg EAP_VERSION=7.2.3&lt;/strong&gt;     \
+                --tag hasalex/eap:7.2.3_jdk8 .&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Avec les &lt;em&gt;build arguments&lt;/em&gt; et 3 fichiers &lt;code&gt;Dockerfile&lt;/code&gt;, on s&amp;#8217;ouvre le choix entre près de 1000 combinaisons système / JDK / EAP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Si vous voulez essayer, vous trouverez les scripts et les Dockerfile sur le GitHub d&amp;#8217;&lt;a href=&quot;https://github.com/hasalex/eap-build&quot;&gt;eap-build&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><category term="docker" /><summary type="html">Depuis quelques années, je gère un repository sur GitHub pour que chacun puisse faire un build à partir du code source de JBoss EAP. Récemment, j&amp;#8217;ai voulu automatiser ce build avec Docker, sur plusieurs systèmes (Debian, CentOS, Alpine), pour plusieurs versions du JDK (8 et 11) et pour plusieurs versions de JBoss EAP. C&amp;#8217;est là que j&amp;#8217;ai découvert la possibilité d&amp;#8217;utiliser des arguments dans Dockerfile et de les passer en option de docker build. Ainsi, je peux choisir les versions du JDK et de JBoss EAP au lancement du build : ~# docker build --build-arg JDK_VERSION=8 --build-arg EAP_VERSION=7.2.3 \ --tag hasalex/eap:7.2.3_jdk8 . Voyons pourquoi et comment j&amp;#8217;en suis arrivé à ce résultat&amp;#8230;&amp;#8203;</summary></entry><entry><title type="html">Sortie du JDK 17</title><link href="https://blog.alexis-hassler.com//2021/11/03/java-17.html" rel="alternate" type="text/html" title="Sortie du JDK 17" /><published>2021-11-03T00:00:00+00:00</published><updated>2021-11-03T00:00:00+00:00</updated><id>https://blog.alexis-hassler.com//2021/11/03/java-17</id><content type="html" xml:base="https://blog.alexis-hassler.com//2021/11/03/java-17.html">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintenant que la sortie d&amp;#8217;une nouvelle version du JDK est devenu une routine, l&amp;#8217;événement est l&amp;#8217;arrivée d&amp;#8217;une version LTS.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Voyons ce que cette version 17 nous apporte au niveau du langage, du runtime et des API.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+Ce billet était initialement publié sur le site de &lt;a href=&quot;https://www.sewatech.fr&quot;&gt;Sewatech&lt;/a&gt;. Il a migré ici suite à l&amp;#8217;abandon de la section &lt;em&gt;Articles&lt;/em&gt;.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;cycle-de-release&quot;&gt;Cycle de release&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le nouveau cycle de release commence à être rodé.
+On a eu cinq versions STS&lt;sup class=&quot;footnote&quot;&gt;[&lt;a id=&quot;_footnoteref_1&quot; class=&quot;footnote&quot; href=&quot;#_footnotedef_1&quot; title=&quot;View footnote.&quot;&gt;1&lt;/a&gt;]&lt;/sup&gt; (12 à 16), avec leurs nouveautés, leurs fonctionnalités en &lt;em&gt;preview&lt;/em&gt; et leurs API expérimentales.
+Ce JDK 17 consolide ces 3 ans de travail dans une version LTS&lt;sup class=&quot;footnote&quot;&gt;[&lt;a id=&quot;_footnoteref_2&quot; class=&quot;footnote&quot; href=&quot;#_footnotedef_2&quot; title=&quot;View footnote.&quot;&gt;2&lt;/a&gt;]&lt;/sup&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;La prochaine version LTS devait être pour le JDK 23 dans 3 ans, mais le délai sera probablement réduit puisqu&amp;#8217;on s&amp;#8217;oriente vers une version LTS tous les 2 ans.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Par ailleur, Oracle a annonce le retour de la gratuité de son JDK, sous certaines conditions assez peu contraignantes.
+Je ne suis pas sûr que ça m&amp;#8217;incite à abandonner OpenJDK pour autant.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Pour rappel, voici une liste de distributions d&amp;#8217;OpenJDK :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://jdk.java.net/&quot;&gt;OpenJDK build from Oracle&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://adoptium.net/&quot;&gt;Eclipse Temurin&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.azul.com/downloads/?package=jdk#download-openjdk&quot;&gt;Azul Zulu&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://developers.redhat.com/products/openjdk/download&quot;&gt;Red Hat build of OpenJDK&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://sap.github.io/SapMachine/&quot;&gt;SapMachine&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://aws.amazon.com/corretto/&quot;&gt;Amazon Corretto&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/java/openjdk/download&quot;&gt;Microsoft Build of OpenJDK&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://developer.ibm.com/languages/java/semeru-runtimes&quot;&gt;IBM Semeru&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://bell-sw.com/pages/downloads/&quot;&gt;BellSoft Liberica JDK&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://dragonwell-jdk.io/&quot;&gt;Alibaba Dragonwell&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;fonctionnalités&quot;&gt;Fonctionnalités&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Les nouveautés du langage Java sont bien plus allèchantes que celles du JDK 11.
+Il y a des choses qui peuvent réellement changer notre code, comme les &lt;em&gt;records&lt;/em&gt;, le &lt;em&gt;pattern matching&lt;/em&gt; ou les classes scellées.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Les &lt;strong&gt;&lt;em&gt;records&lt;/em&gt;&lt;/strong&gt; ressemblent à des &lt;em&gt;java beans&lt;/em&gt; simplifiés et modernisés.
+Plus précisément, ils permettent de définir des tuples nommés.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;record Person(String name, int age) {}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le &lt;strong&gt;&lt;em&gt;pattern matching&lt;/em&gt;&lt;/strong&gt; concerne pour l&amp;#8217;instant l&amp;#8217;instruction &lt;strong&gt;&lt;code&gt;instanceof&lt;/code&gt;&lt;/strong&gt;.
+Sa syntaxe a un peu évolué pour éviter des &lt;em&gt;cast&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if (shape instanceof Rectangle &lt;strong&gt;rect&lt;/strong&gt;) {
+    return 2 * (&lt;strong&gt;rect&lt;/strong&gt;.length() + &lt;strong&gt;rect&lt;/strong&gt;.width());
+} else if (shape instanceof Circle &lt;strong&gt;circle&lt;/strong&gt;) {
+    return 2 * PI * &lt;strong&gt;circle&lt;/strong&gt;.radius();
+} else {
+    throw new IllegalArgumentException(&quot;Unrecognized shape&quot;);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Le &lt;strong&gt;&lt;em&gt;pattern matching&lt;/em&gt;&lt;/strong&gt; concerne aussi l&amp;#8217;instruction &lt;strong&gt;&lt;code&gt;switch&lt;/code&gt;&lt;/strong&gt;.
+Ce projet est bien plus ambitieux.
+Dans un premier temps, la structure du &lt;code&gt;switch&lt;/code&gt; a été enrichie pour en faire une expression, avec un recyclage de la flèche &lt;code&gt;&amp;#8594;&lt;/code&gt;.
+Le &lt;em&gt;pattern matching&lt;/em&gt; à proprement parler n&amp;#8217;est qu&amp;#8217;en &lt;em&gt;preview&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock width-80&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;return switch (shape) {
+
+  case Rectangle &lt;strong&gt;rect&lt;/strong&gt; -&amp;gt; 2 * &lt;strong&gt;rect&lt;/strong&gt;.length() + 2 * &lt;strong&gt;rect&lt;/strong&gt;.width();
+
+  case Circle &lt;strong&gt;circle&lt;/strong&gt; -&amp;gt; 2 * &lt;strong&gt;circle&lt;/strong&gt;.radius() * Math.PI;
+
+  default -&amp;gt;
+    throw new IllegalArgumentException(&quot;Unrecognized shape&quot;);
+
+};&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au niveau du &lt;em&gt;runtime&lt;/em&gt;, les ramasse-miettes de nouvellle génération, &lt;strong&gt;ZGC&lt;/strong&gt; et &lt;strong&gt;Shenendoah GC&lt;/strong&gt;, sont sortis de la phase expérimentale.
+Leurs performances ont l&amp;#8217;air vraiment impressionnantes.
+Et &lt;strong&gt;CMS&lt;/strong&gt;, l&amp;#8217;antique ramasse-miettes concurrent, a été retiré.
+&lt;strong&gt;G1&lt;/strong&gt; reste le &lt;em&gt;garbage collector&lt;/em&gt; par défaut.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Au niveau des API en revanche, il y a beaucoup de petites choses, mais rien de bouleversant.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;C&amp;#8217;est dommage que le pattern matching ne soit pas terminé.
+Sinon, cette version LTS aurait pu être considérée comme réellement importante, au même niveau que les versions 5 (&lt;em&gt;generics&lt;/em&gt;) et 8 (&lt;em&gt;lambda&lt;/em&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A ce titre, la réduction du délai à 2 ans pour la prochaine version LTS est une bonne nouvelle, au moins à court terme.
+La version&amp;#160;21 marquera une nouvelle étape importante dans la modernisation du JDK.
+Rendez-vous en septembre 2023&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;N&amp;#8217;hésitez pas à nous &lt;a href=&quot;/contacts.html&quot;&gt;contacter&lt;/a&gt; si vous souhaitez planifier une &lt;a href=&quot;/formation-java-nouveautes-jdk-17.html&quot;&gt;formation sur les nouveautés du JDK 17&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;div class=&quot;footnote&quot; id=&quot;_footnotedef_1&quot;&gt;
+&lt;a href=&quot;#_footnoteref_1&quot;&gt;1&lt;/a&gt;. Short Term Support
+&lt;/div&gt;
+&lt;div class=&quot;footnote&quot; id=&quot;_footnotedef_2&quot;&gt;
+&lt;a href=&quot;#_footnoteref_2&quot;&gt;2&lt;/a&gt;. Long Term Support
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Alexis Hassler</name></author><summary type="html">Maintenant que la sortie d&amp;#8217;une nouvelle version du JDK est devenu une routine, l&amp;#8217;événement est l&amp;#8217;arrivée d&amp;#8217;une version LTS. Voyons ce que cette version 17 nous apporte au niveau du langage, du runtime et des API. Ce billet était initialement publié sur le site de Sewatech. Il a migré ici suite à l&amp;#8217;abandon de la section Articles.</summary></entry></feed>
